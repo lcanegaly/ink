@@ -2,6 +2,7 @@
 #define GLEW_STATIC
 #include "GL/glew.h"
 #include "glm.hpp"
+#include <GLFW/glfw3.h>
 
 class Renderer
 {
@@ -21,11 +22,13 @@ public:
 	void TestDraw();
   GLuint BuildProgram(GLuint vshader, GLuint fshader, const char* vertexPositionName );
   GLuint LoadShader(GLenum type, const char* shaderSource);
+  GLuint CreateSimpleTexture2D();
 
     
 	glm::vec2 ConvertNormToPixel(glm::vec2 xy);
 	glm::vec2 ConvertPixelToNorm(int x, int y);
 	
+  GLFWwindow* window = nullptr;
 private:
 	Renderer();
 	int m_Width, m_Height;

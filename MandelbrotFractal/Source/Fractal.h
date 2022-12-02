@@ -7,7 +7,7 @@
 class Fractal 
 {
 public:
-	Fractal(glm::vec2 screenSize, glm::vec2 centerPoint, Renderer& renderer);
+	Fractal(glm::vec2 screenSize, glm::vec2 centerPoint, Renderer* renderer);
 	//sets the coordinate plane bounds
 	void SetBounds(glm::vec2 centerPoint, double zoom);
 	void Display() const;
@@ -18,6 +18,6 @@ private:
 	bool m_Calculated;
 	glm::vec2 m_ScreenSize;
 	glm::vec2 m_CenterPoint;
-	Renderer& m_Renderer;
+	Renderer* m_Renderer = nullptr;
 
 };

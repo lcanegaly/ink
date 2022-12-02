@@ -17,83 +17,66 @@ void Renderer::Init(int width, int height)
 	m_Width = width;
 	m_Height = height;
 
+    /* Initialize the library */
+  if (!glfwInit())
+      return;
+
+  // OpenGL ES 2.0
+  glfwDefaultWindowHints();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+  glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+  window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
+  if (!window)
+  {
+      glfwTerminate();
+      return;
+  }
+
+  /* Make the window's context current */
+  glfwMakeContextCurrent(window);
+
+  int w, h;
+  glfwGetFramebufferSize(window, &w, &h);
+  glViewport(0, 0, w, h);
+
   GLuint VBO;
   glGenBuffers(1, &VBO);  
   glBindBuffer(GL_ARRAY_BUFFER, VBO);  
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(vVertices), vVertices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(s_Vertices), s_Vertices, GL_STATIC_DRAW);
 
-	glClearColor ( 0.0f, 0.45f, 0.0f, 0.0f );
-  GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource);
-  GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+  glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
+
+  // load vertex and fragment shaders
+  GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource2);
+  GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource2);
   m_Program = BuildProgram(vertexShader, fragmentShader, "vPosition");
 
+  //  load fragment shader for menu 
+  GLuint fragmentShader2 = LoadShader(GL_FRAGMENT_SHADER, s_FragmentShaderSourceMenu2);
+  m_MenuProgram = BuildProgram(vertexShader, fragmentShader2, "iPosition");
 
-	/*
-	glGenVertexArrays(1, &m_VAO);
-	glBindVertexArray(m_VAO);
-	
-	glGenBuffers(1, &m_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(s_Vertices), s_Vertices, GL_STATIC_DRAW);
-	
-	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &s_VertexShaderSource, NULL);
-	glCompileShader(vertexShader);
 
-	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &s_FragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	m_Program = glCreateProgram();
-	glAttachShader(m_Program, vertexShader);
-	glAttachShader(m_Program, fragmentShader);
-	glLinkProgram(m_Program);
-
-	glUseProgram(m_Program);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	*/
-	//Create second m_Program to load menu frag shader
-	/*m_MenuProgram = glCreateProgram();
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &s_VertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &s_FragmentShaderSourceMenu, NULL);
-	glCompileShader(fragmentShader);
-
-	glAttachShader(m_MenuProgram, vertexShader);
-	glAttachShader(m_MenuProgram, fragmentShader);
-	glLinkProgram(m_MenuProgram);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	*/
-	/*
+  m_Texture = CreateSimpleTexture2D();
 	//texture
-	glGenTextures(1, &m_Texture);
-	glActiveTexture(GL_TEXTURE0);
+	/*
+
+  glGenTextures(1, &m_Texture);
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
 
-	//set texture wrapping
+  //set texture wrapping
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
-	//glBindVertexArray(0);
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	*/
+*/
 };
 
 void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center = glm::vec2(0.0f,0.0f), double zoom = 1.0)
@@ -110,25 +93,64 @@ void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center =
 	GLint uniformPan = glGetUniformLocation(m_Program, "pan");
 	glUniform2f(uniformPan, center.x, center.y);
 
-	//glUseProgram(m_Program);
-	//glBindVertexArray(m_VAO);
-	//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 
+	  // RENDER
 
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0,0,windowWidth,windowHeight);
+  glClear(GL_COLOR_BUFFER_BIT);
+//  glUseProgram(m_Program);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
+    
 
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-	//glBindVertexArray(0);
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
+ //glEnableVertexAttribArray(0);
+
+ //glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
+ //glEnableVertexAttribArray(1);
+  	
+  //glm::mat4 model = glm::mat4(1.0f);
+
+ //GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
+ //glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
+
+	//GLint uniformZoom = glGetUniformLocation(m_Program, "zoom");
+ //glUniform1f(uniformZoom, (float)zoom);
+
+ //GLint uniformPan = glGetUniformLocation(m_Program, "pan");
+ //glUniform2f(uniformPan, center.x, center.y);
+
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  glfwSwapBuffers(window);
+
 }
 
 void Renderer::Draw(unsigned char* tex, int posX, int posY, int width, int height, float rotation)
 {
-	glUseProgram(m_MenuProgram);
+  // RENDER
 
-	glm::vec2 position = ConvertPixelToNorm(posX, posY);
+  GLint texture_uniform = glGetUniformLocation ( m_MenuProgram, "Texture" );
+  std::cout << "tex uniform location = " << texture_uniform << std::endl;
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex);
+  
+  
+  //glClear(GL_COLOR_BUFFER_BIT);
+  glUseProgram(m_MenuProgram);
+ 
+  //glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
+
+
+  glActiveTexture ( GL_TEXTURE0 ); 
+	glBindTexture(GL_TEXTURE_2D, m_Texture);
+  
+  glUniform1i (texture_uniform, 0 );
+  
+  glm::vec2 position = ConvertPixelToNorm(posX, posY);
 	glm::vec2 size;
 	size.x = (float)width / (float)m_Width;
 	size.y = (float)height / (float)m_Height;
@@ -142,48 +164,93 @@ void Renderer::Draw(unsigned char* tex, int posX, int posY, int width, int heigh
 	GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
 	glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
 
-	glBindVertexArray(m_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBindTexture(GL_TEXTURE_2D, m_Texture);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex);
-//	glGenerateMipmap(GL_TEXTURE_2D);
+   // Set the base map sampler to texture unit to 0
 
-	//glViewport ( 0, 0, width, height );
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex);
+	//glGenerateMipmap(GL_TEXTURE_2D);
+
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  glfwSwapBuffers(window);
+
+ // glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
+GLuint Renderer::CreateSimpleTexture2D()
+{
+   // Texture object handle
+   GLuint textureId;
+   
+   // 2x2 Image, 3 bytes per pixel (R, G, B)
+   GLubyte pixels[4 * 3] =
+   {  
+      255,   0,   0, // Red
+        0, 255,   0, // Green
+        0,   0, 255, // Blue
+      255, 255,   0  // Yellow
+   };
+
+   // Use tightly packed data
+   glPixelStorei ( GL_UNPACK_ALIGNMENT, 1 );
+
+   // Generate a texture object
+   glGenTextures ( 1, &textureId );
+
+   // Bind the texture object
+   glBindTexture ( GL_TEXTURE_2D, textureId );
+
+   // Load the texture
+   glTexImage2D ( GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels );
+
+   // Set the filtering mode
+   glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+   glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+
+   return textureId;
+
+}
 
 void Renderer::TestDraw(){
 
-   	// No clientside arrays, so do this in a webgl-friendly manner
-   	GLuint vertexPosObject;
-   	glGenBuffers(1, &vertexPosObject);
-   	glBindBuffer(GL_ARRAY_BUFFER, vertexPosObject);
-   	glBufferData(GL_ARRAY_BUFFER, 9*4, vVertices, GL_STATIC_DRAW);
-   
-   	// Set the viewport
-   	glViewport ( 0, 0, m_Width, m_Height );
-   
-   	// Clear the color buffer
-   	glClear ( GL_COLOR_BUFFER_BIT );
+  // RENDER
 
-   	// Use the program object
-   	glUseProgram ( m_Program );
+  glClear(GL_COLOR_BUFFER_BIT);
+  glUseProgram(m_Program);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
+    
 
-   	// Load the vertex data
-   	glVertexAttribPointer(0 /* ? */, 3, GL_FLOAT, 0, 0, 0);
-   	glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
+ //glEnableVertexAttribArray(0);
 
-   	glDrawArrays ( GL_TRIANGLES, 0, 3 );
+ //glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
+ //glEnableVertexAttribArray(1);
+  	
+  //glm::mat4 model = glm::mat4(1.0f);
+
+ //GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
+ //glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
+
+	//GLint uniformZoom = glGetUniformLocation(m_Program, "zoom");
+ //glUniform1f(uniformZoom, (float)zoom);
+
+ //GLint uniformPan = glGetUniformLocation(m_Program, "pan");
+ //glUniform2f(uniformPan, center.x, center.y);
+
+
+
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  glfwSwapBuffers(window);
+
 }
 
 void Renderer::SetActiveTexture(int texSlot)
 {
 	
-	/*TODO revert this.
+/*	
 	switch (texSlot) 
 	{
 	case 0: glActiveTexture(GL_TEXTURE0);
@@ -200,45 +267,53 @@ void Renderer::SetActiveTexture(int texSlot)
 
 GLuint Renderer::LoadShader(GLenum type, const char* source)
 {
-	GLint compiled;
+    // create shader
+    //GLuint shader = glCreateShader(type);
+    GLuint shader = glCreateShader(type);
+    if(shader == 0)
+    {
+        printf("Error creating shader\n");
+        return 0;
+    }
 
-	unsigned int shader = glCreateShader(type);
-	if (shader == 0)
-		std::cout << "shader creation fucked" << std::endl;
+    // load the shader source to the shader object and compile it;
+    glShaderSource(shader, 1, &source, NULL);
+    //~ glShaderSource(shader, 1, &source, 0);
+    glCompileShader(shader);
 
-	
-	glShaderSource(shader, 1, &source, NULL);
-	glCompileShader(shader);
-	glGetShaderiv (shader, GL_COMPILE_STATUS, &compiled);
+    // check if the shader compiled successfully
+    GLint compiled;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+    if (!compiled)
+    {
+        printf("Shader compilation error\n");
+        glDeleteShader(shader);
+        return 0;
+    }
+    return shader;
 
-   	if (!compiled) 
-   	{
-			std::cout << "error compiling" << std::endl;
-   		glDeleteShader ( shader );
-      return 0;
-   	}	
-  return shader;
 }
 
 GLuint Renderer::BuildProgram(GLuint vertexShader, GLuint fragmentShader, const char * vertexPositionName)
 {
-    // create a GL program and link it
-    m_Program = glCreateProgram();
-    glAttachShader(m_Program, vertexShader);
-    glAttachShader(m_Program, fragmentShader);
-    glBindAttribLocation(m_Program, 0, vertexPositionName);
-    glLinkProgram(m_Program);
+   // create a GL program and link it
+   // GLuint po = glCreateProgram();
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
+    glBindAttribLocation(program, 0, vertexPositionName);
+    glLinkProgram(program);
 
     // check if the program linked successfully
     GLint linked;
-    glGetProgramiv(m_Program, GL_LINK_STATUS, &linked);
+    glGetProgramiv(program, GL_LINK_STATUS, &linked);
     if(!linked)
     {
         printf("Program link error\n");
-        glDeleteProgram(m_Program);
+        glDeleteProgram(program);
         return 0;
     }
-    return m_Program;
+    return program;
 }
 
 void Renderer::PrintStatus() const

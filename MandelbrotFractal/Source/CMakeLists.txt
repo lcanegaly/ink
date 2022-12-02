@@ -8,7 +8,11 @@ add_executable(Fractal
     Texture.cpp
     )
 
-  #add_executable(Fractal hello_gl.cpp)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+  set_target_properties(Fractal PROPERTIES LINK_FLAGS "-o testme.html -s USE_GLFW=3 --preload-file file.txt")
+  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+endif()
+
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)

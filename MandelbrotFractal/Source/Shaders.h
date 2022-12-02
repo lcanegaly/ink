@@ -4,20 +4,26 @@ const char vertexShaderSource2[] =
       "attribute vec4 a_position;   \n"
       "attribute vec2 a_texCoord;   \n"
       "varying vec2 v_texCoord;     \n"
+	    "uniform mat4 translate;\n"
       "void main()                  \n"
       "{                            \n"
-      "   gl_Position = a_position; \n"
+      //"   gl_Position = a_position; \n"
+		  "gl_Position = translate * vec4(a_position.x, a_position.y, a_position.z, 1.0);\n"
       "   v_texCoord = a_texCoord;  \n"
       "}                            \n";
 
 const char fragmentShaderSource2[] =  
       "precision mediump float;                            \n"
       "varying vec2 v_texCoord;                            \n"
+    	"uniform float zoom;\n"
+	    "uniform vec2 pan;\n"
       "void main()                                         \n"
       "{                                                   \n"
      	" vec2 uv = vec2(v_texCoord.x * 3.0, v_texCoord.y*3.0);\n"
 		  " uv = uv - vec2(1.5, 1.5);                        \n"
-  		" float x = 0.0;\n"
+  		"uv *= vec2(zoom);\n"
+	  	"uv += pan;"
+      " float x = 0.0;\n"
 	  	" float y = 0.0;\n"
 	  	" float cx = uv.x;\n"
 	  	" float cy = uv.y;\n"
@@ -44,6 +50,16 @@ const char fragmentShaderSource2[] =
 		  "gl_FragColor = vec4(col, 1.0);\n"
       "}                                                   \n";
 
+static const char* s_FragmentShaderSourceMenu2
+{
+  "precision mediump float;                             \n"
+  "varying vec2 v_texCoord;                            \n"
+	"uniform sampler2D Texture;\n"
+	"void main()\n"
+	"{\n"
+		"gl_FragColor = texture2D(Texture, v_texCoord);\n"
+	"}\0"
+};
 
 const char vertexShaderSource[] = 
   "attribute vec4 vPosition; \n"
