@@ -14,16 +14,16 @@ public:
 		return instance;
 	}
 
-	void Init(int width, int height);
+	void Init(int width, int height, GLFWwindow* window);
 	void DrawFractal(int windowWidth, int windowHeight, glm::vec2 center, double zoom);
-	void Draw(unsigned char* tex, int posX, int posY, int width, int height, float rotation = 0);
+	void Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation = 0);
 	void SetActiveTexture(int texSlot);
 	void PrintStatus() const;
-	void TestDraw();
+	void TestDraw(int bind);
   GLuint BuildProgram(GLuint vshader, GLuint fshader, const char* vertexPositionName );
   GLuint LoadShader(GLenum type, const char* shaderSource);
   GLuint CreateSimpleTexture2D();
-
+  void LoadTexture(unsigned char* texture, int bind_num, int width, int height);
     
 	glm::vec2 ConvertNormToPixel(glm::vec2 xy);
 	glm::vec2 ConvertPixelToNorm(int x, int y);
@@ -36,7 +36,7 @@ private:
 	unsigned int m_VAO;
 	GLuint m_Program;
 	GLuint m_MenuProgram;
-	GLuint m_Texture;
+	GLuint m_Texture[2];
 };
 
 

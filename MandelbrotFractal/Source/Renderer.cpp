@@ -8,39 +8,16 @@
 #include "Shaders.h"
 #include "GL/glew.h"
 
+
 Renderer::Renderer() 
 	: m_Width{ 0 }, m_Height{ 0 }, m_VBO{ 0 }, m_VAO{ 0 }, m_Program{ 0 }, m_MenuProgram{ 0 }, m_Texture{ 0 }
 {};
 
-void Renderer::Init(int width, int height) 
+void Renderer::Init(int width, int height, GLFWwindow* window_ptr) //TODO need to pass in window context. 
 {
 	m_Width = width;
 	m_Height = height;
-
-    /* Initialize the library */
-  if (!glfwInit())
-      return;
-
-  // OpenGL ES 2.0
-  glfwDefaultWindowHints();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-  glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-  window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
-  if (!window)
-  {
-      glfwTerminate();
-      return;
-  }
-
-  /* Make the window's context current */
-  glfwMakeContextCurrent(window);
-
-  int w, h;
-  glfwGetFramebufferSize(window, &w, &h);
-  glViewport(0, 0, w, h);
+  window = window_ptr;
 
   GLuint VBO;
   glGenBuffers(1, &VBO);  
@@ -60,23 +37,25 @@ void Renderer::Init(int width, int height)
 
 
 
-  m_Texture = CreateSimpleTexture2D();
+//  m_Texture = CreateSimpleTexture2D();
 	//texture
-	/*
 
-  glGenTextures(1, &m_Texture);
-	glBindTexture(GL_TEXTURE_2D, m_Texture);
 
+  glGenTextures(2, m_Texture);
+/*
+  glBindTexture(GL_TEXTURE_2D, m_Texture);
   //set texture wrapping
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+*/
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-*/
+
+  
+  //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 64, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, tex);
 };
 
 void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center = glm::vec2(0.0f,0.0f), double zoom = 1.0)
@@ -126,14 +105,9 @@ void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center =
 
 }
 
-void Renderer::Draw(unsigned char* tex, int posX, int posY, int width, int height, float rotation)
+void Renderer::Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation)
 {
-  // RENDER
-
-  GLint texture_uniform = glGetUniformLocation ( m_MenuProgram, "Texture" );
-  std::cout << "tex uniform location = " << texture_uniform << std::endl;
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex);
-  
+    GLint texture_uniform = glGetUniformLocation ( m_MenuProgram, "Texture" );
   
   //glClear(GL_COLOR_BUFFER_BIT);
   glUseProgram(m_MenuProgram);
@@ -144,10 +118,8 @@ void Renderer::Draw(unsigned char* tex, int posX, int posY, int width, int heigh
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
   glEnableVertexAttribArray(1);
 
+  glBindTexture(GL_TEXTURE_2D, m_Texture[bind_num]);
 
-  glActiveTexture ( GL_TEXTURE0 ); 
-	glBindTexture(GL_TEXTURE_2D, m_Texture);
-  
   glUniform1i (texture_uniform, 0 );
   
   glm::vec2 position = ConvertPixelToNorm(posX, posY);
@@ -165,9 +137,7 @@ void Renderer::Draw(unsigned char* tex, int posX, int posY, int width, int heigh
 	glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
 
 
-   // Set the base map sampler to texture unit to 0
 
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex);
 	//glGenerateMipmap(GL_TEXTURE_2D);
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -203,6 +173,7 @@ GLuint Renderer::CreateSimpleTexture2D()
    // Load the texture
    glTexImage2D ( GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels );
 
+
    // Set the filtering mode
    glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
    glTexParameteri ( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
@@ -211,58 +182,39 @@ GLuint Renderer::CreateSimpleTexture2D()
 
 }
 
-void Renderer::TestDraw(){
+void Renderer::TestDraw(int bind){
 
-  // RENDER
-
-  glClear(GL_COLOR_BUFFER_BIT);
-  glUseProgram(m_Program);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
-  glEnableVertexAttribArray(1);
-    
-
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
- //glEnableVertexAttribArray(0);
-
- //glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
- //glEnableVertexAttribArray(1);
-  	
-  //glm::mat4 model = glm::mat4(1.0f);
-
- //GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
- //glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
-
-	//GLint uniformZoom = glGetUniformLocation(m_Program, "zoom");
- //glUniform1f(uniformZoom, (float)zoom);
-
- //GLint uniformPan = glGetUniformLocation(m_Program, "pan");
- //glUniform2f(uniformPan, center.x, center.y);
-
-
-
-  glDrawArrays(GL_TRIANGLES, 0, 6);
-  glfwSwapBuffers(window);
+  SetActiveTexture(0);
+  glBindTexture(GL_TEXTURE_2D, m_Texture[bind]);
 
 }
 
+void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height){
+ 
+  SetActiveTexture(0);
+  glBindTexture(GL_TEXTURE_2D, m_Texture[bind_num]);
+
+  //set texture wrapping
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture); 
+}
+
 void Renderer::SetActiveTexture(int texSlot)
-{
-	
-/*	
+{	
 	switch (texSlot) 
 	{
 	case 0: glActiveTexture(GL_TEXTURE0);
 		break;
-
 	case 1: glActiveTexture(GL_TEXTURE1);
 		break;
-
 	default: glActiveTexture(GL_TEXTURE3);
 		break;
 	}
-	*/
 }
 
 GLuint Renderer::LoadShader(GLenum type, const char* source)

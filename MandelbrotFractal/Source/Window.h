@@ -14,20 +14,24 @@ namespace Window {
 
 	int Create(int width, int height) 
 	{
-	
+    
+	    /* Initialize the library */
+    if (!glfwInit())
+      return 1;
+
     // OpenGL ES 2.0
     glfwDefaultWindowHints();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
     if (!window)
     {
-        glfwTerminate();
-        return -1;
+      std::cout << "NO WINDOW MY GUY \n";
+      glfwTerminate();
+      return 1;
     }
 
     /* Make the window's context current */
@@ -35,9 +39,9 @@ namespace Window {
 
     int w, h;
     glfwGetFramebufferSize(window, &w, &h);
-    glViewport(0, 0, w, h);
 
-		return 0;
+    glViewport(0, 0, w, h);
+  	return 0;
 	}
 
   void Swap()
@@ -65,7 +69,10 @@ void Clear(float r = 0.0f, float g = 0.0f, float b = 1.0f, float a = 1.0f)
 	{
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		outMouse = mouse;
+  
+    std::cout << mouse.m_MouseY << " : " << mouse.m_MouseX << " \n";
+		
+  outMouse = mouse;
 		mouse.Clear();
 	}
 
