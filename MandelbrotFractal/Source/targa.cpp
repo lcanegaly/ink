@@ -17,6 +17,7 @@ Targa::~Targa(){
   delete data_;
 }
 
+//TODO fix this, needs to read in LSB order.
 int Targa::LoadImageHeader(){
   imageIdLength_ = (unsigned char)header_[kIdLengthOffset_] * sizeof(char);
   colorMapType_ = (unsigned char)header_[kColorMapTypeOffset_];
