@@ -13,7 +13,8 @@ public:
 	void AddMouseInputEvent(MouseInput& m);
 	bool Button(int width, int height, int posX, int posY, int texture, float rotation = 0);
 	void ResetGui();
-	enum Icons {up_arrow, down_arrow, left_arrow, right_arrow, DrawMinus, plus};
+//  void DrawGui();
+  enum Icons {up_arrow, down_arrow, left_arrow, right_arrow, minus, plus};
 
 private:
 	Renderer& m_GuiRenderer;

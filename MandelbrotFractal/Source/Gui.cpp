@@ -6,12 +6,24 @@ Gui::Gui(Renderer& renderer)
 {
 	ResetGui();
 
-  m_Textures[Icons::up_arrow].CreateTexture("test3.tga");
+  m_Textures[Icons::up_arrow].CreateTexture("up.tga");
   renderer.LoadTexture(m_Textures[Icons::up_arrow].GetTexture(), Icons::up_arrow, 
                        m_Textures[Icons::up_arrow].GetSize().x, m_Textures[Icons::up_arrow].GetSize().y);
-  m_Textures[Icons::down_arrow].CreateTexture("test.tga");
+  m_Textures[Icons::down_arrow].CreateTexture("down.tga");
   renderer.LoadTexture(m_Textures[Icons::down_arrow].GetTexture(), Icons::down_arrow, 
                        m_Textures[Icons::down_arrow].GetSize().x, m_Textures[Icons::down_arrow].GetSize().y);
+  m_Textures[Icons::left_arrow].CreateTexture("left.tga");
+  renderer.LoadTexture(m_Textures[Icons::left_arrow].GetTexture(), Icons::left_arrow, 
+                       m_Textures[Icons::left_arrow].GetSize().x, m_Textures[Icons::left_arrow].GetSize().y);
+  m_Textures[Icons::right_arrow].CreateTexture("right.tga");
+  renderer.LoadTexture(m_Textures[Icons::right_arrow].GetTexture(), Icons::right_arrow, 
+                       m_Textures[Icons::right_arrow].GetSize().x, m_Textures[Icons::right_arrow].GetSize().y);
+  m_Textures[Icons::plus].CreateTexture("plus.tga");
+  renderer.LoadTexture(m_Textures[Icons::plus].GetTexture(), Icons::plus, 
+                       m_Textures[Icons::plus].GetSize().x, m_Textures[Icons::plus].GetSize().y);
+  m_Textures[Icons::minus].CreateTexture("minus.tga");
+  renderer.LoadTexture(m_Textures[Icons::minus].GetTexture(), Icons::minus, 
+                       m_Textures[Icons::minus].GetSize().x, m_Textures[Icons::minus].GetSize().y);
 }
 
 Gui::~Gui()

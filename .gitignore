@@ -1,5 +1,6 @@
 # Media
 *.jpg
+*.tga
 
 # Prerequisites
 *.d
@@ -34,7 +35,7 @@
 *.out
 *.app
 
-
+resources/
 Dependencies/
 Include/
 build/

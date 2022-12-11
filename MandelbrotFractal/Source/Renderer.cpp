@@ -41,7 +41,7 @@ void Renderer::Init(int width, int height, GLFWwindow* window_ptr) //TODO need t
 	//texture
 
 
-  glGenTextures(2, m_Texture);
+  glGenTextures(6, m_Texture);
 /*
   glBindTexture(GL_TEXTURE_2D, m_Texture);
   //set texture wrapping

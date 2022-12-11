@@ -8,7 +8,7 @@ add_executable(Fractal
     )
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  set_target_properties(Fractal PROPERTIES LINK_FLAGS "-o testme.html -s USE_GLFW=3 --preload-file file.txt --preload-file test.tga --preload-file test3.tga")
+  set_target_properties(Fractal PROPERTIES LINK_FLAGS "-o testme.html -s USE_GLFW=3 --preload-file right.tga --preload-file left.tga --preload-file down.tga --preload-file up.tga --preload-file minus.tga --preload-file plus.tga")
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
 endif()
 

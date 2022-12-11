@@ -38,7 +38,7 @@ int Targa::LoadImageHeader(){
 
   return 0;
 }
-
+//TODO - change byte order function
 int Targa::LoadImageData(std::ifstream& file){
   dataOffset_ = kHeaderLength_ + imageIdLength_ + colorMapData_; 
   data_ = (char*)malloc(imageData_);

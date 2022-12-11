@@ -36,7 +36,7 @@ private:
 	unsigned int m_VAO;
 	GLuint m_Program;
 	GLuint m_MenuProgram;
-	GLuint m_Texture[2];
+	GLuint m_Texture[6];
 };
 
 
