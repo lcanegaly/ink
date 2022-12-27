@@ -58,7 +58,6 @@ void checkInput(){
   */
 }
 
-
 EM_BOOL mouse_callback(int eventType, const EmscriptenMouseEvent *e, void *userData)
 {
   gui_ptr->AddMouseInputEvent(0, 1, (double)e->targetX, (double)e->targetY);  
@@ -68,26 +67,18 @@ EM_BOOL mouse_callback(int eventType, const EmscriptenMouseEvent *e, void *userD
 int main()
 {
   EMSCRIPTEN_RESULT ret = emscripten_set_click_callback("canvas", 0, 1, mouse_callback);
-  //EMSCRIPTEN_RESULT ret = emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_DOCUMENT, 0, 1, mouse_callback);
-  Window::Create(WIDTH, HEIGHT);
   renderer_ptr = &Renderer::Get();
-  renderer_ptr->Init(WIDTH, HEIGHT, Window::window);
+  Renderer::Get().Init(WIDTH, HEIGHT, new GLFWContext(WIDTH, HEIGHT, "title"));
   gui_ptr = new Gui(Renderer::Get());
-  fractal_ptr = new Fractal(glm::vec2(WIDTH, HEIGHT), glm::vec2(0.0, 0.0), renderer_ptr);
-
-
+  fractal_ptr = new Fractal(glm::vec2(WIDTH, HEIGHT), glm::vec2(0.0, 0.0), &Renderer::Get()); 
   emscripten_request_animation_frame_loop(one_iter, (void*)fractal_ptr);
-
 	return 0;
 }
 
 EM_BOOL one_iter(double time, void* userData) {
-
-  Fractal* ptr =(Fractal*)userData;
+  Fractal* ptr = (Fractal*)userData;
   ptr->Display();
-  //fractal_ptr->Display();
   checkInput();
-//	gui_ptr->ResetGui();
   return EM_TRUE;
 }
 

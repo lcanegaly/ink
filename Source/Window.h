@@ -3,47 +3,26 @@
 #include <iostream>
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
-#include "MouseInput.h"
+//#include "MouseInput.h"
 
-namespace Window {
+class WindowDelegate {
+ public:
+  virtual int Create(int width, int height, const char* title) = 0; 
+  virtual void Destroy() = 0;
+  virtual GLFWwindow* context() = 0;
+};
 
-	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
-	static void key_callback(GLFWwindow*, int key, int scancode, int action, int mods);
-  static GLFWwindow* window = nullptr;
-	MouseInput mouse;
-
-	int Create(int width, int height) 
-	{
-    
-	    /* Initialize the library */
-    if (!glfwInit())
-      return 1;
-
-    // OpenGL ES 2.0
-    glfwDefaultWindowHints();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
-    if (!window)
-    {
-      std::cout << "NO WINDOW MY GUY \n";
-      glfwTerminate();
-      return 1;
-    }
-
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-
-    int w, h;
-    glfwGetFramebufferSize(window, &w, &h);
-
-    glViewport(0, 0, w, h);
-  	return 0;
-	}
-
+class GLFWContext : public WindowDelegate {
+ public:
+  GLFWContext(int width, int height, const char* title);  
+ //	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+ //	void key_callback(GLFWwindow*, int key, int scancode, int action, int mods);
+  GLFWwindow* context() override;
+	int Create(int width, int height, const char* title) override; 
+  void Destroy() override;
+  GLFWwindow* window_;
+};
+/*
   void Swap()
   { 
   glfwSwapBuffers(window);
@@ -51,7 +30,7 @@ namespace Window {
     std::cout << "window ptr empty" << std::endl;
   }
   }
-	
+
 void Clear(float r = 0.0f, float g = 0.0f, float b = 1.0f, float a = 1.0f)
 	{
 		glClearColor(0.55f, 0.3f, 1.0f, 1.0f);
@@ -60,11 +39,9 @@ void Clear(float r = 0.0f, float g = 0.0f, float b = 1.0f, float a = 1.0f)
    //     	glfwSwapInterval(0); // stub
 	}
 
-	void Close() 
-	{
-		glfwTerminate();
-	}
-
+*/
+ 
+/*
 	void GetMouseInput(MouseInput& outMouse)
 	{
 		glfwSwapBuffers(window);
@@ -75,8 +52,8 @@ void Clear(float r = 0.0f, float g = 0.0f, float b = 1.0f, float a = 1.0f)
   outMouse = mouse;
 		mouse.Clear();
 	}
-
-	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+	
+  void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 	{
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
@@ -96,7 +73,6 @@ void Clear(float r = 0.0f, float g = 0.0f, float b = 1.0f, float a = 1.0f)
 
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		/*
 		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
 			fractal_ptr->SetBounds(glm::vec2(-0.1, 0.0), 0);//left
 
@@ -114,7 +90,6 @@ void Clear(float r = 0.0f, float g = 0.0f, float b = 1.0f, float a = 1.0f)
 
 		if (key == GLFW_KEY_LEFT_CONTROL && action == GLFW_PRESS)
 			fractal_ptr->SetBounds(glm::vec2(0.0, 0.0), 0.1);//Zoom in
-		*/
 	}
 
 	int ShouldClose() 
@@ -122,5 +97,5 @@ void Clear(float r = 0.0f, float g = 0.0f, float b = 1.0f, float a = 1.0f)
 		return glfwWindowShouldClose(window);
 	}
 
-}
+*/
 

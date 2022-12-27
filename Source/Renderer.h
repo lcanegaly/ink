@@ -3,44 +3,19 @@
 #include "GL/glew.h"
 #include "glm.hpp"
 #include <GLFW/glfw3.h>
+#include "Window.h"
 
-/*
-class Renderer; 
-
-class RendererInterface{
- public:
-  virtual Renderer& Get() = 0;
-	virtual void Init(int width, int height, GLFWwindow* window) = 0;
-	virtual void DrawFractal(int windowWidth, int windowHeight, glm::vec2 center, double zoom) = 0;
-	virtual void Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation = 0) = 0;
-	virtual void SetActiveTexture(int texSlot) = 0;
-	virtual void PrintStatus() const = 0;
-	virtual void TestDraw(int bind) = 0;
-  virtual GLuint BuildProgram(GLuint vshader, GLuint fshader, const char* vertexPositionName ) = 0;
-  virtual GLuint LoadShader(GLenum type, const char* shaderSource) = 0;
-  virtual GLuint CreateSimpleTexture2D() = 0;
-  virtual void LoadTexture(unsigned char* texture, int bind_num, int width, int height) = 0;
-	virtual glm::vec2 ConvertNormToPixel(glm::vec2 xy) = 0;
-  virtual glm::vec2 ConvertPixelToNorm(int x, int y) = 0;
-};
-*/
-
-class Test{
-public:
-  void test(){}
-};
 
 class Renderer
 {
 public:
 	Renderer(const Renderer&) = delete;
-
 	static Renderer& Get() {
 		static Renderer instance;
 		return instance;
 	}
-
-	void Init(int width, int height, GLFWwindow* window);
+  ~Renderer(); 
+	void Init(int width, int height, GLFWContext* window);
 	void DrawFractal(int windowWidth, int windowHeight, glm::vec2 center, double zoom);
 	void Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation = 0);
 	void DrawTexturedQuad(unsigned char* tex, int posX, int posY, int width, int height, float rotation = 0);
@@ -54,8 +29,6 @@ public:
     
 	glm::vec2 ConvertNormToPixel(glm::vec2 xy);
 	glm::vec2 ConvertPixelToNorm(int x, int y);
-	
-  GLFWwindow* window = nullptr;
 private:
 	Renderer();
 	int m_Width, m_Height;
@@ -64,6 +37,7 @@ private:
 	GLuint m_Program;
 	GLuint m_MenuProgram;
 	GLuint m_Texture[6];
+  GLFWContext* window_ptr_;
 };
 
 

@@ -1,3 +1,4 @@
+#include "Window.h"
 #define GLEW_STATIC
 #include "Renderer.h"
 #include <stdio.h>
@@ -13,11 +14,14 @@ Renderer::Renderer()
 	: m_Width{ 0 }, m_Height{ 0 }, m_VBO{ 0 }, m_VAO{ 0 }, m_Program{ 0 }, m_MenuProgram{ 0 }, m_Texture{ 0 }
 {};
 
-void Renderer::Init(int width, int height, GLFWwindow* window_ptr) //TODO need to pass in window context. 
+Renderer::~Renderer(){
+  delete window_ptr_;
+}
+void Renderer::Init(int width, int height, GLFWContext* window_ptr) //TODO need to pass in window context. 
 {
 	m_Width = width;
 	m_Height = height;
-  window = window_ptr;
+  window_ptr_ = window_ptr;
 
   GLuint VBO;
   glGenBuffers(1, &VBO);  
@@ -94,7 +98,7 @@ void Renderer::DrawTexturedQuad(unsigned char* tex, int posX, int posY, int widt
 	//glGenerateMipmap(GL_TEXTURE_2D);
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  glfwSwapBuffers(window);
+  glfwSwapBuffers(window_ptr_->context());
 
  // glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -103,7 +107,7 @@ void Renderer::DrawTexturedQuad(unsigned char* tex, int posX, int posY, int widt
 
 void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center = glm::vec2(0.0f,0.0f), double zoom = 1.0)
 {
-	glUseProgram(m_Program);
+  glUseProgram(m_Program);
 	glm::mat4 model = glm::mat4(1.0f);
 
 	GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
@@ -144,8 +148,8 @@ void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center =
  //glUniform2f(uniformPan, center.x, center.y);
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  glfwSwapBuffers(window);
-
+  glfwSwapBuffers(window_ptr_->context());
+  
 }
 
 void Renderer::Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation)
@@ -184,7 +188,7 @@ void Renderer::Draw(unsigned char* tex, int bind_num, int posX, int posY, int wi
 	//glGenerateMipmap(GL_TEXTURE_2D);
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  glfwSwapBuffers(window);
+  glfwSwapBuffers(window_ptr_->context());
 
  // glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -234,7 +238,6 @@ void Renderer::TestDraw(int bind){
 
 void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height){
 
-  printf("Inside of Load Texture Call. Bind %d Width %d Height %d \n", bind_num, width, height );
   SetActiveTexture(0);
   glBindTexture(GL_TEXTURE_2D, m_Texture[bind_num]);
 

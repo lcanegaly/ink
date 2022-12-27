@@ -12,7 +12,12 @@ class ImageInterface  {
 
 class DrawTexture : public RenderDelegate {
  public:
-  DrawTexture(ObjectInterface* object, Renderer* renderer):RenderDelegate(object, renderer){
+  DrawTexture(ObjectInterface* object, Renderer* renderer):context_{object}, renderer_{renderer}{
+  }
+  ~DrawTexture(){
+    delete image_;
+    delete context_;
+    delete renderer_;
   }
   virtual void Load(const char* filepath) override {
     image_ = new Targa::TgaImage(filepath);
@@ -22,8 +27,13 @@ class DrawTexture : public RenderDelegate {
     renderer()->Draw((unsigned char*)image_->data(), 0, context()->position().x , context()->position().y,
                      context()->size().x, context()->size().y);
   }
+  virtual ObjectInterface* context() override {return context_;}
+  virtual Renderer* renderer() override {return renderer_;}  
+  virtual void Load() override {}
 private:
   Targa::Image* image_;
+  ObjectInterface* context_;
+  Renderer* renderer_;
 };
 
 class Image : public Object, public ImageInterface {
