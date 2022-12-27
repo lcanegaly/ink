@@ -8,9 +8,12 @@
 #include "Gui.h"
 #include "MouseInput.h"
 #include "glm.hpp"
+#include "application.h"
+#include "log.h"
 
 #define WIDTH 800
 #define HEIGHT 600
+#define TITLE "fractal wasm"
 
 Gui* gui_ptr = nullptr;
 EM_BOOL one_iter(double time, void* userData);
@@ -18,8 +21,7 @@ Fractal* fractal_ptr = nullptr;
 Renderer* renderer_ptr = nullptr;
 MouseInput* mouse_ptr = nullptr;
 MouseInput mouse;
-
-//Application application(WIDTH, HEIGHT);
+Application* app;
 
 void checkInput(){
 
@@ -67,18 +69,21 @@ EM_BOOL mouse_callback(int eventType, const EmscriptenMouseEvent *e, void *userD
 int main()
 {
   EMSCRIPTEN_RESULT ret = emscripten_set_click_callback("canvas", 0, 1, mouse_callback);
-  renderer_ptr = &Renderer::Get();
-  Renderer::Get().Init(WIDTH, HEIGHT, new GLFWContext(WIDTH, HEIGHT, "title"));
+  app = new Application(TITLE, WIDTH, HEIGHT, &Renderer::Get());
+  //TODO - get rid of GUI class. Buttons should be image type objects.
   gui_ptr = new Gui(Renderer::Get());
+  //TODO - fractal should be image type object.
   fractal_ptr = new Fractal(glm::vec2(WIDTH, HEIGHT), glm::vec2(0.0, 0.0), &Renderer::Get()); 
-  emscripten_request_animation_frame_loop(one_iter, (void*)fractal_ptr);
-	return 0;
+  emscripten_request_animation_frame_loop(one_iter, (void*)app);
+  
+  return 0;
 }
 
 EM_BOOL one_iter(double time, void* userData) {
-  Fractal* ptr = (Fractal*)userData;
-  ptr->Display();
-  checkInput();
+  //Fractal* ptr = (Fractal*)userData;
+  fractal_ptr->Display();
+  ((Application*)userData)->Draw();
+   checkInput();
   return EM_TRUE;
 }
 

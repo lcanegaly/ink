@@ -10,7 +10,7 @@ Gui::Gui(Renderer& renderer)
 	ResetGui();
 
 //  printf("Image about to be loaded \n");
-  m_Images[0] = new Image("up.tga", &m_GuiRenderer, 250, 250, 100, 100);
+//  m_Images[0] = new Image("up.tga", &m_GuiRenderer, 250, 250, 100, 100);
  // printf("New Image Created \n");
 
 
@@ -59,9 +59,9 @@ bool Gui::Button(int width, int height, int posX, int posY, int texture, float r
 	//m_GuiRenderer.Draw(m_Images[texture]->image(), texture, posX, posY, width, height, rotation);
 	//Todo.. image draw call here.
   //printf("In Button call \n");
-  //m_Images[0]->Draw(width, height, posX, posY); 
-  Object* obj = m_Images[0];
-  obj->Draw(); 
+ // m_Images[0]->Draw(width, height, posX, posY); 
+  //Object* obj = m_Images[0];
+  //obj->Draw(); 
   
 
   if (m_Mouse.m_LeftClick) {

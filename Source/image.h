@@ -14,11 +14,11 @@ class DrawTexture : public RenderDelegate {
  public:
   DrawTexture(ObjectInterface* object, Renderer* renderer):context_{object}, renderer_{renderer}{
   }
-  ~DrawTexture(){
-    delete image_;
-    delete context_;
-    delete renderer_;
-  }
+//  ~DrawTexture(){
+ //   delete image_;
+ //   delete context_;
+//    delete renderer_;
+ // }
   virtual void Load(const char* filepath) override {
     image_ = new Targa::TgaImage(filepath);
     renderer()->LoadTexture((unsigned char*)image_->data(), 0, image_->width(), image_->height());

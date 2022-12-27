@@ -7,6 +7,8 @@ add_executable(Fractal
     targa.cpp
     object.cpp
     image.cpp
+    window.cpp
+    application.cpp
     )
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
