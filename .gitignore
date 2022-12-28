@@ -1,3 +1,7 @@
+#CMake files
+*.cmake
+MAKEFILE
+
 # Media
 *.jpg
 *.tga
@@ -35,6 +39,7 @@
 *.out
 *.app
 
+CMakeFiles/
 resources/
 Dependencies/
 Include/

@@ -9,6 +9,7 @@ add_executable(Fractal
     image.cpp
     window.cpp
     application.cpp
+    input.cpp
     )
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")

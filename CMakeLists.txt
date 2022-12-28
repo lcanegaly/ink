@@ -10,7 +10,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glfw/include)
 link_directories(${PROJECT_SOURCE_DIR}/Dependencies/glew/lib)
 link_directories(${PROJECT_SOURCE_DIR}/Dependencies/glfw/src)
 
-add_subdirectory(MandelbrotFractal/Source)
+add_subdirectory(Source)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
