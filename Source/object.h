@@ -16,6 +16,16 @@ class UpdateDelegate {
   //ObjectInterface* object_ptr_;
 };
 
+//TODO - constructor..
+class ButtonUpdate : public UpdateDelegate {
+  virtual void Update() {}
+  virtual void Update(int position_x, int position_y) {}
+  virtual void Update(int position_x, int position_y, float rotation_r) {}
+  virtual ObjectInterface* context() {return object_ptr_;}
+private:
+  ObjectInterface* object_ptr_;
+};
+
 class RenderDelegate {
  public:
   //RenderDelegate (ObjectInterface* object, Renderer* renderer): 
@@ -74,11 +84,11 @@ public:
   int test;
  protected:
   RenderDelegate* render_delegate() override;
+  
  private:
   ObjectData object_;
   RenderDelegate* renderDelegate_ptr_;
   UpdateDelegate* updateDelegate_ptr_;
-  //UIDelegate uiDelegate_ptr_;
 };
 
 

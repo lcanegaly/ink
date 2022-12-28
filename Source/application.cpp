@@ -1,5 +1,7 @@
 #include "application.h"
 #include "image.h"
+#include "log.h"
+#include <string>
 
 Application::Application(const char* name, int width, int height, Renderer* renderer)
   :renderer_ptr_{renderer}
@@ -15,7 +17,7 @@ Application::~Application(){
 }
 
 void Application::Update() {
-  for (auto x : objects_){
+  for (Object* x : objects_){
     x->Update();
   }
 }
@@ -28,7 +30,21 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  RegisterObject(new Image("up.tga", renderer_ptr_, 50, 50, 100, 100));
+  //RegisterObject(new Image("up.tga", renderer_ptr_, 50, 50, 200, 200));
+  Image* i = new Image("up.tga", renderer_ptr_, 50, 50, 100, 100);
+  i->set_name(std::string("image"));
+  Button* b = new Button("down.tga", renderer_ptr_, 50, 50, 250, 100);
+  b->set_name(std::string("button"));
+  //Object* o = new Object(nullptr, nullptr); 
+  //o->set_name(std::string("object"));
+
+
+  b->RegisterClickDelegate(i, &Image::Test);
+  
+  RegisterObject(i);
+  RegisterObject(b); 
+  //RegisterObject(o);
+  
 }  
 
 

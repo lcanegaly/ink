@@ -6,6 +6,7 @@
 #include "Shaders.h"
 #include "Fractal.h"
 #include "Gui.h"
+//#include "input.h"
 #include "MouseInput.h"
 #include "glm.hpp"
 #include "application.h"
@@ -59,16 +60,16 @@ void checkInput(){
 	}
   */
 }
-
+/*
 EM_BOOL mouse_callback(int eventType, const EmscriptenMouseEvent *e, void *userData)
 {
   gui_ptr->AddMouseInputEvent(0, 1, (double)e->targetX, (double)e->targetY);  
   return 0;
 }
-
+*/
 int main()
 {
-  EMSCRIPTEN_RESULT ret = emscripten_set_click_callback("canvas", 0, 1, mouse_callback);
+  EMSCRIPTEN_RESULT ret = emscripten_set_click_callback("canvas", 0, 1, &EmscriptenInput::mouse_callback);
   app = new Application(TITLE, WIDTH, HEIGHT, &Renderer::Get());
   //TODO - get rid of GUI class. Buttons should be image type objects.
   gui_ptr = new Gui(Renderer::Get());
@@ -83,7 +84,9 @@ EM_BOOL one_iter(double time, void* userData) {
   //Fractal* ptr = (Fractal*)userData;
   fractal_ptr->Display();
   ((Application*)userData)->Draw();
-   checkInput();
+  ((Application*)userData)->Update();
+ 
+  //   checkInput();
   return EM_TRUE;
 }
 

@@ -4,6 +4,7 @@
 #include "targa.h"
 #include "glm.hpp"
 #include "Renderer.h"
+#include "input.h"
 
 class ImageInterface  {
  public:
@@ -40,6 +41,21 @@ class Image : public Object, public ImageInterface {
  public:
   Image(const char* filepath, Renderer* renderer); 
   Image(const char* filepath, Renderer* renderer, int width, int height, int X, int Y); 
-  void Draw(int width, int height, int X, int Y);
+  void Draw(int width, int height, int X, int Y) override;
+  void Test() {printf("TEST TEST TEST\n");}
+};
+
+class Button : public Object, public ImageInterface {
+ public:
+  Button(const char* filepath, Renderer* renderer); 
+  Button(const char* filepath, Renderer* renderer, int width, int height, int X, int Y); 
+  void Draw(int width, int height, int X, int Y) override; 
+  void Update() override;
+  void RegisterClickDelegate(Image* context, void(Image::*)());
+ private:
+  //TODO - should this be a dedicated delegate object.. like a trigger delegate?
+  void (Image::* click_delegate_)();
+  Image* trigger_;
+  InputDelegate* inputDelegate_ptr_;
 };
 
