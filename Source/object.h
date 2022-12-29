@@ -16,6 +16,16 @@ class UpdateDelegate {
   //ObjectInterface* object_ptr_;
 };
 
+class NoUpdate : public UpdateDelegate{
+
+  virtual void Update() {}
+  virtual void Update(int position_x, int position_y) {}
+  virtual void Update(int position_x, int position_y, float rotation_r) {}
+  virtual ObjectInterface* context() {return nullptr;}
+ protected:
+  ~NoUpdate(){}
+}; 
+
 //TODO - constructor..
 class ButtonUpdate : public UpdateDelegate {
   virtual void Update() {}
@@ -43,6 +53,7 @@ class RenderDelegate {
   //Renderer* renderer_ptr_;
 };
 
+
 struct ObjectData {
   ObjectData():name{0}, positionX{0}, positionY{0}, 
     sizeX{0}, sizeY{0}, rotation{0}
@@ -58,6 +69,7 @@ class ObjectInterface {
   virtual ~ObjectInterface() {}
   virtual glm::vec2 position() = 0;
   virtual glm::vec2 size() = 0;
+  virtual float rotation() = 0;
   virtual std::string name() = 0;
   virtual void Update() = 0;
   virtual void Draw() = 0;
@@ -65,7 +77,7 @@ class ObjectInterface {
   virtual void set_name(std::string name) = 0;
   virtual void set_position(glm::vec2 position) = 0;
   virtual void set_size(glm::vec2 size) = 0;
- protected:
+protected:
   virtual RenderDelegate* render_delegate() = 0;
 };
 
@@ -74,6 +86,7 @@ public:
   Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate);
   virtual glm::vec2 position() override;
   virtual glm::vec2 size() override;
+  virtual float rotation() override;
   virtual std::string name() override;
   virtual void Update() override;
   virtual void Draw() override;

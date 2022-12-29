@@ -10,6 +10,7 @@ add_executable(Fractal
     window.cpp
     application.cpp
     input.cpp
+    button.cpp
     )
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")

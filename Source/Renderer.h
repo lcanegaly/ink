@@ -36,7 +36,7 @@ private:
 	unsigned int m_VAO;
 	GLuint m_Program;
 	GLuint m_MenuProgram;
-	GLuint m_Texture[6];
+	GLuint m_Texture[10];
   GLFWContext* window_ptr_;
 };
 

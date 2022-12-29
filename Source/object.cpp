@@ -11,6 +11,11 @@ glm::vec2 Object::position(){
 glm::vec2 Object::size(){
   return glm::vec2(object_.sizeX, object_.sizeY);
 }
+
+float Object::rotation() {
+  return object_.rotation;
+}
+
 void Object::Load(const char * filepath){
   renderDelegate_ptr_->Load(filepath);
 }

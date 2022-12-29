@@ -15,4 +15,6 @@ class Application {
  private:
   Renderer* renderer_ptr_;
   std::vector<Object*> objects_;
+  int width_;
+  int height_;
 };

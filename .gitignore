@@ -1,6 +1,8 @@
 #CMake files
+*.tcl
+CMakeCache.txt
 *.cmake
-MAKEFILE
+*Makefile
 
 # Media
 *.jpg

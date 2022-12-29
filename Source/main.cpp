@@ -74,7 +74,7 @@ int main()
   //TODO - get rid of GUI class. Buttons should be image type objects.
   gui_ptr = new Gui(Renderer::Get());
   //TODO - fractal should be image type object.
-  fractal_ptr = new Fractal(glm::vec2(WIDTH, HEIGHT), glm::vec2(0.0, 0.0), &Renderer::Get()); 
+ // fractal_ptr = new Fractal(glm::vec2(WIDTH, HEIGHT), glm::vec2(0.0, 0.0), &Renderer::Get()); 
   emscripten_request_animation_frame_loop(one_iter, (void*)app);
   
   return 0;
@@ -82,7 +82,7 @@ int main()
 
 EM_BOOL one_iter(double time, void* userData) {
   //Fractal* ptr = (Fractal*)userData;
-  fractal_ptr->Display();
+//  fractal_ptr->Display();
   ((Application*)userData)->Draw();
   ((Application*)userData)->Update();
  

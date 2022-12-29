@@ -1,10 +1,13 @@
 #include "application.h"
 #include "image.h"
+#include "Fractal.h"
+#include "button.h"
 #include "log.h"
+#include "glm.hpp"
 #include <string>
 
 Application::Application(const char* name, int width, int height, Renderer* renderer)
-  :renderer_ptr_{renderer}
+  :renderer_ptr_{renderer}, width_{width}, height_{height}
 {
   renderer_ptr_->Init(width, height, new GLFWContext(width, height, name));
   RegisterObjectList();
@@ -30,21 +33,29 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  //RegisterObject(new Image("up.tga", renderer_ptr_, 50, 50, 200, 200));
-  Image* i = new Image("up.tga", renderer_ptr_, 50, 50, 100, 100);
-  i->set_name(std::string("image"));
-  Button* b = new Button("down.tga", renderer_ptr_, 50, 50, 250, 100);
-  b->set_name(std::string("button"));
-  //Object* o = new Object(nullptr, nullptr); 
-  //o->set_name(std::string("object"));
+  Fractal* f = new Fractal(glm::vec2(width_, height_), glm::vec2(0.0, 0.0), renderer_ptr_); 
+  RegisterObject(f);
 
+//  Image* i = new Image("up.tga", renderer_ptr_, 50, 50, 100, 100);
+  Button* up = new Button("up.tga", renderer_ptr_, 50, 50, 250, 100);
+  up->RegisterClickDelegate(f, &Fractal::Up);
+  Button* down = new Button("down.tga", renderer_ptr_, 50, 50, 250, 200);
+  down->RegisterClickDelegate(f, &Fractal::Down);
+  Button* left = new Button("left.tga", renderer_ptr_, 50, 50, 200, 150);
+  left->RegisterClickDelegate(f, &Fractal::Left);
+  Button* right = new Button("right.tga", renderer_ptr_, 50, 50, 300, 150);
+  right->RegisterClickDelegate(f, &Fractal::Right);
+  Button* in = new Button("plus.tga", renderer_ptr_, 50, 50, 100, 200);
+  in->RegisterClickDelegate(f, &Fractal::In);
+  Button* out = new Button("minus.tga", renderer_ptr_, 50, 50, 100, 250);
+  out->RegisterClickDelegate(f, &Fractal::Out);
 
-  b->RegisterClickDelegate(i, &Image::Test);
-  
-  RegisterObject(i);
-  RegisterObject(b); 
-  //RegisterObject(o);
-  
+  RegisterObject(up); 
+  RegisterObject(down); 
+  RegisterObject(left); 
+  RegisterObject(right); 
+  RegisterObject(in); 
+  RegisterObject(out); 
 }  
 
 
