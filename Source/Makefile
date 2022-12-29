@@ -160,102 +160,6 @@ Fractal/fast:
 	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/build
 .PHONY : Fractal/fast
 
-Fractal.o: Fractal.cpp.o
-.PHONY : Fractal.o
-
-# target to build an object file
-Fractal.cpp.o:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Fractal.cpp.o
-.PHONY : Fractal.cpp.o
-
-Fractal.i: Fractal.cpp.i
-.PHONY : Fractal.i
-
-# target to preprocess a source file
-Fractal.cpp.i:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Fractal.cpp.i
-.PHONY : Fractal.cpp.i
-
-Fractal.s: Fractal.cpp.s
-.PHONY : Fractal.s
-
-# target to generate assembly for a file
-Fractal.cpp.s:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Fractal.cpp.s
-.PHONY : Fractal.cpp.s
-
-Gui.o: Gui.cpp.o
-.PHONY : Gui.o
-
-# target to build an object file
-Gui.cpp.o:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Gui.cpp.o
-.PHONY : Gui.cpp.o
-
-Gui.i: Gui.cpp.i
-.PHONY : Gui.i
-
-# target to preprocess a source file
-Gui.cpp.i:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Gui.cpp.i
-.PHONY : Gui.cpp.i
-
-Gui.s: Gui.cpp.s
-.PHONY : Gui.s
-
-# target to generate assembly for a file
-Gui.cpp.s:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Gui.cpp.s
-.PHONY : Gui.cpp.s
-
-Renderer.o: Renderer.cpp.o
-.PHONY : Renderer.o
-
-# target to build an object file
-Renderer.cpp.o:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Renderer.cpp.o
-.PHONY : Renderer.cpp.o
-
-Renderer.i: Renderer.cpp.i
-.PHONY : Renderer.i
-
-# target to preprocess a source file
-Renderer.cpp.i:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Renderer.cpp.i
-.PHONY : Renderer.cpp.i
-
-Renderer.s: Renderer.cpp.s
-.PHONY : Renderer.s
-
-# target to generate assembly for a file
-Renderer.cpp.s:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Renderer.cpp.s
-.PHONY : Renderer.cpp.s
-
-Texture.o: Texture.cpp.o
-.PHONY : Texture.o
-
-# target to build an object file
-Texture.cpp.o:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Texture.cpp.o
-.PHONY : Texture.cpp.o
-
-Texture.i: Texture.cpp.i
-.PHONY : Texture.i
-
-# target to preprocess a source file
-Texture.cpp.i:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Texture.cpp.i
-.PHONY : Texture.cpp.i
-
-Texture.s: Texture.cpp.s
-.PHONY : Texture.s
-
-# target to generate assembly for a file
-Texture.cpp.s:
-	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/Texture.cpp.s
-.PHONY : Texture.cpp.s
-
 application.o: application.cpp.o
 .PHONY : application.o
 
@@ -279,6 +183,54 @@ application.s: application.cpp.s
 application.cpp.s:
 	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/application.cpp.s
 .PHONY : application.cpp.s
+
+button.o: button.cpp.o
+.PHONY : button.o
+
+# target to build an object file
+button.cpp.o:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/button.cpp.o
+.PHONY : button.cpp.o
+
+button.i: button.cpp.i
+.PHONY : button.i
+
+# target to preprocess a source file
+button.cpp.i:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/button.cpp.i
+.PHONY : button.cpp.i
+
+button.s: button.cpp.s
+.PHONY : button.s
+
+# target to generate assembly for a file
+button.cpp.s:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/button.cpp.s
+.PHONY : button.cpp.s
+
+fractal.o: fractal.cpp.o
+.PHONY : fractal.o
+
+# target to build an object file
+fractal.cpp.o:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/fractal.cpp.o
+.PHONY : fractal.cpp.o
+
+fractal.i: fractal.cpp.i
+.PHONY : fractal.i
+
+# target to preprocess a source file
+fractal.cpp.i:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/fractal.cpp.i
+.PHONY : fractal.cpp.i
+
+fractal.s: fractal.cpp.s
+.PHONY : fractal.s
+
+# target to generate assembly for a file
+fractal.cpp.s:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/fractal.cpp.s
+.PHONY : fractal.cpp.s
 
 image.o: image.cpp.o
 .PHONY : image.o
@@ -376,6 +328,30 @@ object.cpp.s:
 	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/object.cpp.s
 .PHONY : object.cpp.s
 
+renderer.o: renderer.cpp.o
+.PHONY : renderer.o
+
+# target to build an object file
+renderer.cpp.o:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/renderer.cpp.o
+.PHONY : renderer.cpp.o
+
+renderer.i: renderer.cpp.i
+.PHONY : renderer.i
+
+# target to preprocess a source file
+renderer.cpp.i:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/renderer.cpp.i
+.PHONY : renderer.cpp.i
+
+renderer.s: renderer.cpp.s
+.PHONY : renderer.s
+
+# target to generate assembly for a file
+renderer.cpp.s:
+	cd /home/lee/code/fractal_wasm && $(MAKE) $(MAKESILENT) -f Source/CMakeFiles/Fractal.dir/build.make Source/CMakeFiles/Fractal.dir/renderer.cpp.s
+.PHONY : renderer.cpp.s
+
 targa.o: targa.cpp.o
 .PHONY : targa.o
 
@@ -436,21 +412,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... Fractal"
-	@echo "... Fractal.o"
-	@echo "... Fractal.i"
-	@echo "... Fractal.s"
-	@echo "... Gui.o"
-	@echo "... Gui.i"
-	@echo "... Gui.s"
-	@echo "... Renderer.o"
-	@echo "... Renderer.i"
-	@echo "... Renderer.s"
-	@echo "... Texture.o"
-	@echo "... Texture.i"
-	@echo "... Texture.s"
 	@echo "... application.o"
 	@echo "... application.i"
 	@echo "... application.s"
+	@echo "... button.o"
+	@echo "... button.i"
+	@echo "... button.s"
+	@echo "... fractal.o"
+	@echo "... fractal.i"
+	@echo "... fractal.s"
 	@echo "... image.o"
 	@echo "... image.i"
 	@echo "... image.s"
@@ -463,6 +433,9 @@ help:
 	@echo "... object.o"
 	@echo "... object.i"
 	@echo "... object.s"
+	@echo "... renderer.o"
+	@echo "... renderer.i"
+	@echo "... renderer.s"
 	@echo "... targa.o"
 	@echo "... targa.i"
 	@echo "... targa.s"

@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "window.h"
 
 GLFWContext::GLFWContext(int width, int height, const char* title) {
   if (!glfwInit())

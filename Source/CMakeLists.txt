@@ -1,9 +1,7 @@
 add_executable(Fractal 
     main.cpp
-    Fractal.cpp
-    Gui.cpp
-    Renderer.cpp
-    Texture.cpp
+    fractal.cpp
+    renderer.cpp
     targa.cpp
     object.cpp
     image.cpp

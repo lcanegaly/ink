@@ -1,7 +1,7 @@
 #pragma once
 #include "object.h"
 #include "image.h"
-#include "Fractal.h"
+#include "fractal.h"
 
 class Button : public Object, public ImageInterface {
  public:

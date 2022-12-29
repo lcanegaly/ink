@@ -3,7 +3,7 @@
 #include "GL/glew.h"
 #include "glm.hpp"
 #include <GLFW/glfw3.h>
-#include "Window.h"
+#include "window.h"
 
 
 class Renderer
@@ -18,13 +18,8 @@ public:
 	void Init(int width, int height, GLFWContext* window);
 	void DrawFractal(int windowWidth, int windowHeight, glm::vec2 center, double zoom);
 	void Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation = 0);
-	void DrawTexturedQuad(unsigned char* tex, int posX, int posY, int width, int height, float rotation = 0);
-	void SetActiveTexture(int texSlot);
-	void PrintStatus() const;
-	void TestDraw(int bind);
   GLuint BuildProgram(GLuint vshader, GLuint fshader, const char* vertexPositionName );
   GLuint LoadShader(GLenum type, const char* shaderSource);
-  GLuint CreateSimpleTexture2D();
   void LoadTexture(unsigned char* texture, int bind_num, int width, int height);
     
 	glm::vec2 ConvertNormToPixel(glm::vec2 xy);

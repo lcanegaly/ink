@@ -20,8 +20,10 @@ class InputDelegate {
 
 class EmscriptenInput : public InputDelegate {
  public:
+  EmscriptenInput(){
+    EMSCRIPTEN_RESULT ret = emscripten_set_click_callback("canvas", 0, 1, &mouse_callback);
+  }
   static EM_BOOL mouse_callback(int eventType, const EmscriptenMouseEvent *e, void *userData) {
-    LOG("Input Event");  
     input_.MouseX = e->targetX;
     input_.MouseY = e->targetY;
     input_.LeftClick = true;

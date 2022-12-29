@@ -3,7 +3,7 @@
 #include "object.h"
 #include "targa.h"
 #include "glm.hpp"
-#include "Renderer.h"
+#include "renderer.h"
 #include "input.h"
 
 class ImageInterface  {

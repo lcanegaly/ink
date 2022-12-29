@@ -1,6 +1,5 @@
 #include "button.h"
 
-
 //TODO.. Updatedelegate should actually do something. 
 Button::Button(const char* filepath, Renderer* renderer):
   Object(new ButtonUpdate, new DrawTexture(this, renderer)), 
@@ -13,7 +12,6 @@ Button::Button(const char* filepath, Renderer* renderer):
 Button::Button(const char* filepath, Renderer* renderer, int width, int height, int X, int Y): 
  Object(new ButtonUpdate, new DrawTexture(this, renderer)), inputDelegate_ptr_{new EmscriptenInput()}
 {
-  LOG("in button constructor");
   set_size(glm::vec2(width, height));
   set_position(glm::vec2(X,Y));
   Load(filepath);
@@ -26,7 +24,6 @@ void Button::Draw(int width, int height, int X, int Y) {
 }
 
 void Button::Update() {
-  //printf("Button contains : %f, %f, %d \n", inputDelegate_ptr_->GetMousePosition().x, inputDelegate_ptr_->GetMousePosition().y, inputDelegate_ptr_->GetMouseClick());
   if (inputDelegate_ptr_->GetMouseClick()) {
 		int x = std::abs(inputDelegate_ptr_->GetMousePosition().x - this->position().x);
 		int y = std::abs(inputDelegate_ptr_->GetMousePosition().y - this->position().y);

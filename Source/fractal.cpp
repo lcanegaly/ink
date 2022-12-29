@@ -1,4 +1,4 @@
-#include "Fractal.h"
+#include "fractal.h"
 #include <iostream>
 
 

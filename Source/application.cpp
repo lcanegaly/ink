@@ -1,8 +1,7 @@
 #include "application.h"
 #include "image.h"
-#include "Fractal.h"
+#include "fractal.h"
 #include "button.h"
-#include "log.h"
 #include "glm.hpp"
 #include <string>
 
@@ -36,7 +35,6 @@ void Application::RegisterObjectList() {
   Fractal* f = new Fractal(glm::vec2(width_, height_), glm::vec2(0.0, 0.0), renderer_ptr_); 
   RegisterObject(f);
 
-//  Image* i = new Image("up.tga", renderer_ptr_, 50, 50, 100, 100);
   Button* up = new Button("up.tga", renderer_ptr_, 50, 50, 250, 100);
   up->RegisterClickDelegate(f, &Fractal::Up);
   Button* down = new Button("down.tga", renderer_ptr_, 50, 50, 250, 200);

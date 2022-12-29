@@ -2,7 +2,7 @@
 *.tcl
 CMakeCache.txt
 *.cmake
-*Makefile
+Source/Makefile
 
 # Media
 *.jpg

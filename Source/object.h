@@ -7,13 +7,12 @@ class Renderer;
 
 class UpdateDelegate {
  public:
-  //UpdateDelegate(ObjectInterface* obj): object_ptr_{obj}{}
   virtual void Update() =0; //{}
   virtual void Update(int position_x, int position_y) = 0; // {}
   virtual void Update(int position_x, int position_y, float rotation_r) = 0; // {}
   virtual ObjectInterface* context() = 0;// {return object_ptr_;}
- //private:
-  //ObjectInterface* object_ptr_;
+ protected:
+  ~UpdateDelegate(){}
 };
 
 class NoUpdate : public UpdateDelegate{

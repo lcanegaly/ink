@@ -1,12 +1,8 @@
 #pragma once
 #include "glm.hpp"
-#include "Renderer.h"
-#include "Texture.h"
+#include "renderer.h"
 #include "object.h"
 #include <complex>
-
-
-
 
 class Fractal : public Object {
 public:
@@ -29,5 +25,4 @@ private:
 	glm::vec2 m_ScreenSize;
 	glm::vec2 m_CenterPoint;
 	Renderer* m_Renderer = nullptr;
-
 };
