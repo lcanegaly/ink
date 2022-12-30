@@ -1,5 +1,5 @@
 #pragma once
-
+//shaders updated to work with webGL/emscripten
 const char vertexShaderSource2[] =
       "attribute vec4 a_position;   \n"
       "attribute vec2 a_texCoord;   \n"
@@ -12,6 +12,7 @@ const char vertexShaderSource2[] =
       "   v_texCoord = a_texCoord;  \n"
       "}                            \n";
 
+//Shader used to render a fractal. 
 const char fragmentShaderSource2[] =  
       "precision mediump float;                            \n"
       "varying vec2 v_texCoord;                            \n"
@@ -48,6 +49,8 @@ const char fragmentShaderSource2[] =
 		  "  gl_FragColor = vec4(col, 1.0);\n"
       "}                                                   \n";
 
+//shader previously used to render GUI buttons, now is for more general textured quad drawing.
+//TODO - update this name, and update to allow for texture coord setting. 
 static const char* s_FragmentShaderSourceMenu2
 {
   "precision mediump float;                             \n"
@@ -59,6 +62,8 @@ static const char* s_FragmentShaderSourceMenu2
 	"}\0"
 };
 
+
+//Old shader versions, from original desktop verison of this software. 
 const char vertexShaderSource[] = 
   "attribute vec4 vPosition; \n"
   "void main() \n"

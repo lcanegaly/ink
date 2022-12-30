@@ -5,7 +5,6 @@
 #include <GLFW/glfw3.h>
 #include "window.h"
 
-
 class Renderer
 {
 public:
@@ -35,12 +34,6 @@ private:
   GLFWContext* window_ptr_;
 };
 
-
-static const GLfloat vVertices[9] = {
-    0.0f, 0.5f, 0.0f,
-    -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f
-};
 
 static const float s_Vertices[30] = {
 	// first triangle
