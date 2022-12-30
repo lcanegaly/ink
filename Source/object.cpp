@@ -34,9 +34,10 @@ void Object::Draw() {
   renderDelegate_ptr_->Draw();
 }
 
-void Object::set_position(glm::vec2 position){
+void Object::set_position(glm::vec2 position, float rotation){
   object_.positionX = position.x;
   object_.positionY = position.y;
+  object_.rotation = rotation;
 }
 
 void Object::set_size(glm::vec2 size){

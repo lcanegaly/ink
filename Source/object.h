@@ -74,7 +74,7 @@ class ObjectInterface {
   virtual void Draw() = 0;
   virtual void Load(const char*) = 0;
   virtual void set_name(std::string name) = 0;
-  virtual void set_position(glm::vec2 position) = 0;
+  virtual void set_position(glm::vec2 position, float rotation) = 0;
   virtual void set_size(glm::vec2 size) = 0;
 protected:
   virtual RenderDelegate* render_delegate() = 0;
@@ -91,7 +91,7 @@ public:
   virtual void Draw() override;
   virtual void Load(const char*) override;
   virtual void set_name(std::string name) override;
-  virtual void set_position(glm::vec2 position) override;
+  virtual void set_position(glm::vec2 position, float rotation) override;
   virtual void set_size(glm::vec2 size) override;
   int test;
  protected:

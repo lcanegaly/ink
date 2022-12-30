@@ -2,12 +2,15 @@
 #include "image.h"
 #include "fractal.h"
 #include "button.h"
+#include "input.h"
 #include "glm.hpp"
 #include <string>
 
 Application::Application(const char* name, int width, int height, Renderer* renderer)
   :renderer_ptr_{renderer}, width_{width}, height_{height}
 {
+  //TODO - emscripteninput should not set callbacks in constructor. 
+  EmscriptenInput input; 
   renderer_ptr_->Init(width, height, new GLFWContext(width, height, name));
   RegisterObjectList();
 }
@@ -20,6 +23,11 @@ Application::~Application(){
 
 void Application::Update() {
   for (Object* x : objects_){
+    if (x->rotation() > 360.0){
+      x->set_position(x->position(), 0.0);
+    }else{
+      x->set_position(x->position(), x->rotation()+1);
+    }
     x->Update();
   }
 }
@@ -32,28 +40,15 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  Fractal* f = new Fractal(glm::vec2(width_, height_), glm::vec2(0.0, 0.0), renderer_ptr_); 
-  RegisterObject(f);
 
-  Button* up = new Button("up.tga", renderer_ptr_, 50, 50, 250, 100);
-  up->RegisterClickDelegate(f, &Fractal::Up);
-  Button* down = new Button("down.tga", renderer_ptr_, 50, 50, 250, 200);
-  down->RegisterClickDelegate(f, &Fractal::Down);
-  Button* left = new Button("left.tga", renderer_ptr_, 50, 50, 200, 150);
-  left->RegisterClickDelegate(f, &Fractal::Left);
-  Button* right = new Button("right.tga", renderer_ptr_, 50, 50, 300, 150);
-  right->RegisterClickDelegate(f, &Fractal::Right);
-  Button* in = new Button("plus.tga", renderer_ptr_, 50, 50, 100, 200);
-  in->RegisterClickDelegate(f, &Fractal::In);
-  Button* out = new Button("minus.tga", renderer_ptr_, 50, 50, 100, 250);
-  out->RegisterClickDelegate(f, &Fractal::Out);
+  for (int i = 0; i < 1; i++)
+    RegisterObject(new Image("corn.tga", renderer_ptr_, width_/2, 3, width_/2, 50*i+50));
 
-  RegisterObject(up); 
-  RegisterObject(down); 
-  RegisterObject(left); 
-  RegisterObject(right); 
-  RegisterObject(in); 
-  RegisterObject(out); 
+
+  //Button* out = new Button("minus.tga", renderer_ptr_, 50, 50, 100, 250);
+  //out->RegisterClickDelegate(f, &Fractal::Out);
+
+  //RegisterObject(out); 
 }  
 
 

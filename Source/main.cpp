@@ -2,6 +2,7 @@
 #include <emscripten/html5.h>
 #include "renderer.h"
 #include "application.h"
+#include "log.h"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -13,6 +14,7 @@ int main()
 {
   Application* app = new Application(TITLE, WIDTH, HEIGHT, &Renderer::Get());
   emscripten_request_animation_frame_loop(one_iter, (void*)app);
+  LOG("TEST");
   return 0;
 }
 
