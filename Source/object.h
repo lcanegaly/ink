@@ -37,19 +37,11 @@ private:
 
 class RenderDelegate {
  public:
-  //RenderDelegate (ObjectInterface* object, Renderer* renderer): 
-  //  object_ptr_{object}, renderer_ptr_{renderer}
-  //{}
-  //~RenderDelegate(){
-  //}
   virtual void Draw() = 0;// {}
   virtual ObjectInterface* context() = 0; //{return object_ptr_;}
   virtual Renderer* renderer() = 0; // {return renderer_ptr_;}  
   virtual void Load() = 0;// {}
   virtual void Load(const char* filepath) = 0;// {}
-// private:
-  //ObjectInterface* object_ptr_;
-  //Renderer* renderer_ptr_;
 };
 
 
@@ -59,7 +51,8 @@ struct ObjectData {
   {}
   std::string name;
   int positionX, positionY;
-  int sizeX, sizeY;
+  int sizeX;
+  int sizeY;
   float rotation;
 };
 

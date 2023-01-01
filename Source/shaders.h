@@ -50,16 +50,23 @@ const char fragmentShaderSource2[] =
       "}                                                   \n";
 
 //shader previously used to render GUI buttons, now is for more general textured quad drawing.
-//TODO - update this name, and update to allow for texture coord setting. 
+//TODO - update this name, 
 static const char* s_FragmentShaderSourceMenu2
 {
-  "precision mediump float;                             \n"
-  "varying vec2 v_texCoord;                            \n"
-	"uniform sampler2D Texture;\n"
-	"void main()\n"
-	"{\n"
-		"gl_FragColor = texture2D(Texture, v_texCoord);\n"
-	"}\0"
+  "precision mediump float;                               \n"
+  "varying vec2 v_texCoord;                               \n"
+  "uniform sampler2D Texture;                             \n"
+  "uniform float rows;                                      \n"
+  "uniform float columns;                                   \n"
+  "uniform int row;                                       \n"
+  "uniform int column;                                    \n"
+  "void main()                                            \n"
+	"{                                                      \n"
+	"  vec2 scale = vec2((1.0/columns),(1.0/rows));             \n"
+	"  vec2 imageSection = (v_texCoord + vec2(column, row)) * scale; \n"
+//	"  vec2 imageSection = (v_texCoord + vec2(1.0, 7.0)) * 0.125; \n"
+	"  gl_FragColor = texture2D(Texture, imageSection);       \n"
+	"}                                                      \0"
 };
 
 

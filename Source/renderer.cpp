@@ -68,16 +68,26 @@ void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center =
 
 void Renderer::Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation)
 {
-  GLint texture_uniform = glGetUniformLocation ( m_MenuProgram, "Texture" );
   glUseProgram(m_MenuProgram);
- 
+  int textureRows = 1;
+  int textureColumns = 1;
+  int row = 0;
+  int column = 0;
+  GLint texture_uniform = glGetUniformLocation ( m_MenuProgram, "Texture" );
+  GLint uniformRows = glGetUniformLocation(m_MenuProgram, "rows");
+  GLint uniformColumns = glGetUniformLocation(m_MenuProgram, "columns");
+  GLint uniformRow = glGetUniformLocation(m_MenuProgram, "row");
+  GLint uniformColumn = glGetUniformLocation(m_MenuProgram, "column");
+	glUniform1f(uniformRows, (float)textureRows);
+	glUniform1f(uniformColumns, (float)textureColumns);
+	glUniform1i(uniformRow, row);
+	glUniform1i(uniformColumn, column);
+
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
   glEnableVertexAttribArray(1);
-
   glBindTexture(GL_TEXTURE_2D, m_Texture[bind_num]);
-
   glUniform1i (texture_uniform, 0 );
   
   glm::vec2 position = ConvertPixelToNorm(posX, posY);
@@ -88,6 +98,46 @@ void Renderer::Draw(unsigned char* tex, int bind_num, int posX, int posY, int wi
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position, 0.0f));
 	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(size, 1.0f));
+
+	GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
+	glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
+
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  glfwSwapBuffers(window_ptr_->context());
+}
+
+void Renderer::Draw(ImageData& image_data)
+{
+  glUseProgram(m_MenuProgram);
+  GLint texture_uniform = glGetUniformLocation ( m_MenuProgram, "Texture" );
+  GLint uniformRows = glGetUniformLocation(m_MenuProgram, "rows");
+  GLint uniformColumns = glGetUniformLocation(m_MenuProgram, "columns");
+  GLint uniformRow = glGetUniformLocation(m_MenuProgram, "row");
+  GLint uniformColumn = glGetUniformLocation(m_MenuProgram, "column");
+	glUniform1f(uniformRows, (float)image_data.textureRows);
+	glUniform1f(uniformColumns, (float)image_data.textureColumns);
+	glUniform1i(uniformRow, image_data.row);
+	glUniform1i(uniformColumn, image_data.column);
+
+  printf("rows %d, cols %d, row %d, col %d \n", image_data.textureRows, image_data.textureColumns, 
+         image_data.row, image_data.column);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
+  glBindTexture(GL_TEXTURE_2D, m_Texture[image_data.bind_num]);
+  glUniform1i (texture_uniform, 0 );
+  
+  glm::vec2 position = ConvertPixelToNorm(image_data.posX, image_data.posY);
+	glm::vec2 size;
+	size.x = (float)image_data.width / (float)m_Width;
+	size.y = (float)image_data.height / (float)m_Height;
+
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(position, 0.0f));
+	model = glm::rotate(model, glm::radians(image_data.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(size, 1.0f));
 
 	GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");

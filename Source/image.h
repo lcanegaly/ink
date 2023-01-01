@@ -1,7 +1,7 @@
 #pragma once
 #define GLEW_STATIC
 #include "object.h"
-#include "targa.h"
+#include "targa/targa.h"
 #include "glm.hpp"
 #include "renderer.h"
 #include "input.h"

@@ -1,0 +1,3 @@
+[submodule "Source/targa"]
+	path = Source/targa
+	url = git@github.com:lcanegaly/targa.git

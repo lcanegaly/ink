@@ -5,6 +5,20 @@
 #include <GLFW/glfw3.h>
 #include "window.h"
 
+struct ImageData {
+  unsigned char* tex; 
+  int bind_num; 
+  int posX; 
+  int posY; 
+  int width; 
+  int height;
+  float rotation;
+  int textureRows;
+  int textureColumns;
+  int row;
+  int column;
+};
+
 class Renderer
 {
 public:
@@ -17,6 +31,7 @@ public:
 	void Init(int width, int height, GLFWContext* window);
 	void DrawFractal(int windowWidth, int windowHeight, glm::vec2 center, double zoom);
 	void Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation = 0);
+	void Draw(ImageData& image_data);
   GLuint BuildProgram(GLuint vshader, GLuint fshader, const char* vertexPositionName );
   GLuint LoadShader(GLenum type, const char* shaderSource);
   void LoadTexture(unsigned char* texture, int bind_num, int width, int height);
