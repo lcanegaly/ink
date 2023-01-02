@@ -3,6 +3,7 @@
 #include "fractal.h"
 #include "button.h"
 #include "sprite.h"
+#include "textbox.h"
 #include "input.h"
 #include "glm.hpp"
 #include <string>
@@ -36,11 +37,16 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  //Button* out = new Button("corn.tga", renderer_ptr_, 128, 128, 200, 250);
-  Sprite* s = new Sprite("font1.tga", renderer_ptr_, 128, 128, 150, 150, 8, 16 );
+  Button* test = new Button("plus.tga", renderer_ptr_, 128, 128, 200, 250);
+  //Sprite* s = new Sprite("font1.tga", renderer_ptr_, 128, 128, 150, 150, 8, 16 );
+  TextBox* b = new TextBox("font1.tga", renderer_ptr_, 16, 16, 16, 250);  
+  
+
   //out->RegisterClickDelegate(f, &Fractal::Out);
-  s->SetIndex(7,0);
-  RegisterObject(s); 
+  //s->SetIndex(7,0);
+  //RegisterObject(s); 
+  RegisterObject(test); 
+  RegisterObject(b); 
 }  
 
 

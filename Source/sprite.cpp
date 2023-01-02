@@ -6,12 +6,13 @@ DrawSprite::DrawSprite(ObjectInterface* object, ImageData& image_data, Renderer*
 {}
 
 void DrawSprite::Draw(){
-  data_.bind_num = 1;
-  data_.posX = context_->position().x;
-  data_.posY = context_->position().y;
-  data_.width = context_->size().x;
-  data_.height = context_->size().y;
-  data_.rotation = context_->rotation();
+  printf("In sprite draw \n");
+  //data_.bind_num = 1;
+  //data_.posX = context_->position().x;
+  //data_.posY = context_->position().y;
+  //data_.width = context_->size().x;
+  //data_.height = context_->size().y;
+  //data_.rotation = context_->rotation();
   renderer_->LoadTexture((unsigned char*)spriteSheet_->data(), data_.bind_num, spriteSheet_->width(), spriteSheet_->height()); 
   renderer_->Draw(data_);
 }
