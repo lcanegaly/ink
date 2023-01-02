@@ -120,9 +120,6 @@ void Renderer::Draw(ImageData& image_data)
 	glUniform1i(uniformRow, image_data.row);
 	glUniform1i(uniformColumn, image_data.column);
 
-  printf("rows %d, cols %d, row %d, col %d \n", image_data.textureRows, image_data.textureColumns, 
-         image_data.row, image_data.column);
-
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
