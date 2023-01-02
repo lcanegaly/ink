@@ -23,7 +23,7 @@ int DrawText::SetChar(int position, char character){
   Vec2 sheetLookup = Lookup(character);
   if (sheetLookup.x == -1 && sheetLookup.y == -1)
     return 0;
-  data_.posX = data_.width*position;
+  data_.posX = context_->position().x + data_.width*position;
   data_.row = sheetLookup.x;
   data_.column = sheetLookup.y;
   return 1;

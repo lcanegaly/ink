@@ -39,7 +39,7 @@ void Application::RegisterObject(Object* object) {
 void Application::RegisterObjectList() {
   Button* test = new Button("plus.tga", renderer_ptr_, 128, 128, 200, 250);
   //Sprite* s = new Sprite("font1.tga", renderer_ptr_, 128, 128, 150, 150, 8, 16 );
-  TextBox* b = new TextBox("font1.tga", renderer_ptr_, 16, 16, 16, 250);  
+  TextBox* b = new TextBox("font1.tga", renderer_ptr_, 16, 16, 164, 250);  
   
 
   //out->RegisterClickDelegate(f, &Fractal::Out);
