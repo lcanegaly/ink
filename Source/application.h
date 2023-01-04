@@ -9,7 +9,7 @@ class Application {
   void Update();
   void Draw();
   void RegisterObject(Object* object);
-  void RegisterObjectList(); //Objects created here for now. 
+  virtual void RegisterObjectList(); //Objects created here for now. 
  private:
   Renderer* renderer_ptr_;
   std::vector<Object*> objects_;

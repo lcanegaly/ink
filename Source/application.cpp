@@ -37,16 +37,12 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  Button* test = new Button("plus.tga", renderer_ptr_, 128, 128, 200, 250);
-  //Sprite* s = new Sprite("font1.tga", renderer_ptr_, 128, 128, 150, 150, 8, 16 );
-  TextBox* b = new TextBox("font1.tga", renderer_ptr_, 16, 16, 164, 250);  
-  
-
-  //out->RegisterClickDelegate(f, &Fractal::Out);
-  //s->SetIndex(7,0);
-  //RegisterObject(s); 
-  RegisterObject(test); 
-  RegisterObject(b); 
+  TextBox* textbox = new TextBox("font1.tga", renderer_ptr_, 32, 32, 50, 100);
+  Callback_T* callback = 
+    new Callback<TextBox, std::string>(textbox, &TextBox::SetText, std::string("test test test"));
+  Button* button = new Button("up.tga", renderer_ptr_, glm::vec2(50, 50), glm::vec2(50,200), callback);
+  RegisterObject(button);
+  RegisterObject(textbox);
 }  
 
 

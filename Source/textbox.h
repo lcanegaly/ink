@@ -46,6 +46,7 @@ class TextBox : public Object {
   void UpdateKeys(std::string keys);
   //TODO should be delegate
   void Update()override; 
+  void SetText(const std::string text);
  private:
   //TODO - base class should have input delegate pointer. 
   std::string text_; 

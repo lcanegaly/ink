@@ -133,6 +133,10 @@ void TextBox::Update() {
   ((DrawText*)render_delegate())->DrawString(text_);
 }
 
+void TextBox::SetText(const std::string text) {
+  text_ = text;
+}
+
 void TextBox::UpdateKeys(std::string keys) {
     if (!keys.empty() && modeInput_){
       if(keys == "Backspace"){
