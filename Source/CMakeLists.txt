@@ -10,8 +10,11 @@ add_executable(Fractal
     input.cpp
     button.cpp
     sprite.cpp
+    label.cpp
     textbox.cpp
-    )
+)
+
+add_subdirectory(../testapp ../build/testapp)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   set_target_properties(Fractal PROPERTIES LINK_FLAGS "-O0 -o testme.html -s USE_GLFW=3 --preload-file right.tga --preload-file left.tga --preload-file down.tga --preload-file up.tga --preload-file minus.tga --preload-file plus.tga --preload-file font1.tga")

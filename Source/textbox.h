@@ -7,6 +7,7 @@
 #include <string>
 #include "glm.hpp"
 
+//TODO should be a seperate file/class
 struct Font {
   const char* filepath;
   int columns;

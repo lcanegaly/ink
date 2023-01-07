@@ -4,6 +4,7 @@
 #include "button.h"
 #include "sprite.h"
 #include "textbox.h"
+#include "label.h"
 #include "input.h"
 #include "glm.hpp"
 #include <string>
@@ -24,6 +25,7 @@ Application::~Application(){
 }
 
 void Application::Update() {
+  OnUserUpdate();
   for (Object* x : objects_){
     x->Update();
   }
@@ -37,12 +39,10 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  TextBox* textbox = new TextBox("font1.tga", renderer_ptr_, 32, 32, 50, 100);
-  Callback_T* callback = 
-    new Callback<TextBox, std::string>(textbox, &TextBox::SetText, std::string("test test test"));
-  Button* button = new Button("up.tga", renderer_ptr_, glm::vec2(50, 50), glm::vec2(50,200), callback);
-  RegisterObject(button);
-  RegisterObject(textbox);
+  
 }  
+Renderer* Application::renderer_ptr(){
+  return renderer_ptr_;
+}
 
 
