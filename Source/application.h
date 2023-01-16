@@ -4,7 +4,7 @@
 
 class Application {
  public:
-  Application(const char* name, int width, int height, Renderer* renderer);
+  Application(const char* name, int width, int height);
   ~Application();
   void Update();
   void Draw();
@@ -19,4 +19,5 @@ class Application {
   int height_;
 };
 
-
+//to be defined by client app
+extern Application* CreateApplication();

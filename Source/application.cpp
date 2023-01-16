@@ -9,9 +9,10 @@
 #include "glm.hpp"
 #include <string>
 
-Application::Application(const char* name, int width, int height, Renderer* renderer)
-  :renderer_ptr_{renderer}, width_{width}, height_{height}
+Application::Application(const char* name, int width, int height)
+  :width_{width}, height_{height}
 {
+  renderer_ptr_ = &Renderer::Get();
   //TODO - emscripteninput should not set callbacks in constructor. 
   EmscriptenInput input; 
   renderer_ptr_->Init(width, height, new GLFWContext(width, height, name));

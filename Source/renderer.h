@@ -35,7 +35,7 @@ public:
   GLuint BuildProgram(GLuint vshader, GLuint fshader, const char* vertexPositionName );
   GLuint LoadShader(GLenum type, const char* shaderSource);
   void LoadTexture(unsigned char* texture, int bind_num, int width, int height);
-    
+
 	glm::vec2 ConvertNormToPixel(glm::vec2 xy);
 	glm::vec2 ConvertPixelToNorm(int x, int y);
 private:

@@ -8,7 +8,7 @@ Label::Label(const char* filepath, Renderer* renderer, int width, int height, in
     set_size(glm::vec2(width,height));
     Load(filepath);
     SetupFont();
-    character_.bind_num = 1;
+    character_.bind_num = 2;
     character_.textureColumns = font_.columns;
     character_.textureRows = font_.rows;
     character_.posX = X;

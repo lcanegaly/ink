@@ -2,7 +2,6 @@
 #include <emscripten/html5.h>
 #include "renderer.h"
 #include "application.h"
-#include "../testapp/testapp.h"
 #include "log.h"
 
 #define WIDTH 800
@@ -13,7 +12,7 @@ EM_BOOL one_iter(double time, void* userData);
 
 int main()
 {
-  Application* app = new TestApp(TITLE, WIDTH, HEIGHT, &Renderer::Get());
+  auto app = CreateApplication(); 
   emscripten_request_animation_frame_loop(one_iter, (void*)app);
   LOG("TEST");
   return 0;
