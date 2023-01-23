@@ -1,5 +1,6 @@
+
+#include "GL/glew.h"
 #include "window.h"
-#define GLEW_STATIC
 #include "renderer.h"
 #include <stdio.h>
 #include <iostream>
@@ -7,7 +8,6 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 #include "shaders.h"
-#include "GL/glew.h"
 
 
 Renderer::Renderer() 

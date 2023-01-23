@@ -1,4 +1,5 @@
 #include "window.h"
+#include <iostream>
 
 GLFWContext::GLFWContext(int width, int height, const char* title) {
   if (!glfwInit())

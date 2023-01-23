@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
-#include "object.h"
+
+class Object;
+class Renderer;
 
 class Application {
  public:

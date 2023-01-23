@@ -1,5 +1,4 @@
 #pragma once
-#define GLEW_STATIC
 #include "object.h"
 #include "targa/targa.h"
 #include "glm.hpp"
@@ -42,7 +41,6 @@ class Image : public Object, public ImageInterface {
   Image(const char* filepath, Renderer* renderer); 
   Image(const char* filepath, Renderer* renderer, int width, int height, int X, int Y); 
   void Draw(int width, int height, int X, int Y) override;
-  void Test() {printf("TEST TEST TEST\n");}
 };
 
 

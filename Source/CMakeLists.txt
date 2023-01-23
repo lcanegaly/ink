@@ -1,17 +1,17 @@
-target_sources(Fractal PUBLIC 
-    Source/main.cpp
-    Source/fractal.cpp
-    Source/renderer.cpp
-    Source/targa/targa.cpp
-    Source/object.cpp
-    Source/image.cpp
-    Source/window.cpp
-    Source/application.cpp
-    Source/input.cpp
-    Source/button.cpp
-    Source/sprite.cpp
-    Source/label.cpp
-    Source/textbox.cpp
+target_sources(Fractal PRIVATE 
+ ${PROJECT_SOURCE_DIR}/Source/renderer.cpp
+ ${PROJECT_SOURCE_DIR}/Source/targa/targa.cpp
+ ${PROJECT_SOURCE_DIR}/Source/object.cpp
+ ${PROJECT_SOURCE_DIR}/Source/image.cpp
+ ${PROJECT_SOURCE_DIR}/Source/window.cpp
+ ${PROJECT_SOURCE_DIR}/Source/application.cpp
+ ${PROJECT_SOURCE_DIR}/Source/input.cpp
+ ${PROJECT_SOURCE_DIR}/Source/button.cpp
+ ${PROJECT_SOURCE_DIR}/Source/sprite.cpp
+ ${PROJECT_SOURCE_DIR}/Source/label.cpp
+ ${PROJECT_SOURCE_DIR}/Source/textbox.cpp
 )
+
+
 
 

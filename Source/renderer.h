@@ -1,9 +1,9 @@
 #pragma once
-#define GLEW_STATIC
 #include "GL/glew.h"
 #include "glm.hpp"
 #include <GLFW/glfw3.h>
 #include "window.h"
+#include "GL/gl.h"
 
 struct ImageData {
   unsigned char* tex; 
