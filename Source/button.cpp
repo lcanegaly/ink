@@ -3,13 +3,16 @@
 //TODO.. Updatedelegate should actually do something. 
 Button::Button(const char* filepath, Renderer* renderer):
   Object(new ButtonUpdate, new DrawTexture(this, renderer)), 
-  inputDelegate_ptr_{new EmscriptenInput()}, callback_{nullptr}
+  inputDelegate_ptr_{new EmscriptenInput()}, callback_{nullptr}, clicked_{false}
+
 {
   Load(filepath);
 }
 
 Button::Button(const char* filepath, Renderer* renderer, int width, int height, int X, int Y): 
-  Object(new ButtonUpdate, new DrawTexture(this, renderer)), inputDelegate_ptr_{new EmscriptenInput()}, callback_{nullptr}
+  Object(new ButtonUpdate, new DrawTexture(this, renderer)), inputDelegate_ptr_{new EmscriptenInput()}, 
+  callback_{nullptr}, clicked_{false}
+
 {
   set_size(glm::vec2(width, height));
   set_position(glm::vec2(X,Y), 0); //TODO - fix, should take rotation from constructor.
@@ -17,8 +20,10 @@ Button::Button(const char* filepath, Renderer* renderer, int width, int height, 
 }
 
 Button::Button(const char* filepath, Renderer* renderer, glm::vec2 size, glm::vec2 position, Callback_T* callback) : 
-  Object(new ButtonUpdate, new DrawTexture(this, renderer)), inputDelegate_ptr_{new EmscriptenInput()}, callback_{callback}
+  Object(new ButtonUpdate, new DrawTexture(this, renderer)), inputDelegate_ptr_{new EmscriptenInput()}, 
+  callback_{callback}, clicked_{false}
 {
+  
   set_size(size);
   set_position(position, 0); //TODO - fix, should take rotation from constructor.
   Load(filepath);
@@ -38,8 +43,9 @@ void Button::Update() {
 		if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y ))
 		{
       inputDelegate_ptr_->Reset();
-			LOG("Button Clicked");
-      if (callback_) callback_->Call();
+      if (callback_) {
+        callback_->Call();
+      } 
     }
 	}
 }

@@ -8,6 +8,7 @@
 #include "input.h"
 #include "glm.hpp"
 #include <string>
+#include <iostream>
 
 Application::Application(const char* name, int width, int height)
   :width_{width}, height_{height}

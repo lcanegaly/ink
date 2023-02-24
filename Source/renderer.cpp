@@ -42,6 +42,19 @@ void Renderer::Init(int width, int height, GLFWContext* window_ptr) //TODO need 
   glGenTextures(6, m_Texture);
 };
 
+void Renderer::StartDraw()
+{
+  glClear(GL_COLOR_BUFFER_BIT);
+}
+void Renderer::EndDraw()
+{
+
+}
+void Renderer::SetClearColor(float r, float g, float b, float a)
+{
+  glClearColor(r,g,b,a);  
+}
+
 void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center = glm::vec2(0.0f,0.0f), double zoom = 1.0)
 {
   glUseProgram(m_Program);

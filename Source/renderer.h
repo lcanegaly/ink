@@ -29,7 +29,10 @@ public:
 	}
   ~Renderer(); 
 	void Init(int width, int height, GLFWContext* window);
-	void DrawFractal(int windowWidth, int windowHeight, glm::vec2 center, double zoom);
+  void StartDraw();
+  void EndDraw();
+  void SetClearColor(float r, float g, float b, float a);
+  void DrawFractal(int windowWidth, int windowHeight, glm::vec2 center, double zoom);
 	void Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation = 0);
 	void Draw(ImageData& image_data);
   GLuint BuildProgram(GLuint vshader, GLuint fshader, const char* vertexPositionName );

@@ -16,5 +16,6 @@ class Button : public Object, public ImageInterface {
  private:
   InputDelegate* inputDelegate_ptr_;
   Callback_T* callback_;
+  bool clicked_; 
 };
 

@@ -11,7 +11,7 @@ class Application {
   void Update();
   void Draw();
   void RegisterObject(Object* object);
-  virtual void RegisterObjectList(); //Objects created here for now. 
+  void RegisterObjectList(); 
   Renderer* renderer_ptr();
   virtual void OnUserUpdate(){}
  private:
