@@ -27,15 +27,17 @@ Application::~Application(){
 }
 
 void Application::Update() {
-  OnUserUpdate();
   for (Object* x : objects_){
     x->Update();
   }
+  OnUserUpdate();
 }
 void Application::Draw() {
+  Renderer::Get().StartDraw();
   for (Object* x : objects_){
     x->Draw();
   }
+  Renderer::Get().EndDraw();
 }
 void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
