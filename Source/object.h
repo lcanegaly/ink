@@ -1,6 +1,7 @@
 #pragma once
 #include "glm.hpp"
 #include <string>
+#include <functional>
 
 class ObjectInterface;
 class Renderer;
@@ -16,13 +17,27 @@ class UpdateDelegate {
 };
 
 class NoUpdate : public UpdateDelegate{
-
   virtual void Update() {}
   virtual void Update(int position_x, int position_y) {}
   virtual void Update(int position_x, int position_y, float rotation_r) {}
   virtual ObjectInterface* context() {return nullptr;}
  protected:
   ~NoUpdate(){}
+}; 
+
+class ScriptUpdate : public UpdateDelegate{
+ public:
+  ScriptUpdate(std::function<void()> func):onUpdate_{func}
+  {}
+  virtual void Update() {
+    if (onUpdate_ != nullptr)
+      onUpdate_();
+  }
+  virtual void Update(int position_x, int position_y) {}
+  virtual void Update(int position_x, int position_y, float rotation_r) {}
+  virtual ObjectInterface* context() {return nullptr;}
+ private:
+  std::function<void()> onUpdate_;
 }; 
 
 //TODO - constructor..
@@ -71,6 +86,7 @@ class ObjectInterface {
   virtual void set_size(glm::vec2 size) = 0;
 protected:
   virtual RenderDelegate* render_delegate() = 0;
+  virtual UpdateDelegate* update_delegate() = 0;
 };
 
 class Object : public ObjectInterface {
@@ -89,11 +105,12 @@ public:
   int test;
  protected:
   RenderDelegate* render_delegate() override;
+  UpdateDelegate* update_delegate() override;
   
  private:
   ObjectData object_;
-  RenderDelegate* renderDelegate_ptr_;
   UpdateDelegate* updateDelegate_ptr_;
+  RenderDelegate* renderDelegate_ptr_;
 };
 
 

@@ -4,7 +4,6 @@
 Button::Button(const char* filepath, Renderer* renderer):
   Object(new ButtonUpdate, new DrawTexture(this, renderer)), 
   inputDelegate_ptr_{new EmscriptenInput()}, callback_{nullptr}, clicked_{false}
-
 {
   Load(filepath);
 }
@@ -23,7 +22,6 @@ Button::Button(const char* filepath, Renderer* renderer, glm::vec2 size, glm::ve
   Object(new ButtonUpdate, new DrawTexture(this, renderer)), inputDelegate_ptr_{new EmscriptenInput()}, 
   callback_{callback}, clicked_{false}
 {
-  
   set_size(size);
   set_position(position, 0); //TODO - fix, should take rotation from constructor.
   Load(filepath);
@@ -42,6 +40,9 @@ void Button::Update() {
 
 		if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y ))
 		{
+      if (execute != nullptr){
+        execute();
+      } 
       inputDelegate_ptr_->Reset();
       if (callback_) {
         callback_->Call();
@@ -51,3 +52,6 @@ void Button::Update() {
 }
 
 
+void Button::SetExecute(std::function<void()> f){
+  execute = f;
+}

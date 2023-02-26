@@ -4,6 +4,7 @@
 #include "fractal.h"
 #include "callback.h"
 #include "vec2.h"
+#include <functional>
 
 class Button : public Object, public ImageInterface {
  public:
@@ -13,9 +14,11 @@ class Button : public Object, public ImageInterface {
   void Draw(int width, int height, int X, int Y) override; 
   void Update() override;
   void RegisterCallback(Callback_T* callback);
+  void SetExecute(std::function<void()> f);
  private:
   InputDelegate* inputDelegate_ptr_;
   Callback_T* callback_;
   bool clicked_; 
+  std::function<void()> execute; 
 };
 

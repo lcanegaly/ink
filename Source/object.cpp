@@ -1,7 +1,7 @@
 #include "object.h"
 
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate): 
-  updateDelegate_ptr_{update_delegate}, renderDelegate_ptr_{render_delegate}
+  updateDelegate_ptr_{update_delegate}, renderDelegate_ptr_{render_delegate} 
 {}
 
 glm::vec2 Object::position(){
@@ -47,4 +47,8 @@ void Object::set_size(glm::vec2 size){
 
 RenderDelegate* Object::render_delegate() {
   return renderDelegate_ptr_;
-} 
+}
+
+UpdateDelegate* Object::update_delegate() {
+  return updateDelegate_ptr_;
+}
