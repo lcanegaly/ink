@@ -45,6 +45,10 @@ void Object::set_size(glm::vec2 size){
   object_.sizeY = size.y;
 }
 
+void Object::set_updateDelegate(UpdateDelegate* updateDelegate){
+  updateDelegate_ptr_ = updateDelegate;
+}
+
 RenderDelegate* Object::render_delegate() {
   return renderDelegate_ptr_;
 }

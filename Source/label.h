@@ -10,8 +10,6 @@
 class Label : public Object {
  public:
   Label(const char* filepath, Renderer* renderer, int width, int height, int X, int Y);
-  Label(const char* filepath, Renderer* renderer, int width, int height, int X, int Y, 
-        std::function<void()> scriptFunc);
   void SetupFont();
   void Update()override; 
   void SetText(const std::string text);

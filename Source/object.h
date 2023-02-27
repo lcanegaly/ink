@@ -102,7 +102,8 @@ public:
   virtual void set_name(std::string name) override;
   virtual void set_position(glm::vec2 position, float rotation) override;
   virtual void set_size(glm::vec2 size) override;
-  int test;
+  void set_updateDelegate(UpdateDelegate* updateDelegate);
+
  protected:
   RenderDelegate* render_delegate() override;
   UpdateDelegate* update_delegate() override;

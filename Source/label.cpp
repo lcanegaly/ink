@@ -21,25 +21,6 @@ Label::Label(const char* filepath, Renderer* renderer, int width, int height, in
     character_.rotation = 0;
 }
 
-Label::Label(const char* filepath, Renderer* renderer, int width, int height, int X, int Y, std::function<void()> script_func):
-    Object(new ScriptUpdate(script_func), new DrawText(this, character_, font_, renderer)),text_{0}
-  {
-    set_position(glm::vec2(X,Y), 0);
-    set_size(glm::vec2(width,height));
-    Load(filepath);
-    SetupFont();
-    character_.bind_num = 2;
-    character_.textureColumns = font_.columns;
-    character_.textureRows = font_.rows;
-    character_.posX = X;
-    character_.posY = Y;
-    character_.width = width;
-    character_.height = height;
-    character_.column = 0;
-    character_.row = 7;
-    character_.rotation = 0;
-}
-
 void Label::SetupFont(){
     font_.filepath = "font1.tga";
     font_.columns = 16;
@@ -101,7 +82,8 @@ void Label::Update() {
   character_.height = size().y;
   //TODO - dynamic cast this.
   ((DrawText*)render_delegate())->DrawString(text_);
-  update_delegate()->Update();
+  if(update_delegate())
+    update_delegate()->Update();
 }
 
 void Label::SetText(const std::string text) {
