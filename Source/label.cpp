@@ -2,11 +2,12 @@
 #include "object.h"
 
 
-Label::Label(const char* filepath, Renderer* renderer, int width, int height, int X, int Y):
-    Object(new NoUpdate(), new DrawText(this, character_, font_, renderer)),text_{0}
+Label::Label(const char* filepath, int size, int X, int Y):
+    Object(new NoUpdate(), new DrawText(this, character_, font_, &Renderer::Get())),text_{0},
+    ticks_per_update_{1}, tick_{0}
   {
     set_position(glm::vec2(X,Y), 0);
-    set_size(glm::vec2(width,height));
+    set_size(glm::vec2(size,size));
     Load(filepath);
     SetupFont();
     character_.bind_num = 2;
@@ -14,8 +15,8 @@ Label::Label(const char* filepath, Renderer* renderer, int width, int height, in
     character_.textureRows = font_.rows;
     character_.posX = X;
     character_.posY = Y;
-    character_.width = width;
-    character_.height = height;
+    character_.width = size;
+    character_.height = size;
     character_.column = 0;
     character_.row = 7;
     character_.rotation = 0;
@@ -82,8 +83,11 @@ void Label::Update() {
   character_.height = size().y;
   //TODO - dynamic cast this.
   ((DrawText*)render_delegate())->DrawString(text_);
-  if(update_delegate())
+  if(update_delegate() && tick_ < 1){
     update_delegate()->Update();
+    tick_ = ticks_per_update_;
+  }
+  tick_--;
 }
 
 void Label::SetText(const std::string text) {

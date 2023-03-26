@@ -9,13 +9,16 @@
 
 class Label : public Object {
  public:
-  Label(const char* filepath, Renderer* renderer, int width, int height, int X, int Y);
+  Label(const char* filepath, int size, int X, int Y);
   void SetupFont();
   void Update()override; 
   void SetText(const std::string text);
+  void SetUpdateFrequency(int ticks_per_update) {ticks_per_update_ = ticks_per_update;}
 private:
-  //TODO - base class should have input delegate pointer. 
+  //TODO - base class should have input delegate pointer.  
   std::string text_; 
   ImageData character_;
   Font font_;
+  int ticks_per_update_;
+  int tick_;
 };
