@@ -1,7 +1,7 @@
 #pragma once
 #include "glm.hpp"
-#include <emscripten.h>
-#include <emscripten/html5.h>
+//#include <emscripten.h>
+//#include <emscripten/html5.h>
 #include "log.h"
 #include <string>
 #include <vector>
@@ -45,8 +45,8 @@ class InputDelegate {
 class EmscriptenInput : public InputDelegate {
  public:
   EmscriptenInput();
-  static EM_BOOL mouse_callback(int eventType, const EmscriptenMouseEvent *mouseEvent, void *userData);
-  static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *keyEvent, void *userData);
+  //static EM_BOOL mouse_callback(int eventType, const EmscriptenMouseEvent *mouseEvent, void *userData);
+  //static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *keyEvent, void *userData);
   glm::vec2 GetMousePosition() override; 
   bool GetMouseClick() override;
   std::string GetKeys() override;

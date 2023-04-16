@@ -12,7 +12,8 @@
 
 Renderer::Renderer() 
 	: m_Width{ 0 }, m_Height{ 0 }, m_VBO{ 0 }, m_VAO{ 0 }, m_Program{ 0 }, m_MenuProgram{ 0 }, m_Texture{ 0 }
-{};
+{
+};
 
 Renderer::~Renderer(){
   delete window_ptr_;

@@ -19,6 +19,7 @@ GLFWContext::GLFWContext(int width, int height, const char* title) {
     /* Make the window's context current */
   glfwMakeContextCurrent(window_);
 
+  glewInit();
   int w, h;
   glfwGetFramebufferSize(window_, &w, &h);
 
@@ -50,6 +51,7 @@ int GLFWContext::Create(int width, int height, const char* title) {
   /* Make the window's context current */
   glfwMakeContextCurrent(window_);
 
+  glewInit();
   int w, h;
   glfwGetFramebufferSize(window_, &w, &h);
 
