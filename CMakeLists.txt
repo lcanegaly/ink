@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.0.0)
 project(Fractal VERSION 0.1.0)
 
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glm/glm)
-#include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glfw3/include)
 include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glfw/include)
-include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glew/include)
 link_directories(${PROJECT_SOURCE_DIR}/Dependencies/glew/lib)
-#link_directories(${PROJECT_SOURCE_DIR}/Dependencies/glfw3/src)
+link_directories(${PROJECT_SOURCE_DIR}/Dependencies/glfw/src)
+
+include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glew/include)
 
 add_library(Fractal)
 add_subdirectory(Source)
