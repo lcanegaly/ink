@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "window.h"
 
 class Object;
 class Renderer;
@@ -14,7 +15,10 @@ class Application {
   void RegisterObjectList(); 
   Renderer* renderer_ptr();
   virtual void OnUserUpdate(){}
+  bool shouldClose(){return window_->shouldClose();}
+  void Close(){window_->Destroy();}
  private:
+  WindowDelegate* window_;
   Renderer* renderer_ptr_;
   std::vector<Object*> objects_;
   int width_;

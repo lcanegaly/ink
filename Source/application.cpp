@@ -11,12 +11,11 @@
 #include <iostream>
 
 Application::Application(const char* name, int width, int height)
-  :width_{width}, height_{height}
+  :window_{new GLFWContext(width, height, name)}, width_{width}, height_{height}
 {
   renderer_ptr_ = &Renderer::Get();
-  //TODO - emscripteninput should not set callbacks in constructor. 
   EmscriptenInput input; 
-  renderer_ptr_->Init(width, height, new GLFWContext(width, height, name));
+  renderer_ptr_->Init(width, height, window_);
   RegisterObjectList();
 }
 
@@ -27,8 +26,10 @@ Application::~Application(){
 }
 
 void Application::Update() {
+  window_->PollEvents();
   for (Object* x : objects_){
     x->Update();
+    x->set_position(x->position(), x->rotation()+1);
   }
   OnUserUpdate();
 }
@@ -43,7 +44,8 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  
+  Image* fan = new Image("fan.tga", &Renderer::Get(), 125, 125, 535, 180 );
+  objects_.push_back(fan);
 }  
 Renderer* Application::renderer_ptr(){
   return renderer_ptr_;

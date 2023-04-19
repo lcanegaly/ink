@@ -18,7 +18,7 @@ Renderer::Renderer()
 Renderer::~Renderer(){
   delete window_ptr_;
 }
-void Renderer::Init(int width, int height, GLFWContext* window_ptr) //TODO need to pass in window context. 
+void Renderer::Init(int width, int height, WindowDelegate* window_ptr) //TODO need to pass in window context. 
 {
 	m_Width = width;
 	m_Height = height;

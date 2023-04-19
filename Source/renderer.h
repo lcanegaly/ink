@@ -28,7 +28,7 @@ public:
 		return instance;
 	}
   ~Renderer(); 
-	void Init(int width, int height, GLFWContext* window);
+  void Init(int width, int height, WindowDelegate* window);
   void StartDraw();
   void EndDraw();
   void SetClearColor(float r, float g, float b, float a);
@@ -49,7 +49,7 @@ private:
 	GLuint m_Program;
 	GLuint m_MenuProgram;
 	GLuint m_Texture[10];
-  GLFWContext* window_ptr_;
+	WindowDelegate* window_ptr_;
 };
 
 
