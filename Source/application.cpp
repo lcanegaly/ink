@@ -29,7 +29,6 @@ void Application::Update() {
   window_->PollEvents();
   for (Object* x : objects_){
     x->Update();
-    x->set_position(x->position(), x->rotation()+1);
   }
   OnUserUpdate();
 }
@@ -44,7 +43,6 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  
 }  
 Renderer* Application::renderer_ptr(){
   return renderer_ptr_;
