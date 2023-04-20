@@ -44,8 +44,7 @@ void Application::RegisterObject(Object* object) {
   objects_.push_back(object);
 }
 void Application::RegisterObjectList() {
-  Image* fan = new Image("fan.tga", &Renderer::Get(), 125, 125, 535, 180 );
-  objects_.push_back(fan);
+  
 }  
 Renderer* Application::renderer_ptr(){
   return renderer_ptr_;
