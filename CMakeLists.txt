@@ -1,29 +1,52 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(Ink VERSION 0.1.0)
+cmake_minimum_required(VERSION 3.11.0)
+project(ink VERSION 0.0.1)
 
-include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glm/glm)
-include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glfw/include)
-link_directories(${PROJECT_SOURCE_DIR}/Dependencies/glew/lib)
-link_directories(${PROJECT_SOURCE_DIR}/Dependencies/glfw/src)
+include(CTest)
+enable_testing()
 
-include_directories(${PROJECT_SOURCE_DIR}/Dependencies/glew/include)
+link_directories(${PROJECT_SOURCE_DIR}/dependencies/glew/lib)
+include_directories(${PROJECT_SOURCE_DIR}/dependencies/glew/include)
+include_directories(${PROJECT_SOURCE_DIR}/dependencies/glm/glm)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/include)
+link_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/build/src)
+link_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/build/Debug)
 
-add_library(Ink)
+add_executable(ink)
 add_subdirectory(Source)
+add_subdirectory(example)
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  set_target_properties(Fractal PROPERTIES LINK_FLAGS "-O0 -o testme.html -s USE_GLFW=3 ")
-  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  #target_link_libraries(ink Ink)
+  target_link_libraries(ink glfw3)
+  
+  #target_sources(ink PUBLIC main.cpp)
+
+  target_link_libraries(ink glew32)
+  find_package(OpenGL REQUIRED)
+  target_link_libraries(ink OpenGL::GL)
 endif()
 
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  #target_link_libraries(ink libInk.a)
+  target_link_libraries(ink libglfw3.a)
+   
+  #target_sources(ink PUBLIC main.cpp)
 
-target_link_libraries(Ink libglfw3.a)
-target_link_libraries(Ink libGLEW.a)
-target_link_libraries(Ink libGLU.so)
-target_link_libraries(Ink libGL.so)
+  target_link_libraries(ink libGLEW.so)
+  target_link_libraries(ink libGL.so)
+endif()
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+  target_link_libraries(ink libInk.a)
+  target_sources(ink PUBLIC emscripten_main.cpp)
+ 
+  set_target_properties(ink PROPERTIES LINK_FLAGS "-O3 -o test.html -s USE_GLFW=3 --preload-file font1.tga")
+  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+  
+  target_link_libraries(ink libGLEW.so)
+  target_link_libraries(ink libGL.so)
+endif()
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

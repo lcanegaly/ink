@@ -1,4 +1,4 @@
-target_sources(Ink PRIVATE 
+target_sources(ink PRIVATE 
  ${PROJECT_SOURCE_DIR}/Source/renderer.cpp
  ${PROJECT_SOURCE_DIR}/Source/targa/targa.cpp
  ${PROJECT_SOURCE_DIR}/Source/object.cpp

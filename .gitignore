@@ -42,11 +42,12 @@ Makefile
 *.out
 *.app
 
+# Directories
 CMakeFiles/
 resources/
-Dependencies/
 Include/
-build/
+testapp/
+build*/
 x64/
 vs/
 .vs/
