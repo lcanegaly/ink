@@ -13,7 +13,7 @@ link_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/build/src)
 link_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/build/Debug)
 
 add_executable(ink)
-add_subdirectory(Source)
+add_subdirectory(src)
 add_subdirectory(example)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")

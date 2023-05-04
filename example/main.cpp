@@ -1,6 +1,6 @@
 //#include "dependencies/glew/include/GL/glew.h"
 //#include "dependencies/glfw3/include/GLFW/glfw3.h"
-#include "../Source/application.h"
+#include "../src/application.h"
 #include "../include/ink.h"
 
 #include "demo.h"

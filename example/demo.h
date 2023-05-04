@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "../Source/application.h"
+#include "../src/application.h"
 
 class Demo: public Application {
  public:
