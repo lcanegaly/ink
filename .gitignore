@@ -45,6 +45,7 @@ Makefile
 # Directories
 CMakeFiles/
 resources/
+dependencies/
 Include/
 testapp/
 build*/
