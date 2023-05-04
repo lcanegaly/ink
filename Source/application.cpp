@@ -1,6 +1,5 @@
 #include "application.h"
 #include "image.h"
-#include "fractal.h"
 #include "button.h"
 #include "sprite.h"
 #include "textbox.h"

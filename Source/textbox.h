@@ -17,7 +17,7 @@ struct Font {
 
 class DrawText : public RenderDelegate {
  public:
-  DrawText(ObjectInterface* object, ImageData& image_data, Font& font, Renderer* renderer);
+  DrawText(ObjectInterface* object, ImageData& image_data, Font& font);
   virtual void Draw();
   virtual void DrawString(std::string& text);
   virtual int SetChar(int position, char character);
@@ -41,7 +41,7 @@ class DrawText : public RenderDelegate {
 
 class TextBox : public Object {
  public:
-  TextBox(const char* filepath, Renderer* renderer, int width, int height, int X, int Y);
+  TextBox(const char* filepath, int width, int height, int X, int Y);
   //TODO this should load from file. 
   void SetupFont();
   void UpdateKeys(std::string keys);

@@ -19,7 +19,7 @@ void Demo::OnUserUpdate() {
 
 void Demo::LoadDemo() {
   
-  Image* fan = new Image("fan.tga", &Renderer::Get(), 125, 125, 535, 180 );
+  Image* fan = new Image("fan.tga", 125, 125, 535, 180 );
   RegisterObject(fan);
 
 }

@@ -12,7 +12,7 @@ class ImageInterface  {
 
 class DrawTexture : public RenderDelegate {
  public:
-  DrawTexture(ObjectInterface* object, Renderer* renderer):image_{nullptr}, context_{object}, renderer_{renderer} {
+  DrawTexture(ObjectInterface* object):image_{nullptr}, context_{object}, renderer_{&Renderer::Get()} {
     textureSlot_ = 1; 
   }
   virtual void Load(const char* filepath) override {
@@ -40,8 +40,8 @@ private:
 
 class Image : public Object, public ImageInterface {
  public:
-  Image(const char* filepath, Renderer* renderer); 
-  Image(const char* filepath, Renderer* renderer, int width, int height, int X, int Y); 
+  Image(const char* filepath); 
+  Image(const char* filepath, int width, int height, int X, int Y); 
   void Draw(int width, int height, int X, int Y) override;
 };
 

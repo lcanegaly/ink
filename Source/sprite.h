@@ -7,7 +7,7 @@
 
 class DrawSprite : public RenderDelegate {
  public:
-  DrawSprite(ObjectInterface* object, ImageData& image_data, Renderer* renderer);
+  DrawSprite(ObjectInterface* object, ImageData& image_data);
   virtual void Draw();
   virtual ObjectInterface* context();
   virtual Renderer* renderer(); 
@@ -27,7 +27,7 @@ class DrawSprite : public RenderDelegate {
 
 class Sprite : public Object {
  public:
-  Sprite(const char* filepath, Renderer* renderer, int width, int height, int X, int Y, int rows, int columns);
+  Sprite(const char* filepath, int width, int height, int X, int Y, int rows, int columns);
   virtual void SetIndex(int row, int column){
     data_.row = row;
     data_.column = column;

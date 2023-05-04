@@ -1,8 +1,8 @@
 #include "sprite.h"
 #include <iostream>
 
-DrawSprite::DrawSprite(ObjectInterface* object, ImageData& image_data, Renderer* renderer):
-  context_{object}, data_{image_data}, renderer_{renderer} 
+DrawSprite::DrawSprite(ObjectInterface* object, ImageData& image_data):
+  data_{image_data}, context_{object}
 {}
 
 void DrawSprite::Draw(){
@@ -24,8 +24,8 @@ void DrawSprite::Load(const char* filepath){
   data_.tex = (unsigned char*)spriteSheet_->data();
 }
 
-Sprite::Sprite(const char* filepath, Renderer* renderer, int width, int height, int X, int Y, int rows, int columns):
-    Object(new NoUpdate(), new DrawSprite(this, data_, renderer)) 
+Sprite::Sprite(const char* filepath, int width, int height, int X, int Y, int rows, int columns):
+    Object(new NoUpdate(), new DrawSprite(this, data_)) 
 {
   data_.textureRows = rows;
   data_.textureColumns = columns;

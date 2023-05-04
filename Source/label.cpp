@@ -3,7 +3,7 @@
 
 
 Label::Label(const char* filepath, int size, int X, int Y):
-    Object(new NoUpdate(), new DrawText(this, character_, font_, &Renderer::Get())),text_{0},
+    Object(new NoUpdate(), new DrawText(this, character_, font_)),text_{0},
     ticks_per_update_{1}, tick_{0}
   {
     set_position(glm::vec2(X,Y), 0);

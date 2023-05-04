@@ -1,15 +1,15 @@
 #include "button.h"
 
 //TODO.. Updatedelegate should actually do something. 
-Button::Button(const char* filepath, Renderer* renderer):
-  Object(new ButtonUpdate, new DrawTexture(this, renderer)), 
+Button::Button(const char* filepath):
+  Object(new ButtonUpdate, new DrawTexture(this)), 
   inputDelegate_ptr_{new EmscriptenInput()}, callback_{nullptr}, clicked_{false}
 {
   Load(filepath);
 }
 
-Button::Button(const char* filepath, Renderer* renderer, int width, int height, int X, int Y): 
-  Object(new ButtonUpdate, new DrawTexture(this, renderer)), inputDelegate_ptr_{new EmscriptenInput()}, 
+Button::Button(const char* filepath, int width, int height, int X, int Y): 
+  Object(new ButtonUpdate, new DrawTexture(this)), inputDelegate_ptr_{new EmscriptenInput()}, 
   callback_{nullptr}, clicked_{false}
 
 {
@@ -18,8 +18,8 @@ Button::Button(const char* filepath, Renderer* renderer, int width, int height, 
   Load(filepath);
 }
 
-Button::Button(const char* filepath, Renderer* renderer, glm::vec2 size, glm::vec2 position, Callback_T* callback) : 
-  Object(new ButtonUpdate, new DrawTexture(this, renderer)), inputDelegate_ptr_{new EmscriptenInput()}, 
+Button::Button(const char* filepath, glm::vec2 size, glm::vec2 position, Callback_T* callback) : 
+  Object(new ButtonUpdate, new DrawTexture(this)), inputDelegate_ptr_{new EmscriptenInput()}, 
   callback_{callback}, clicked_{false}
 {
   set_size(size);

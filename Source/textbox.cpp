@@ -1,7 +1,7 @@
 #include "textbox.h"
 
-DrawText::DrawText(ObjectInterface* object, ImageData& image_data, Font& font, Renderer* renderer):
-  context_{object}, data_{image_data}, renderer_{renderer}, font_{font}, cursorPosition_{0} 
+DrawText::DrawText(ObjectInterface* object, ImageData& image_data, Font& font):
+  data_{image_data}, context_{object}, font_{font}, cursorPosition_{0} 
 {}
 
 void DrawText::Draw(){
@@ -53,8 +53,8 @@ Vec2 DrawText::Lookup(char character){
 }
 
 
-TextBox::TextBox(const char* filepath, Renderer* renderer, int width, int height, int X, int Y):
-    Object(new NoUpdate(), new DrawText(this, character_, font_, renderer)),text_{0}, input_{new EmscriptenInput()},
+TextBox::TextBox(const char* filepath, int width, int height, int X, int Y):
+    Object(new NoUpdate(), new DrawText(this, character_, font_)),text_{0}, input_{new EmscriptenInput()},
     modeInput_{true}
   {
     ((EmscriptenInput*)input_)->RegisterKeyCallback<TextBox>(this, &TextBox::UpdateKeys); 
