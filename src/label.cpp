@@ -11,10 +11,10 @@ Label::Label(const char* filepath, int size, int X, int Y):
     Load(filepath);
     SetupFont();
     character_.bind_num = 2;
-    character_.textureColumns = font_.columns;
-    character_.textureRows = font_.rows;
-    character_.posX = X;
-    character_.posY = Y;
+    character_.texture_columns = font_.columns;
+    character_.texture_rows = font_.rows;
+    character_.pos_x = X;
+    character_.pos_y = Y;
     character_.width = size;
     character_.height = size;
     character_.column = 0;
@@ -77,8 +77,8 @@ void Label::SetupFont(){
 }
 
 void Label::Update() {
-  character_.posX = position().x;
-  character_.posY = position().y;
+  character_.pos_x = position().x;
+  character_.pos_y = position().y;
   character_.width = size().x;
   character_.height = size().y;
   //TODO - dynamic cast this.

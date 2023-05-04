@@ -2,7 +2,7 @@
 
 #include "image.h"
 
-int DrawTexture::textureCounter_ = 0; 
+int DrawTexture::texture_counter_ = 0; 
 
 Image::Image(const char* filepath):
   Object(new ButtonUpdate, new DrawTexture(this))

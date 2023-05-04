@@ -3,13 +3,13 @@
 //TODO.. Updatedelegate should actually do something. 
 Button::Button(const char* filepath):
   Object(new ButtonUpdate, new DrawTexture(this)), 
-  inputDelegate_ptr_{new EmscriptenInput()}, callback_{nullptr}, clicked_{false}
+  input_delegate_ptr_{new EmscriptenInput()}, callback_{nullptr}, clicked_{false}
 {
   Load(filepath);
 }
 
 Button::Button(const char* filepath, int width, int height, int X, int Y): 
-  Object(new ButtonUpdate, new DrawTexture(this)), inputDelegate_ptr_{new EmscriptenInput()}, 
+  Object(new ButtonUpdate, new DrawTexture(this)), input_delegate_ptr_{new EmscriptenInput()}, 
   callback_{nullptr}, clicked_{false}
 
 {
@@ -19,7 +19,7 @@ Button::Button(const char* filepath, int width, int height, int X, int Y):
 }
 
 Button::Button(const char* filepath, glm::vec2 size, glm::vec2 position, Callback_T* callback) : 
-  Object(new ButtonUpdate, new DrawTexture(this)), inputDelegate_ptr_{new EmscriptenInput()}, 
+  Object(new ButtonUpdate, new DrawTexture(this)), input_delegate_ptr_{new EmscriptenInput()}, 
   callback_{callback}, clicked_{false}
 {
   set_size(size);
@@ -34,16 +34,16 @@ void Button::Draw(int width, int height, int X, int Y) {
 }
 
 void Button::Update() {
-  if (inputDelegate_ptr_->GetMouseClick()) {
-		int x = std::abs(inputDelegate_ptr_->GetMousePosition().x - this->position().x);
-		int y = std::abs(inputDelegate_ptr_->GetMousePosition().y - this->position().y);
+  if (input_delegate_ptr_->GetMouseClick()) {
+		int x = std::abs(input_delegate_ptr_->GetMousePosition().x - this->position().x);
+		int y = std::abs(input_delegate_ptr_->GetMousePosition().y - this->position().y);
 
 		if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y ))
 		{
       if (execute != nullptr){
         execute();
       } 
-      inputDelegate_ptr_->Reset();
+      input_delegate_ptr_->Reset();
       if (callback_) {
         callback_->Call();
       } 

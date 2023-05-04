@@ -23,7 +23,7 @@ int DrawText::SetChar(int position, char character){
   Vec2 sheetLookup = Lookup(character);
   if (sheetLookup.x == -1 && sheetLookup.y == -1)
     return 0;
-  data_.posX = context_->position().x + data_.width*position;
+  data_.pos_x = context_->position().x + data_.width*position;
   data_.row = sheetLookup.x;
   data_.column = sheetLookup.y;
   return 1;
@@ -63,10 +63,10 @@ TextBox::TextBox(const char* filepath, int width, int height, int X, int Y):
     Load(filepath);
     SetupFont();
     character_.bind_num = 1;
-    character_.textureColumns = font_.columns;
-    character_.textureRows = font_.rows;
-    character_.posX = X;
-    character_.posY = Y;
+    character_.texture_columns = font_.columns;
+    character_.texture_rows = font_.rows;
+    character_.pos_x = X;
+    character_.pos_y = Y;
     character_.width = width;
     character_.height = height;
     character_.column = 0;

@@ -11,7 +11,7 @@
 
 
 Renderer::Renderer() 
-	: m_Width{ 0 }, m_Height{ 0 }, m_VBO{ 0 }, m_VAO{ 0 }, m_Program{ 0 }, m_MenuProgram{ 0 }, m_Texture{ 0 }
+	: width_{ 0 }, height_{ 0 }, vbo_{ 0 }, vao_{ 0 }, program_{ 0 }, menu_program_{ 0 }, texture_{ 0 }
 {
 };
 
@@ -20,27 +20,27 @@ Renderer::~Renderer(){
 }
 void Renderer::Init(int width, int height, WindowDelegate* window_ptr) //TODO need to pass in window context. 
 {
-	m_Width = width;
-	m_Height = height;
+	width_ = width;
+	height_ = height;
   window_ptr_ = window_ptr;
 
-  GLuint VBO;
-  glGenBuffers(1, &VBO);  
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);  
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(s_Vertices), s_Vertices, GL_STATIC_DRAW);
+  GLuint vbo;
+  glGenBuffers(1, &vbo);  
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);  
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
 
   // load vertex and fragment shaders
-  GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource2);
-  GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource2);
-  m_Program = BuildProgram(vertexShader, fragmentShader, "vPosition");
+  GLuint vertex_shader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource2);
+  GLuint fragment_shader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource2);
+  program_ = BuildProgram(vertex_shader, fragment_shader, "vPosition");
 
   //  load fragment shader for menu 
-  GLuint fragmentShader2 = LoadShader(GL_FRAGMENT_SHADER, s_FragmentShaderSourceMenu2);
-  m_MenuProgram = BuildProgram(vertexShader, fragmentShader2, "iPosition");
+  GLuint menu_fragment_shader = LoadShader(GL_FRAGMENT_SHADER, s_FragmentShaderSourceMenu2);
+  menu_program_ = BuildProgram(vertex_shader, menu_fragment_shader, "iPosition");
 
-  glGenTextures(6, m_Texture);
+  glGenTextures(6, texture_);
 };
 
 void Renderer::StartDraw()
@@ -56,19 +56,19 @@ void Renderer::SetClearColor(float r, float g, float b, float a)
   glClearColor(r,g,b,a);  
 }
 
-void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center = glm::vec2(0.0f,0.0f), double zoom = 1.0)
+void Renderer::DrawFractal(int window_width, int window_height, glm::vec2 center = glm::vec2(0.0f,0.0f), double zoom = 1.0)
 {
-  glUseProgram(m_Program);
+  glUseProgram(program_);
 	glm::mat4 model = glm::mat4(1.0f);
 
-	GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
-	glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
+	GLint uniform_translate = glGetUniformLocation(program_, "translate");
+	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
 
-	GLint uniformZoom = glGetUniformLocation(m_Program, "zoom");
-	glUniform1f(uniformZoom, (float)zoom);
+	GLint uniform_zoom = glGetUniformLocation(program_, "zoom");
+	glUniform1f(uniform_zoom, (float)zoom);
 
-	GLint uniformPan = glGetUniformLocation(m_Program, "pan");
-	glUniform2f(uniformPan, center.x, center.y);
+	GLint uniform_pan = glGetUniformLocation(program_, "pan");
+	glUniform2f(uniform_pan, center.x, center.y);
 
   glClear(GL_COLOR_BUFFER_BIT);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
@@ -80,42 +80,42 @@ void Renderer::DrawFractal(int windowWidth, int windowHeight, glm::vec2 center =
   glfwSwapBuffers(window_ptr_->context());
 }
 
-void Renderer::Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation)
+void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation)
 {
-  glUseProgram(m_MenuProgram);
-  int textureRows = 1;
-  int textureColumns = 1;
+  glUseProgram(menu_program_);
+  int texture_rows = 1;
+  int texture_columns = 1;
   int row = 0;
   int column = 0;
-  GLint texture_uniform = glGetUniformLocation ( m_MenuProgram, "Texture" );
-  GLint uniformRows = glGetUniformLocation(m_MenuProgram, "rows");
-  GLint uniformColumns = glGetUniformLocation(m_MenuProgram, "columns");
-  GLint uniformRow = glGetUniformLocation(m_MenuProgram, "row");
-  GLint uniformColumn = glGetUniformLocation(m_MenuProgram, "column");
-	glUniform1f(uniformRows, (float)textureRows);
-	glUniform1f(uniformColumns, (float)textureColumns);
-	glUniform1i(uniformRow, row);
-	glUniform1i(uniformColumn, column);
+  GLint texture_uniform = glGetUniformLocation ( menu_program_, "Texture" );
+  GLint uniform_rows = glGetUniformLocation(menu_program_, "rows");
+  GLint uniform_columns = glGetUniformLocation(menu_program_, "columns");
+  GLint uniform_row = glGetUniformLocation(menu_program_, "row");
+  GLint uniform_column = glGetUniformLocation(menu_program_, "column");
+	glUniform1f(uniform_rows, (float)texture_rows);
+	glUniform1f(uniform_columns, (float)texture_columns);
+	glUniform1i(uniform_row, row);
+	glUniform1i(uniform_column, column);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
   glEnableVertexAttribArray(1);
-  glBindTexture(GL_TEXTURE_2D, m_Texture[bind_num]);
+  glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
   glUniform1i (texture_uniform, 0 );
   
-  glm::vec2 position = ConvertPixelToNorm(posX, posY);
+  glm::vec2 position = ConvertPixelToNorm(pos_x, pos_y);
 	glm::vec2 size;
-	size.x = (float)width / (float)m_Width;
-	size.y = (float)height / (float)m_Height;
+	size.x = (float)width / (float)width_;
+	size.y = (float)height / (float)height_;
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position, 0.0f));
 	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(size, 1.0f));
 
-	GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
-	glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
+	GLint uniform_translate = glGetUniformLocation(program_, "translate");
+	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
   glfwSwapBuffers(window_ptr_->context());
@@ -123,43 +123,43 @@ void Renderer::Draw(unsigned char* tex, int bind_num, int posX, int posY, int wi
 
 void Renderer::Draw(ImageData& image_data)
 {
-  glUseProgram(m_MenuProgram);
-  GLint texture_uniform = glGetUniformLocation ( m_MenuProgram, "Texture" );
-  GLint uniformRows = glGetUniformLocation(m_MenuProgram, "rows");
-  GLint uniformColumns = glGetUniformLocation(m_MenuProgram, "columns");
-  GLint uniformRow = glGetUniformLocation(m_MenuProgram, "row");
-  GLint uniformColumn = glGetUniformLocation(m_MenuProgram, "column");
-	glUniform1f(uniformRows, (float)image_data.textureRows);
-	glUniform1f(uniformColumns, (float)image_data.textureColumns);
-	glUniform1i(uniformRow, image_data.row);
-	glUniform1i(uniformColumn, image_data.column);
+  glUseProgram(menu_program_);
+  GLint texture_uniform = glGetUniformLocation ( menu_program_, "Texture" );
+  GLint uniform_rows = glGetUniformLocation(menu_program_, "rows");
+  GLint uniform_columns = glGetUniformLocation(menu_program_, "columns");
+  GLint uniform_row = glGetUniformLocation(menu_program_, "row");
+  GLint uniform_column = glGetUniformLocation(menu_program_, "column");
+	glUniform1f(uniform_rows, (float)image_data.texture_rows);
+	glUniform1f(uniform_columns, (float)image_data.texture_columns);
+	glUniform1i(uniform_row, image_data.row);
+	glUniform1i(uniform_column, image_data.column);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
   glEnableVertexAttribArray(1);
-  glBindTexture(GL_TEXTURE_2D, m_Texture[image_data.bind_num]);
-  glUniform1i (texture_uniform, 0 );
+  glBindTexture(GL_TEXTURE_2D, texture_[image_data.bind_num]);
+  glUniform1i(texture_uniform, 0 );
   
-  glm::vec2 position = ConvertPixelToNorm(image_data.posX, image_data.posY);
+  glm::vec2 position = ConvertPixelToNorm(image_data.pos_x, image_data.pos_y);
 	glm::vec2 size;
-	size.x = (float)image_data.width / (float)m_Width;
-	size.y = (float)image_data.height / (float)m_Height;
+	size.x = (float)image_data.width / (float)width_;
+	size.y = (float)image_data.height / (float)height_;
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position, 0.0f));
 	model = glm::rotate(model, glm::radians(image_data.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(size, 1.0f));
 
-	GLint uniformTranslate = glGetUniformLocation(m_Program, "translate");
-	glUniformMatrix4fv(uniformTranslate, 1, GL_FALSE, glm::value_ptr(model));
+	GLint uniform_translate = glGetUniformLocation(program_, "translate");
+	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
   glfwSwapBuffers(window_ptr_->context());
 }
 
 void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height){
-  glBindTexture(GL_TEXTURE_2D, m_Texture[bind_num]);
+  glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
 
   //set texture wrapping
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -196,13 +196,13 @@ GLuint Renderer::LoadShader(GLenum type, const char* source)
     return shader;
 }
 
-GLuint Renderer::BuildProgram(GLuint vertexShader, GLuint fragmentShader, const char * vertexPositionName)
+GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char * vertex_position_name)
 {
    // create a GL program and link it
     GLuint program = glCreateProgram();
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-    glBindAttribLocation(program, 0, vertexPositionName);
+    glAttachShader(program, vertex_shader);
+    glAttachShader(program, fragment_shader);
+    glBindAttribLocation(program, 0, vertex_position_name);
     glLinkProgram(program);
 
     // check if the program linked successfully
@@ -219,18 +219,18 @@ GLuint Renderer::BuildProgram(GLuint vertexShader, GLuint fragmentShader, const 
 
 glm::vec2 Renderer::ConvertNormToPixel(glm::vec2 xy)
 {
-	float outX = ((xy.x + 1.0f) / 2.0f) * m_Width;
-	float outY = ((xy.y + 1.0f) / 2.0f) * m_Height;
-	outY = outY * -1; //flip y for drawing
-	return glm::vec2(outX, outY);
+	float out_x = ((xy.x + 1.0f) / 2.0f) * width_;
+	float out_y = ((xy.y + 1.0f) / 2.0f) * height_;
+	out_y = out_y * -1; //flip y for drawing
+	return glm::vec2(out_x, out_y);
 }
 
 glm::vec2 Renderer::ConvertPixelToNorm(int x, int y)
 {
-	float outX = (((float)x / (float)m_Width)*2) - 1;
-	float outY = (((float)y / (float)m_Height) * 2) - 1;
-	outY = outY * -1; //flip y for drawing
+	float out_x = (((float)x / (float)width_)*2) - 1;
+	float out_y = (((float)y / (float)height_) * 2) - 1;
+	out_y = out_y * -1; //flip y for drawing
 
-	return glm::vec2(outX, outY);
+	return glm::vec2(out_x, out_y);
 }
 

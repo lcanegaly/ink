@@ -27,8 +27,8 @@ void DrawSprite::Load(const char* filepath){
 Sprite::Sprite(const char* filepath, int width, int height, int X, int Y, int rows, int columns):
     Object(new NoUpdate(), new DrawSprite(this, data_)) 
 {
-  data_.textureRows = rows;
-  data_.textureColumns = columns;
+  data_.texture_rows = rows;
+  data_.texture_columns = columns;
   set_size(glm::vec2(width, height));
   set_position(glm::vec2(X,Y), 0); //TODO, image constructor should take a rotation
   Load(filepath);

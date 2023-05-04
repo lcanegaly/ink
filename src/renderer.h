@@ -8,13 +8,13 @@
 struct ImageData {
   unsigned char* tex; 
   int bind_num; 
-  int posX; 
-  int posY; 
+  int pos_x; 
+  int pos_y; 
   int width; 
   int height;
   float rotation;
-  int textureRows;
-  int textureColumns;
+  int texture_rows;
+  int texture_columns;
   int row;
   int column;
 };
@@ -32,28 +32,28 @@ public:
   void StartDraw();
   void EndDraw();
   void SetClearColor(float r, float g, float b, float a);
-  void DrawFractal(int windowWidth, int windowHeight, glm::vec2 center, double zoom);
-	void Draw(unsigned char* tex, int bind_num, int posX, int posY, int width, int height, float rotation = 0);
+  void DrawFractal(int window_width, int window_height, glm::vec2 center, double zoom);
+	void Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation = 0);
 	void Draw(ImageData& image_data);
-  GLuint BuildProgram(GLuint vshader, GLuint fshader, const char* vertexPositionName );
-  GLuint LoadShader(GLenum type, const char* shaderSource);
+  GLuint BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char* vertex_position_name );
+  GLuint LoadShader(GLenum type, const char* shader_source);
   void LoadTexture(unsigned char* texture, int bind_num, int width, int height);
 
 	glm::vec2 ConvertNormToPixel(glm::vec2 xy);
 	glm::vec2 ConvertPixelToNorm(int x, int y);
 private:
 	Renderer();
-	int m_Width, m_Height;
-	GLuint m_VBO;
-	unsigned int m_VAO;
-	GLuint m_Program;
-	GLuint m_MenuProgram;
-	GLuint m_Texture[10];
+	int width_, height_;
+	GLuint vbo_;
+	unsigned int vao_;
+	GLuint program_;
+	GLuint menu_program_;
+	GLuint texture_[10];
 	WindowDelegate* window_ptr_;
 };
 
 
-static const float s_Vertices[30] = {
+static const float vertices[30] = {
 	// first triangle
 	 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,  // top right
 	 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, // bottom right

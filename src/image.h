@@ -13,7 +13,7 @@ class ImageInterface  {
 class DrawTexture : public RenderDelegate {
  public:
   DrawTexture(ObjectInterface* object):image_{nullptr}, context_{object}, renderer_{&Renderer::Get()} {
-    textureSlot_ = 1; 
+    texture_slot_ = 1; 
   }
   virtual void Load(const char* filepath) override {
     if (image_ != nullptr){
@@ -22,8 +22,8 @@ class DrawTexture : public RenderDelegate {
     image_ = new Targa::TgaImage(filepath);
   }
   virtual void Draw() override { 
-    renderer()->LoadTexture((unsigned char*)image_->data(), textureSlot_, image_->width(), image_->height());
-    renderer()->Draw((unsigned char*)image_->data(), textureSlot_, context_->position().x , context_->position().y,
+    renderer()->LoadTexture((unsigned char*)image_->data(), texture_slot_, image_->width(), image_->height());
+    renderer()->Draw((unsigned char*)image_->data(), texture_slot_, context_->position().x , context_->position().y,
                      context_->size().x, context_->size().y, context_->rotation());
   }
   virtual ObjectInterface* context() override {return context_;}
@@ -31,8 +31,8 @@ class DrawTexture : public RenderDelegate {
   virtual void Load() override {}
   ~DrawTexture(){ delete image_; }
 private:
-  static int textureCounter_;
-  int textureSlot_;
+  static int texture_counter_;
+  int texture_slot_;
   Targa::Image* image_;
   ObjectInterface* context_;
   Renderer* renderer_;

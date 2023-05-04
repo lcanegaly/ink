@@ -8,14 +8,14 @@
 class Button : public Object, public ImageInterface {
  public:
   Button(const char* filepath); 
-  Button(const char* filepath, int width, int height, int X, int Y); 
+  Button(const char* filepath, int width, int height, int x, int y); 
   Button(const char* filepath, glm::vec2 size, glm::vec2 position, Callback_T* callback); 
-  void Draw(int width, int height, int X, int Y) override; 
+  void Draw(int width, int height, int x, int y) override; 
   void Update() override;
   void RegisterCallback(Callback_T* callback);
-  void SetExecute(std::function<void()> f);
+  void SetExecute(std::function<void()> func);
  private:
-  InputDelegate* inputDelegate_ptr_;
+  InputDelegate* input_delegate_ptr_;
   Callback_T* callback_;
   bool clicked_; 
   std::function<void()> execute; 
