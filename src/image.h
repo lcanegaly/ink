@@ -40,6 +40,7 @@ private:
 
 class Image : public Object, public ImageInterface {
  public:
+  Image();  
   Image(const char* filepath); 
   Image(const char* filepath, int width, int height, int X, int Y); 
   void Draw(int width, int height, int X, int Y) override;

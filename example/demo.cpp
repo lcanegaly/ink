@@ -2,6 +2,7 @@
 #include "demo.h"
 #include <string>
 
+
 Application* CreateApplication(){
   return new Demo("demo app", 800, 600);
 }
@@ -18,9 +19,7 @@ void Demo::OnUserUpdate() {
 }
 
 void Demo::LoadDemo() {
-  
-  Image* fan = new Image("fan.tga", 125, 125, 535, 180 );
-  RegisterObject(fan);
-
+  ImageView* canvas = new ImageView(Vec2{250,250}, Vec2{0,0});
+  RegisterObject(canvas);
 }
 

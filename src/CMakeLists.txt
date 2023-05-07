@@ -3,6 +3,7 @@ target_sources(ink PRIVATE
  ${PROJECT_SOURCE_DIR}/src/targa/targa.cpp
  ${PROJECT_SOURCE_DIR}/src/object.cpp
  ${PROJECT_SOURCE_DIR}/src/image.cpp
+ ${PROJECT_SOURCE_DIR}/src/image_view.cpp
  ${PROJECT_SOURCE_DIR}/src/window.cpp
  ${PROJECT_SOURCE_DIR}/src/application.cpp
  ${PROJECT_SOURCE_DIR}/src/input.cpp

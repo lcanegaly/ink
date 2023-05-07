@@ -11,3 +11,4 @@
 #include "../src/sprite.h"
 #include "../src/textbox.h"
 #include "../src/vec2.h"
+#include "../src/image_view.h"
