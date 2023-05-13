@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "object.h"
 #include "targa/targa.h"
 #include "glm.hpp"
@@ -21,7 +22,7 @@ class DrawTexture : public RenderDelegate {
     } 
     image_ = new Targa::TgaImage(filepath);
   }
-  virtual void Draw() override { 
+  virtual void Draw() override {
     renderer()->LoadTexture((unsigned char*)image_->data(), texture_slot_, image_->width(), image_->height());
     renderer()->Draw((unsigned char*)image_->data(), texture_slot_, context_->position().x , context_->position().y,
                      context_->size().x, context_->size().y, context_->rotation());
@@ -29,6 +30,9 @@ class DrawTexture : public RenderDelegate {
   virtual ObjectInterface* context() override {return context_;}
   virtual Renderer* renderer() override {return renderer_;}  
   virtual void Load() override {}
+  virtual void Load(Targa::TgaImage* image) {
+    image_ = image;
+  }
   ~DrawTexture(){ delete image_; }
 private:
   static int texture_counter_;
