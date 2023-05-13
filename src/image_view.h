@@ -5,17 +5,15 @@
 #include "targa/targa.h"
 #include "glm.hpp"
 
+void SetPixel(unsigned char* pixel_buffer, int buffer_width, 
+              int buffer_height, int x, int y, uint8_t r, uint8_t g, uint8_t b);
+
+bool isPointOnLine(int x, int y, int x1, int y1, int x2, int y2); 
 struct Color{
-  Color(): red{0},green{255},blue{0}
-  {}
-  int red;
-  int green;
-  int blue;
+  uint8_t r, g, b;
 };
 
 struct Stroke{
-  Stroke():thickness{1}
-  {} 
   int thickness;
 };
 
@@ -36,6 +34,7 @@ class ImageView : public Object {
  public:
   ImageView(Vec2 size, Vec2 position);
   void Point(int size, Vec2 position); 
+  void DrawLine(Vec2 start_point,Vec2 end_point);
   void Draw() override;
   void setBrush(Brush brush); 
 

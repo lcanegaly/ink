@@ -2,7 +2,6 @@
 #include "demo.h"
 #include <string>
 
-
 Application* CreateApplication(){
   return new Demo("demo app", 800, 600);
 }
@@ -19,8 +18,15 @@ void Demo::OnUserUpdate() {
 
 void Demo::LoadDemo() {
   ImageView* canvas = new ImageView(Vec2{200,200}, Vec2{290,400});
-  canvas->setBrush(Brush(Color{0,255,0}, Stroke()));
-  canvas->Point(20, Vec2{100,100}); 
+  canvas->setBrush(Brush(Color{0,255,0}, Stroke{6}));
+  //canvas->Point(20, Vec2{100,100}); 
+  canvas->DrawLine(Vec2{20,140},Vec2{100,200}); 
+  canvas->setBrush(Brush(Color{255,0,0}, Stroke{6}));
+  canvas->DrawLine(Vec2{100,200},Vec2{120,0}); 
+  canvas->setBrush(Brush(Color{0,0,255}, Stroke{6}));
+  canvas->DrawLine(Vec2{120,0},Vec2{20,140}); 
+
   RegisterObject(canvas);
+
 }
 
