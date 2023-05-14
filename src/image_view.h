@@ -5,6 +5,7 @@
 #include "targa/targa.h"
 #include "glm.hpp"
 
+//TODO - update these functions to take Vec2 and Color
 void SetPixel(unsigned char* pixel_buffer, int buffer_width, 
               int buffer_height, int x, int y, uint8_t r, uint8_t g, uint8_t b);
 
