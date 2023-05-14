@@ -8,7 +8,14 @@
 void SetPixel(unsigned char* pixel_buffer, int buffer_width, 
               int buffer_height, int x, int y, uint8_t r, uint8_t g, uint8_t b);
 
+void LineVector(unsigned char* buffer, int width, 
+                int height, int x1, int y1, int vx, int vy, int magnitude);
+void LineSegment(unsigned char* buffer, int width, int height, 
+                 int x1, int y1, int x2, int y2, int thickness);
+
+Vec2 NormalOfLine(int x1, int y1, int x2, int y2);
 bool isPointOnLine(int x, int y, int x1, int y1, int x2, int y2); 
+
 struct Color{
   uint8_t r, g, b;
 };
