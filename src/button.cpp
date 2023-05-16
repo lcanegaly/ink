@@ -27,11 +27,13 @@ Button::Button(const char* filepath, glm::vec2 size, glm::vec2 position, Callbac
   Load(filepath);
 }
 
+/*
 void Button::Draw(int width, int height, int X, int Y) {
   set_size(glm::vec2(width, height));
   set_position(glm::vec2(X,Y), 0); //TODO fix, draw should take a rotation. 
   render_delegate()->Draw();
 }
+*/
 
 void Button::Update() {
   if (input_delegate_ptr_->GetMouseClick()) {

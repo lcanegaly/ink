@@ -26,13 +26,13 @@ int main()
 
     auto fps = static_cast<double>(frameCount)/elapsedTime;
 
-    if (elapsedTime >= 1){
-      std::cout << fps << std::endl;
+    if (elapsedTime >= 0.01){
+      //std::cout << fps << std::endl;
       startTime = currentTime;
       frameCount = 0;
     }
-    app->Update();
-    app->Draw();
+      app->Draw();
+      app->Update();
   }
   app->Close();
 

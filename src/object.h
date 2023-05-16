@@ -59,6 +59,13 @@ class RenderDelegate {
   virtual void Load(const char* filepath) = 0;// {}
 };
 
+class SoundDelegate {
+ public:
+  virtual void PlaySound() = 0;
+  virtual void LoadSound(const char*) = 0;
+ protected:
+  ~SoundDelegate(){}
+};
 
 struct ObjectData {
   ObjectData():name{0}, positionX{0}, positionY{0}, 
@@ -71,7 +78,7 @@ struct ObjectData {
   float rotation;
 };
 
-class ObjectInterface {
+class ObjectInterface : public SoundDelegate {
  public:
   virtual ~ObjectInterface() {}
   virtual glm::vec2 position() = 0;
@@ -90,15 +97,23 @@ protected:
 };
 
 class Object : public ObjectInterface {
-public:
+ public:
   Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate);
+ 
+ public:
+  virtual void Update() override;
+  virtual void Draw() override;
+  virtual void PlaySound() override;
+  virtual void LoadSound(const char*) override;
+  virtual void Load(const char*) override;
+
+ public:
   virtual glm::vec2 position() override;
   virtual glm::vec2 size() override;
   virtual float rotation() override;
   virtual std::string name() override;
-  virtual void Update() override;
-  virtual void Draw() override;
-  virtual void Load(const char*) override;
+ 
+ public: 
   virtual void set_name(std::string name) override;
   virtual void set_position(glm::vec2 position, float rotation) override;
   virtual void set_size(glm::vec2 size) override;
@@ -112,6 +127,7 @@ public:
   ObjectData object_;
   UpdateDelegate* updateDelegate_ptr_;
   RenderDelegate* renderDelegate_ptr_;
+  SoundDelegate* sound_;
 };
 
 

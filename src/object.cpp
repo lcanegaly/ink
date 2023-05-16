@@ -1,8 +1,11 @@
 #include "object.h"
+#include "log.h"
 
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate): 
   updateDelegate_ptr_{update_delegate}, renderDelegate_ptr_{render_delegate} 
-{}
+{
+  sound_ = nullptr;
+}
 
 glm::vec2 Object::position(){
   return glm::vec2(object_.positionX, object_.positionY);
@@ -15,6 +18,12 @@ glm::vec2 Object::size(){
 float Object::rotation() {
   return object_.rotation;
 }
+
+void Object::PlaySound(){
+  LOG("Playing Sound\n");
+} 
+
+void Object::LoadSound(const char*){} 
 
 void Object::Load(const char * filepath){
   renderDelegate_ptr_->Load(filepath);
