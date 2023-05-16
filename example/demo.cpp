@@ -26,8 +26,12 @@ void Demo::LoadDemo() {
   canvas->DrawLine(Vec2{150,200},Vec2{300,100}); 
   canvas->setBrush(Brush(Color{0,25,250}, Stroke{6}));
   canvas->DrawLine(Vec2{300,100},Vec2{0,100}); 
-   
+
+  Image* image = new Image("font1.tga", 200,200,200,200);
+  Image* image2 = new Image("font1.tga", 200,200,400,200);
   RegisterObject(canvas);
+  RegisterObject(image);
+  RegisterObject(image2);
 
 }
 

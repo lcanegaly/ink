@@ -49,7 +49,7 @@ void Renderer::StartDraw()
 }
 void Renderer::EndDraw()
 {
-
+  glfwSwapBuffers(window_ptr_->context());
 }
 void Renderer::SetClearColor(float r, float g, float b, float a)
 {
@@ -118,7 +118,6 @@ void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int 
 	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  glfwSwapBuffers(window_ptr_->context());
 }
 
 void Renderer::Draw(ImageData& image_data)
@@ -155,7 +154,7 @@ void Renderer::Draw(ImageData& image_data)
 	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  glfwSwapBuffers(window_ptr_->context());
+  //glfwSwapBuffers(window_ptr_->context());
 }
 
 void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height){
