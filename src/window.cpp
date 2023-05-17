@@ -1,6 +1,16 @@
 #include "window.h"
 #include <iostream>
 
+GLFWwindow* window_handle = nullptr;
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
+  return;  
+}
+
+void key_callback(GLFWwindow*, int key, int scancode, int action, int mods){
+  //std::cout << "key pressed " << key << " action " << action << "\n";
+}
+
 GLFWContext::GLFWContext(int width, int height, const char* title) {
   if (!glfwInit())
       return;
@@ -12,6 +22,8 @@ GLFWContext::GLFWContext(int width, int height, const char* title) {
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
   window_ = glfwCreateWindow(width, height, title, NULL, NULL);
+  
+  window_handle = window_; 
   if (!window_){
     glfwTerminate();
   }
@@ -23,16 +35,18 @@ GLFWContext::GLFWContext(int width, int height, const char* title) {
   int w, h;
   glfwGetFramebufferSize(window_, &w, &h);
 
+  glfwSetKeyCallback(window_, key_callback);
   glViewport(0, 0, w, h);
 }
-	//void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
-	//void key_callback(GLFWwindow*, int key, int scancode, int action, int mods);
+
+
   
 GLFWwindow* GLFWContext::context() {
   if (!window_){printf("window_ ptr not set \n");}
   return window_;
 }
 
+/*
 int GLFWContext::Create(int width, int height, const char* title) {
   if (!glfwInit())
     return 1;
@@ -48,7 +62,7 @@ int GLFWContext::Create(int width, int height, const char* title) {
     glfwTerminate();
     return 1;
   }
-  /* Make the window's context current */
+  // Make the window's context current 
   glfwMakeContextCurrent(window_);
 
   glewInit();
@@ -58,6 +72,7 @@ int GLFWContext::Create(int width, int height, const char* title) {
   glViewport(0, 0, w, h);
   return 1;
 }
+*/
 
 void GLFWContext::Destroy() {
 	glfwTerminate();

@@ -13,7 +13,7 @@ Application::Application(const char* name, int width, int height)
   :window_{new GLFWContext(width, height, name)}, width_{width}, height_{height}
 {
   renderer_ptr_ = &Renderer::Get();
-  EmscriptenInput input; 
+  GLFWInput input; 
   renderer_ptr_->Init(width, height, window_);
   RegisterObjectList();
 }

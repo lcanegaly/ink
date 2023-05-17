@@ -1,16 +1,17 @@
 #include "button.h"
 #include "audio.h"
 #include "log.h"
+
 //TODO.. Updatedelegate should actually do something. 
 Button::Button(const char* filepath):
   Object(new ButtonUpdate, new DrawTexture(this)), 
-  input_delegate_ptr_{new EmscriptenInput()}, callback_{nullptr}, clicked_{false}
+  input_delegate_ptr_{new GLFWInput()}, callback_{nullptr}, clicked_{false}
 {
   Load(filepath);
 }
 
 Button::Button(const char* filepath, int width, int height, int X, int Y): 
-  Object(new ButtonUpdate, new DrawTexture(this), new SoundEffect("click.wav")), input_delegate_ptr_{new EmscriptenInput()}, 
+  Object(new ButtonUpdate, new DrawTexture(this), new SoundEffect("click.wav")), input_delegate_ptr_{new GLFWInput()}, 
   callback_{nullptr}, clicked_{false}
 {
   set_size(glm::vec2(width, height));
@@ -36,6 +37,15 @@ void Button::Draw(int width, int height, int X, int Y) {
 */
 
 void Button::Update() {
+  if (input_delegate_ptr_){
+    if (input_delegate_ptr_->GetKey(65)) {
+      LOG("BUTTON PRESSED\n");
+      if(audio()){
+        audio()->PlaySound();
+      }
+    }
+  } 
+
   if (input_delegate_ptr_->GetMouseClick()) {
 		int x = std::abs(input_delegate_ptr_->GetMousePosition().x - this->position().x);
 		int y = std::abs(input_delegate_ptr_->GetMousePosition().y - this->position().y);

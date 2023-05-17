@@ -1,5 +1,40 @@
 #include "input.h"
 #include <algorithm>
+#include "window.h"
+
+std::vector<KeyCallbackDelegate*> GLFWInput::callback_;
+bool GLFWInput::init_ = false;
+InputData GLFWInput::input_ {0.0, 0.0, 0,0};
+
+GLFWInput::GLFWInput(){
+
+}
+
+glm::vec2 GLFWInput::GetMousePosition(){
+  return glm::vec2{0,0};
+} 
+
+bool GLFWInput::GetMouseClick() {
+  return false;
+}
+
+std::string GLFWInput::GetKeys(){
+  return std::string{};
+}
+
+bool GLFWInput::GetKey(int key_code){
+  int state = glfwGetKey(window_handle, key_code);
+  if (state == GLFW_PRESS){
+    return true;
+  }
+  return false;
+} 
+
+void GLFWInput::Reset() {
+    input_.MouseY = 0;
+    input_.MouseX = 0;
+    input_.LeftClick = 0;
+}
 
 std::vector<KeyCallbackDelegate*> EmscriptenInput::callback_;
 bool EmscriptenInput::init_ = false;

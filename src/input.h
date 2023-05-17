@@ -1,11 +1,11 @@
 #pragma once
-#include "glm.hpp"
-//#include <emscripten.h>
-//#include <emscripten/html5.h>
-#include "log.h"
 #include <string>
 #include <vector>
 
+#include "glm.hpp"
+#include "log.h"
+//#include <emscripten.h>
+//#include <emscripten/html5.h>
 
 class KeyCallbackDelegate {
  public:
@@ -39,7 +39,22 @@ class InputDelegate {
   virtual glm::vec2 GetMousePosition() = 0;
   virtual bool GetMouseClick() = 0;
   virtual std::string GetKeys() = 0;
+  virtual bool GetKey(int key_code) = 0;
   virtual void Reset() = 0;
+};
+
+class GLFWInput : public InputDelegate {
+ public: 
+  GLFWInput();
+  glm::vec2 GetMousePosition() override; 
+  bool GetMouseClick() override;
+  std::string GetKeys() override;
+  virtual bool GetKey(int key_code) override;
+  void Reset()override; 
+ private:
+  static std::vector<KeyCallbackDelegate*> callback_;
+  static bool init_;
+  static InputData input_;
 };
 
 class EmscriptenInput : public InputDelegate {
@@ -50,6 +65,7 @@ class EmscriptenInput : public InputDelegate {
   glm::vec2 GetMousePosition() override; 
   bool GetMouseClick() override;
   std::string GetKeys() override;
+  bool GetKey(int key_code) override{return false;}
   void Reset() override {
     input_.MouseY = 0;
     input_.MouseX = 0;

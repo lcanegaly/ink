@@ -1,6 +1,9 @@
 #pragma once
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
+#include <iostream>
+
+extern GLFWwindow* window_handle;
 
 class WindowDelegate {
  public:
@@ -15,7 +18,7 @@ class GLFWContext : public WindowDelegate {
  public:
   GLFWContext(int width, int height, const char* title);  
   GLFWwindow* context() override;
-	int Create(int width, int height, const char* title) override; 
+	int Create(int width, int height, const char* title) override{return 1;} 
   void Destroy() override;
   int shouldClose() override {return glfwWindowShouldClose(window_);}
   void PollEvents() override {glfwPollEvents();}
