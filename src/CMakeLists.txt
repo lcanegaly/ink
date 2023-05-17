@@ -11,6 +11,7 @@ target_sources(ink PRIVATE
  ${PROJECT_SOURCE_DIR}/src/sprite.cpp
  ${PROJECT_SOURCE_DIR}/src/label.cpp
  ${PROJECT_SOURCE_DIR}/src/textbox.cpp
+ ${PROJECT_SOURCE_DIR}/src/audio.cpp
 )
 
 

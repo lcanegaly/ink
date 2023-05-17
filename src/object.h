@@ -59,12 +59,12 @@ class RenderDelegate {
   virtual void Load(const char* filepath) = 0;// {}
 };
 
-class SoundDelegate {
+class AudioDelegate {
  public:
   virtual void PlaySound() = 0;
   virtual void LoadSound(const char*) = 0;
  protected:
-  ~SoundDelegate(){}
+  ~AudioDelegate(){}
 };
 
 struct ObjectData {
@@ -78,7 +78,7 @@ struct ObjectData {
   float rotation;
 };
 
-class ObjectInterface : public SoundDelegate {
+class ObjectInterface : public AudioDelegate {
  public:
   virtual ~ObjectInterface() {}
   virtual glm::vec2 position() = 0;
@@ -99,12 +99,14 @@ protected:
 class Object : public ObjectInterface {
  public:
   Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate);
+  Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate,
+         AudioDelegate* audio_delegate);
  
  public:
   virtual void Update() override;
   virtual void Draw() override;
-  virtual void PlaySound() override;
-  virtual void LoadSound(const char*) override;
+  virtual void PlaySound();
+  virtual void LoadSound(const char*);
   virtual void Load(const char*) override;
 
  public:
@@ -127,7 +129,7 @@ class Object : public ObjectInterface {
   ObjectData object_;
   UpdateDelegate* updateDelegate_ptr_;
   RenderDelegate* renderDelegate_ptr_;
-  SoundDelegate* sound_;
+  AudioDelegate* audio_;
 };
 
 

@@ -4,8 +4,14 @@
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate): 
   updateDelegate_ptr_{update_delegate}, renderDelegate_ptr_{render_delegate} 
 {
-  sound_ = nullptr;
+  audio_ = nullptr;
 }
+
+Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate,
+         AudioDelegate* audio_delegate) : updateDelegate_ptr_{update_delegate}, 
+  renderDelegate_ptr_{render_delegate}, audio_{audio_delegate}{
+
+} 
 
 glm::vec2 Object::position(){
   return glm::vec2(object_.positionX, object_.positionY);
@@ -20,10 +26,16 @@ float Object::rotation() {
 }
 
 void Object::PlaySound(){
-  LOG("Playing Sound\n");
+  if (!audio_){
+    LOG("ERROR - NO AUDIO DELEGATE\n");
+    return; 
+  }
+  audio_->PlaySound();
 } 
 
-void Object::LoadSound(const char*){} 
+void Object::LoadSound(const char* filename){
+  audio_->LoadSound(filename); 
+} 
 
 void Object::Load(const char * filepath){
   renderDelegate_ptr_->Load(filepath);

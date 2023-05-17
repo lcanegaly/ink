@@ -33,7 +33,6 @@ void Demo::LoadDemo() {
   RegisterObject(canvas);
   RegisterObject(image);
   RegisterObject(image2);
-  test_image->PlaySound(); 
 
   RegisterObject(test_image);
 

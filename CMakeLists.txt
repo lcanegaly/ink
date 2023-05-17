@@ -9,6 +9,7 @@ include_directories(${PROJECT_SOURCE_DIR}/dependencies/glew/include)
 include_directories(${PROJECT_SOURCE_DIR}/dependencies/glm/glm)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/include)
+include_directories(${PROJECT_SOURCE_DIR}/dependencies/miniaudio)
 link_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/build/src)
 link_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/build/Debug)
 
