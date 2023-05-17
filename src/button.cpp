@@ -1,5 +1,6 @@
 #include "button.h"
-
+#include "audio.h"
+#include "log.h"
 //TODO.. Updatedelegate should actually do something. 
 Button::Button(const char* filepath):
   Object(new ButtonUpdate, new DrawTexture(this)), 
@@ -9,9 +10,8 @@ Button::Button(const char* filepath):
 }
 
 Button::Button(const char* filepath, int width, int height, int X, int Y): 
-  Object(new ButtonUpdate, new DrawTexture(this)), input_delegate_ptr_{new EmscriptenInput()}, 
+  Object(new ButtonUpdate, new DrawTexture(this), new SoundEffect("click.wav")), input_delegate_ptr_{new EmscriptenInput()}, 
   callback_{nullptr}, clicked_{false}
-
 {
   set_size(glm::vec2(width, height));
   set_position(glm::vec2(X,Y), 0); //TODO - fix, should take rotation from constructor.
@@ -42,6 +42,11 @@ void Button::Update() {
 
 		if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y ))
 		{
+      if(audio()){
+        LOG("Button clicked\n");
+        audio()->PlaySound();
+      }
+      
       if (execute != nullptr){
         execute();
       } 

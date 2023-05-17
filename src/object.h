@@ -124,7 +124,8 @@ class Object : public ObjectInterface {
  protected:
   RenderDelegate* render_delegate() override;
   UpdateDelegate* update_delegate() override;
-  
+  AudioDelegate* audio();
+ 
  private:
   ObjectData object_;
   UpdateDelegate* updateDelegate_ptr_;

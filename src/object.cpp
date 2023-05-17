@@ -77,3 +77,7 @@ RenderDelegate* Object::render_delegate() {
 UpdateDelegate* Object::update_delegate() {
   return updateDelegate_ptr_;
 }
+
+AudioDelegate* Object::audio(){
+  return audio_;
+}

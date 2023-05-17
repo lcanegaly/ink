@@ -30,11 +30,12 @@ void Demo::LoadDemo() {
   Image* image = new Image("font1.tga", 200,200,200,200);
   Image* image2 = new Image("font1.tga", 200,200,400,200);
   Image* test_image = new Image("font1.tga", 128, 128, 600, 350);
+  Button* button = new Button("corn.tga", 300,300, 500, 500);
   RegisterObject(canvas);
   RegisterObject(image);
   RegisterObject(image2);
-
   RegisterObject(test_image);
+  RegisterObject(button);
 
 }
 
