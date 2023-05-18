@@ -37,7 +37,7 @@ public:
 	void Draw(ImageData& image_data);
   GLuint BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char* vertex_position_name );
   GLuint LoadShader(GLenum type, const char* shader_source);
-  void LoadTexture(unsigned char* texture, int bind_num, int width, int height);
+  void LoadTexture(unsigned char* texture, int bind_num, int width, int height, int color_depth);
 
 	glm::vec2 ConvertNormToPixel(glm::vec2 xy);
 	glm::vec2 ConvertPixelToNorm(int x, int y);

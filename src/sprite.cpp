@@ -6,7 +6,8 @@ DrawSprite::DrawSprite(ObjectInterface* object, ImageData& image_data):
 {}
 
 void DrawSprite::Draw(){
-  renderer_->LoadTexture((unsigned char*)spriteSheet_->data(), data_.bind_num, spriteSheet_->width(), spriteSheet_->height()); 
+  //TODO - LoadTexture should pull color depth
+  renderer_->LoadTexture((unsigned char*)spriteSheet_->data(), data_.bind_num, spriteSheet_->width(), spriteSheet_->height(), 3); 
   renderer_->Draw(data_);
 }
 

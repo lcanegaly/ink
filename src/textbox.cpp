@@ -6,7 +6,8 @@ DrawText::DrawText(ObjectInterface* object, ImageData& image_data, Font& font):
 
 void DrawText::Draw(){
   //printf("In Text draw \n");
-  renderer_->LoadTexture((unsigned char*)spriteSheet_->data(), data_.bind_num, spriteSheet_->width(), spriteSheet_->height()); 
+  //TODO - should pull color depth
+  renderer_->LoadTexture((unsigned char*)spriteSheet_->data(), data_.bind_num, spriteSheet_->width(), spriteSheet_->height(), 3); 
 }
 
 void DrawText::DrawString(std::string& text){

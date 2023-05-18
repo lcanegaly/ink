@@ -66,6 +66,7 @@ static const char* s_FragmentShaderSourceMenu2
 	"  vec2 imageSection = (v_texCoord + vec2(column, row)) * scale; \n"
 //	"  vec2 imageSection = (v_texCoord + vec2(1.0, 7.0)) * 0.125; \n"
 	"  gl_FragColor = texture2D(Texture, imageSection);       \n"
+	//"  gl_FragColor = vec4(1.0, 0.5, 0.2, 0.0);       \n"
 	"}                                                      \0"
 };
 

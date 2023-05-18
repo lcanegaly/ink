@@ -157,7 +157,7 @@ void Renderer::Draw(ImageData& image_data)
   //glfwSwapBuffers(window_ptr_->context());
 }
 
-void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height){
+void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height, int color_depth){
   glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
 
   //set texture wrapping
@@ -166,7 +166,12 @@ void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int 
 	// set texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture); 
+  if (color_depth == 3){
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture); 
+  }
+  else{
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture); 
+  }
 }
 
 GLuint Renderer::LoadShader(GLenum type, const char* source)

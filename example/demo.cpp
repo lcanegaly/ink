@@ -18,6 +18,7 @@ void Demo::OnUserUpdate() {
 }
 
 void Demo::LoadDemo() {
+  
   ImageView* canvas = new ImageView(Vec2{512,512}, Vec2{300,300});
   canvas->setBrush(Brush(Color{0,255,0}, Stroke{6}));
   canvas->Point(20, Vec2{100,100}); 
@@ -30,12 +31,11 @@ void Demo::LoadDemo() {
   Image* image = new Image("font1.tga", 200,200,200,200);
   Image* image2 = new Image("font1.tga", 200,200,400,200);
   Image* test_image = new Image("font1.tga", 128, 128, 600, 350);
-  Button* button = new Button("corn.tga", 300,300, 500, 500);
+  Button* button = new Button("test.tga", 300,300, 400, 300);
   RegisterObject(canvas);
   RegisterObject(image);
   RegisterObject(image2);
   RegisterObject(test_image);
   RegisterObject(button);
-
 }
 

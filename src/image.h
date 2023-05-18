@@ -23,7 +23,7 @@ class DrawTexture : public RenderDelegate {
     image_ = new Targa::TgaImage(filepath);
   }
   virtual void Draw() override {
-    renderer()->LoadTexture((unsigned char*)image_->data(), texture_slot_, image_->width(), image_->height());
+    renderer()->LoadTexture((unsigned char*)image_->data(), texture_slot_, image_->width(), image_->height(), image_->pixel_depth()/8);
     renderer()->Draw((unsigned char*)image_->data(), texture_slot_, context_->position().x , context_->position().y,
                      context_->size().x, context_->size().y, context_->rotation());
   }
