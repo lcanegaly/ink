@@ -45,7 +45,7 @@ class InputDelegate {
 
 class GLFWInput : public InputDelegate {
  public: 
-  GLFWInput();
+  GLFWInput() = default;
   glm::vec2 GetMousePosition() override; 
   bool GetMouseClick() override;
   std::string GetKeys() override;

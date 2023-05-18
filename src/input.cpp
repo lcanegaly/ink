@@ -2,19 +2,21 @@
 #include <algorithm>
 #include "window.h"
 
+extern GLFWwindow* window_handle;
+
 std::vector<KeyCallbackDelegate*> GLFWInput::callback_;
 bool GLFWInput::init_ = false;
 InputData GLFWInput::input_ {0.0, 0.0, 0,0};
 
-GLFWInput::GLFWInput(){
-
-}
-
 glm::vec2 GLFWInput::GetMousePosition(){
-  return glm::vec2{0,0};
+  double xpos, ypos;
+  glfwGetCursorPos(window_handle, &xpos, &ypos); 
+  return glm::vec2{xpos, ypos};
 } 
 
 bool GLFWInput::GetMouseClick() {
+  if(glfwGetMouseButton(window_handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)  
+    return true;
   return false;
 }
 
