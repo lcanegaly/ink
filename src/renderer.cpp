@@ -11,15 +11,14 @@
 
 
 Renderer::Renderer() 
-	: width_{ 0 }, height_{ 0 }, vbo_{ 0 }, vao_{ 0 }, program_{ 0 }, menu_program_{ 0 }, texture_{ 0 }
-{
-};
+	: width_{ 0 }, height_{ 0 }, vbo_{ 0 }, vao_{ 0 }, program_{ 0 }, texture_{ 0 }
+{};
 
-Renderer::~Renderer(){
+Renderer::~Renderer() {
   delete window_ptr_;
 }
-void Renderer::Init(int width, int height, WindowDelegate* window_ptr) //TODO need to pass in window context. 
-{
+
+void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 	width_ = width;
 	height_ = height;
   window_ptr_ = window_ptr;
@@ -31,67 +30,36 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) //TODO ne
 
   glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
 
-  // load vertex and fragment shaders
-  GLuint vertex_shader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource2);
-  GLuint fragment_shader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource2);
-  program_ = BuildProgram(vertex_shader, fragment_shader, "vPosition");
-
-  //  load fragment shader for menu 
-  GLuint menu_fragment_shader = LoadShader(GL_FRAGMENT_SHADER, s_FragmentShaderSourceMenu2);
-  menu_program_ = BuildProgram(vertex_shader, menu_fragment_shader, "iPosition");
+  GLuint vertex_shader = LoadShader(GL_VERTEX_SHADER, vertex_shader_source);
+  GLuint fragment_shader = LoadShader(GL_FRAGMENT_SHADER, fragment_shader_source);
+  program_ = BuildProgram(vertex_shader, fragment_shader, "iPosition");
 
   glGenTextures(6, texture_);
 };
 
-void Renderer::StartDraw()
-{
+void Renderer::StartDraw() {
   glClear(GL_COLOR_BUFFER_BIT);
 }
-void Renderer::EndDraw()
-{
+
+void Renderer::EndDraw() {
   glfwSwapBuffers(window_ptr_->context());
 }
-void Renderer::SetClearColor(float r, float g, float b, float a)
-{
+
+void Renderer::SetClearColor(float r, float g, float b, float a) {
   glClearColor(r,g,b,a);  
 }
 
-void Renderer::DrawFractal(int window_width, int window_height, glm::vec2 center = glm::vec2(0.0f,0.0f), double zoom = 1.0)
-{
+void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation) {
   glUseProgram(program_);
-	glm::mat4 model = glm::mat4(1.0f);
-
-	GLint uniform_translate = glGetUniformLocation(program_, "translate");
-	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
-
-	GLint uniform_zoom = glGetUniformLocation(program_, "zoom");
-	glUniform1f(uniform_zoom, (float)zoom);
-
-	GLint uniform_pan = glGetUniformLocation(program_, "pan");
-	glUniform2f(uniform_pan, center.x, center.y);
-
-  glClear(GL_COLOR_BUFFER_BIT);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
-  glEnableVertexAttribArray(1);
-    
-  glDrawArrays(GL_TRIANGLES, 0, 6);
-  glfwSwapBuffers(window_ptr_->context());
-}
-
-void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation)
-{
-  glUseProgram(menu_program_);
   int texture_rows = 1;
   int texture_columns = 1;
   int row = 0;
   int column = 0;
-  GLint texture_uniform = glGetUniformLocation ( menu_program_, "Texture" );
-  GLint uniform_rows = glGetUniformLocation(menu_program_, "rows");
-  GLint uniform_columns = glGetUniformLocation(menu_program_, "columns");
-  GLint uniform_row = glGetUniformLocation(menu_program_, "row");
-  GLint uniform_column = glGetUniformLocation(menu_program_, "column");
+  GLint texture_uniform = glGetUniformLocation ( program_, "Texture" );
+  GLint uniform_rows = glGetUniformLocation(program_, "rows");
+  GLint uniform_columns = glGetUniformLocation(program_, "columns");
+  GLint uniform_row = glGetUniformLocation(program_, "row");
+  GLint uniform_column = glGetUniformLocation(program_, "column");
 	glUniform1f(uniform_rows, (float)texture_rows);
 	glUniform1f(uniform_columns, (float)texture_columns);
 	glUniform1i(uniform_row, row);
@@ -120,14 +88,13 @@ void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int 
   glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void Renderer::Draw(ImageData& image_data)
-{
-  glUseProgram(menu_program_);
-  GLint texture_uniform = glGetUniformLocation ( menu_program_, "Texture" );
-  GLint uniform_rows = glGetUniformLocation(menu_program_, "rows");
-  GLint uniform_columns = glGetUniformLocation(menu_program_, "columns");
-  GLint uniform_row = glGetUniformLocation(menu_program_, "row");
-  GLint uniform_column = glGetUniformLocation(menu_program_, "column");
+void Renderer::Draw(ImageData& image_data) {
+  glUseProgram(program_);
+  GLint texture_uniform = glGetUniformLocation ( program_, "Texture" );
+  GLint uniform_rows = glGetUniformLocation(program_, "rows");
+  GLint uniform_columns = glGetUniformLocation(program_, "columns");
+  GLint uniform_row = glGetUniformLocation(program_, "row");
+  GLint uniform_column = glGetUniformLocation(program_, "column");
 	glUniform1f(uniform_rows, (float)image_data.texture_rows);
 	glUniform1f(uniform_columns, (float)image_data.texture_columns);
 	glUniform1i(uniform_row, image_data.row);
@@ -157,16 +124,16 @@ void Renderer::Draw(ImageData& image_data)
   //glfwSwapBuffers(window_ptr_->context());
 }
 
-void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height, int color_depth){
+void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height, int color_depth) {
   glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
 
-  //set texture wrapping
+  // set texture wrapping
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  if (color_depth == 3){
+  if (color_depth == 3) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture); 
   }
   else{
@@ -174,12 +141,10 @@ void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int 
   }
 }
 
-GLuint Renderer::LoadShader(GLenum type, const char* source)
-{
+GLuint Renderer::LoadShader(GLenum type, const char* source) {
     // create shader
     GLuint shader = glCreateShader(type);
-    if(shader == 0)
-    {
+    if(shader == 0) {
         printf("Error creating shader\n");
         return 0;
     }
@@ -191,8 +156,7 @@ GLuint Renderer::LoadShader(GLenum type, const char* source)
     // check if the shader compiled successfully
     GLint compiled;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-    if (!compiled)
-    {
+    if (!compiled) {
         printf("Shader compilation error\n");
         glDeleteShader(shader);
         return 0;
@@ -200,8 +164,7 @@ GLuint Renderer::LoadShader(GLenum type, const char* source)
     return shader;
 }
 
-GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char * vertex_position_name)
-{
+GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char * vertex_position_name) {
    // create a GL program and link it
     GLuint program = glCreateProgram();
     glAttachShader(program, vertex_shader);
@@ -212,8 +175,7 @@ GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader, cons
     // check if the program linked successfully
     GLint linked;
     glGetProgramiv(program, GL_LINK_STATUS, &linked);
-    if(!linked)
-    {
+    if(!linked) {
         printf("Program link error\n");
         glDeleteProgram(program);
         return 0;
@@ -221,16 +183,14 @@ GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader, cons
     return program;
 }
 
-glm::vec2 Renderer::ConvertNormToPixel(glm::vec2 xy)
-{
+glm::vec2 Renderer::ConvertNormToPixel(glm::vec2 xy) {
 	float out_x = ((xy.x + 1.0f) / 2.0f) * width_;
 	float out_y = ((xy.y + 1.0f) / 2.0f) * height_;
 	out_y = out_y * -1; //flip y for drawing
 	return glm::vec2(out_x, out_y);
 }
 
-glm::vec2 Renderer::ConvertPixelToNorm(int x, int y)
-{
+glm::vec2 Renderer::ConvertPixelToNorm(int x, int y) {
 	float out_x = (((float)x / (float)width_)*2) - 1;
 	float out_y = (((float)y / (float)height_) * 2) - 1;
 	out_y = out_y * -1; //flip y for drawing

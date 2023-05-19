@@ -32,7 +32,6 @@ public:
   void StartDraw();
   void EndDraw();
   void SetClearColor(float r, float g, float b, float a);
-  void DrawFractal(int window_width, int window_height, glm::vec2 center, double zoom);
 	void Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation = 0);
 	void Draw(ImageData& image_data);
   GLuint BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char* vertex_position_name );
@@ -47,7 +46,6 @@ private:
 	GLuint vbo_;
 	unsigned int vao_;
 	GLuint program_;
-	GLuint menu_program_;
 	GLuint texture_[10];
 	WindowDelegate* window_ptr_;
 };
