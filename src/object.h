@@ -1,6 +1,7 @@
 #pragma once
 #include "glm.hpp"
 #include <string>
+#include <chrono>
 #include <functional>
 
 class ObjectInterface;
@@ -8,18 +9,18 @@ class Renderer;
 
 class UpdateDelegate {
  public:
-  virtual void Update() =0; //{}
-  virtual void Update(int position_x, int position_y) = 0; // {}
-  virtual void Update(int position_x, int position_y, float rotation_r) = 0; // {}
+  virtual void Update(std::time_t delta_t) =0; //{}
+  //virtual void Update(int position_x, int position_y) = 0; // {}
+  //virtual void Update(int position_x, int position_y, float rotation_r) = 0; // {}
   virtual ObjectInterface* context() = 0;// {return object_ptr_;}
  protected:
   ~UpdateDelegate(){}
 };
 
 class NoUpdate : public UpdateDelegate{
-  virtual void Update() {}
-  virtual void Update(int position_x, int position_y) {}
-  virtual void Update(int position_x, int position_y, float rotation_r) {}
+  virtual void Update(std::time_t delta_t) {}
+  //virtual void Update(int position_x, int position_y) {}
+  //virtual void Update(int position_x, int position_y, float rotation_r) {}
   virtual ObjectInterface* context() {return nullptr;}
  protected:
   ~NoUpdate(){}
@@ -29,12 +30,12 @@ class ScriptUpdate : public UpdateDelegate{
  public:
   ScriptUpdate(std::function<void()> func):onUpdate_{func}
   {}
-  virtual void Update() {
+  virtual void Update(std::time_t delta_t) {
     if (onUpdate_ != nullptr)
       onUpdate_();
   }
-  virtual void Update(int position_x, int position_y) {}
-  virtual void Update(int position_x, int position_y, float rotation_r) {}
+  //virtual void Update(int position_x, int position_y) {}
+  //virtual void Update(int position_x, int position_y, float rotation_r) {}
   virtual ObjectInterface* context() {return nullptr;}
  private:
   std::function<void()> onUpdate_;
@@ -42,9 +43,9 @@ class ScriptUpdate : public UpdateDelegate{
 
 //TODO - constructor..
 class ButtonUpdate : public UpdateDelegate {
-  virtual void Update() {}
-  virtual void Update(int position_x, int position_y) {}
-  virtual void Update(int position_x, int position_y, float rotation_r) {}
+  virtual void Update(std::time_t delta_t) {}
+  //virtual void Update(int position_x, int position_y) {}
+  //virtual void Update(int position_x, int position_y, float rotation_r) {}
   virtual ObjectInterface* context() {return object_ptr_;}
 private:
   ObjectInterface* object_ptr_;
@@ -85,7 +86,7 @@ class ObjectInterface : public AudioDelegate {
   virtual glm::vec2 size() = 0;
   virtual float rotation() = 0;
   virtual std::string name() = 0;
-  virtual void Update() = 0;
+  virtual void Update(std::time_t delta_t) = 0;
   virtual void Draw() = 0;
   virtual void Load(const char*) = 0;
   virtual void set_name(std::string name) = 0;
@@ -103,7 +104,7 @@ class Object : public ObjectInterface {
          AudioDelegate* audio_delegate);
  
  public:
-  virtual void Update() override;
+  virtual void Update(std::time_t delta_t) override;
   virtual void Draw() override;
   virtual void PlaySound();
   virtual void LoadSound(const char*);
@@ -122,6 +123,7 @@ class Object : public ObjectInterface {
   void set_updateDelegate(UpdateDelegate* updateDelegate);
 
  protected:
+  time_t elapsed_time_;
   RenderDelegate* render_delegate() override;
   UpdateDelegate* update_delegate() override;
   AudioDelegate* audio();

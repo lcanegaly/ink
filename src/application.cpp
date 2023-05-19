@@ -1,3 +1,7 @@
+#include <string>
+#include <chrono>
+#include <iostream>
+
 #include "application.h"
 #include "image.h"
 #include "button.h"
@@ -6,8 +10,6 @@
 #include "label.h"
 #include "input.h"
 #include "glm.hpp"
-#include <string>
-#include <iostream>
 
 Application::Application(const char* name, int width, int height)
   :window_{new GLFWContext(width, height, name)}, width_{width}, height_{height}
@@ -24,10 +26,10 @@ Application::~Application(){
   }
 }
 
-void Application::Update() {
+void Application::Update(std::time_t delta_t ) {
   window_->PollEvents();
   for (Object* x : objects_){
-    x->Update();
+    x->Update(delta_t);
   }
   OnUserUpdate();
 }

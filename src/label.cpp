@@ -76,7 +76,7 @@ void Label::SetupFont(){
     font_.characterMap['/'] = Vec2{3,7};
 }
 
-void Label::Update() {
+void Label::Update(std::time_t delta_t) {
   character_.pos_x = position().x;
   character_.pos_y = position().y;
   character_.width = size().x;
@@ -84,7 +84,7 @@ void Label::Update() {
   //TODO - dynamic cast this.
   ((DrawText*)render_delegate())->DrawString(text_);
   if(update_delegate() && tick_ < 1){
-    update_delegate()->Update();
+    update_delegate()->Update(delta_t);
     tick_ = ticks_per_update_;
   }
   tick_--;

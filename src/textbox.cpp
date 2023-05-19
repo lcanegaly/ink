@@ -1,3 +1,5 @@
+#include <chrono>
+
 #include "textbox.h"
 
 DrawText::DrawText(ObjectInterface* object, ImageData& image_data, Font& font):
@@ -129,7 +131,7 @@ void TextBox::SetupFont(){
     font_.characterMap['/'] = Vec2{3,7};
 }
 
-void TextBox::Update() {
+void TextBox::Update(std::time_t delta_t) {
   //TODO - dynamic cast this.
   ((DrawText*)render_delegate())->DrawString(text_);
 }

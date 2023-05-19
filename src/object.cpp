@@ -1,14 +1,16 @@
+#include <chrono>
+
 #include "object.h"
 #include "log.h"
 
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate): 
-  updateDelegate_ptr_{update_delegate}, renderDelegate_ptr_{render_delegate} 
+  elapsed_time_{0}, updateDelegate_ptr_{update_delegate}, renderDelegate_ptr_{render_delegate} 
 {
   audio_ = nullptr;
 }
 
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate,
-         AudioDelegate* audio_delegate) : updateDelegate_ptr_{update_delegate}, 
+         AudioDelegate* audio_delegate) : elapsed_time_{0}, updateDelegate_ptr_{update_delegate}, 
   renderDelegate_ptr_{render_delegate}, audio_{audio_delegate}{
 
 } 
@@ -43,8 +45,8 @@ void Object::Load(const char * filepath){
 std::string Object::name() {
   return object_.name;
 }
-void Object::Update() {
-  updateDelegate_ptr_->Update();
+void Object::Update(std::time_t delta_t) {
+  updateDelegate_ptr_->Update(delta_t);
 }
 
 void Object::set_name(std::string name) {

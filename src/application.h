@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "window.h"
-
+#include <chrono>
 
 class Object;
 class Renderer;
@@ -10,7 +10,7 @@ class Application {
  public:
   Application(const char* name, int width, int height);
   ~Application();
-  void Update();
+  void Update(std::time_t delta_t );
   void Draw();
   void RegisterObject(Object* object);
   void RegisterObjectList(); 

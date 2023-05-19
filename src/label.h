@@ -11,7 +11,7 @@ class Label : public Object {
  public:
   Label(const char* filepath, int size, int X, int Y);
   void SetupFont();
-  void Update()override; 
+  void Update(std::time_t delta_t) override; 
   void SetText(const std::string text);
   void SetUpdateFrequency(int ticks_per_update) {ticks_per_update_ = ticks_per_update;}
 private:

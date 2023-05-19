@@ -21,7 +21,8 @@ int main()
 
   while(!app->shouldClose()){
     auto currentTime = std::chrono::high_resolution_clock::now();
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count() /1000;
+    auto delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count() /1000;
+    auto elapsedTime = delta_time /1000;
     frameCount++;
 
     auto fps = static_cast<double>(frameCount)/elapsedTime;
@@ -32,7 +33,7 @@ int main()
       frameCount = 0;
     }
       app->Draw();
-      app->Update();
+      app->Update(delta_time);
   }
   app->Close();
 

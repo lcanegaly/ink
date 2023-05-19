@@ -5,7 +5,9 @@
 #include "object.h"
 #include <unordered_map>
 #include <string>
+#include <chrono>
 #include "glm.hpp"
+
 
 //TODO should be a seperate file/class
 struct Font {
@@ -46,7 +48,7 @@ class TextBox : public Object {
   void SetupFont();
   void UpdateKeys(std::string keys);
   //TODO should be delegate
-  void Update()override; 
+  void Update(std::time_t delta_t) override; 
   void SetText(const std::string text);
  private:
   //TODO - base class should have input delegate pointer. 

@@ -1,3 +1,5 @@
+#include <chrono>
+
 #include "button.h"
 #include "audio.h"
 #include "log.h"
@@ -28,23 +30,20 @@ Button::Button(const char* filepath, glm::vec2 size, glm::vec2 position, Callbac
   Load(filepath);
 }
 
-/*
-void Button::Draw(int width, int height, int X, int Y) {
-  set_size(glm::vec2(width, height));
-  set_position(glm::vec2(X,Y), 0); //TODO fix, draw should take a rotation. 
-  render_delegate()->Draw();
-}
-*/
-
-void Button::Update() {
-  if (input_delegate_ptr_){
-    if (input_delegate_ptr_->GetKey(65)) {
-      LOG("BUTTON PRESSED\n");
-      if(audio()){
-        audio()->PlaySound();
+void Button::Update(std::time_t delta_t) {
+  elapsed_time_ += delta_t; 
+  if (elapsed_time_ > 1500){
+    if (input_delegate_ptr_){
+      if (input_delegate_ptr_->GetKey(65)) {
+        LOG("BUTTON PRESSED\n");
+        LOG("resetting timer\n");
+        elapsed_time_ = 0;
+        if(audio()){
+          audio()->PlaySound();
+        }
       }
     }
-  } 
+  }
 
   if (input_delegate_ptr_->GetMouseClick()) {
 		int x = std::abs(input_delegate_ptr_->GetMousePosition().x - this->position().x);
