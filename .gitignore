@@ -47,6 +47,7 @@ CMakeFiles/
 resources/
 dependencies/
 Include/
+client/
 testapp/
 build*/
 x64/

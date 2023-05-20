@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.11.0)
 project(ink VERSION 0.0.1)
 
+set(BUILD_DEMO "FALSE")
+
 include(CTest)
 enable_testing()
 
@@ -15,7 +17,12 @@ link_directories(${PROJECT_SOURCE_DIR}/dependencies/glfw3/build/Debug)
 
 add_executable(ink)
 add_subdirectory(src)
-add_subdirectory(example)
+if (BUILD_DEMO MATCHES "TRUE")
+  add_subdirectory(example)
+elseif (BUILD_DEMO MATCHES "FALSE")
+  add_subdirectory(client)
+endif()
+
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   #target_link_libraries(ink Ink)
