@@ -30,28 +30,30 @@ Button::Button(const char* filepath, glm::vec2 size, glm::vec2 position, Callbac
   Load(filepath);
 }
 
+// TODO - testing code, needs cleaned up. 
 void Button::Update(std::time_t delta_t) {
   elapsed_time_ += delta_t; 
-  if (elapsed_time_ > 1500){
+  if (elapsed_time_ > 15000){
     if (input_delegate_ptr_){
       if (input_delegate_ptr_->GetKey(65)) {
         LOG("BUTTON PRESSED\n");
-        LOG("resetting timer\n");
         elapsed_time_ = 0;
         if(audio()){
-          audio()->PlaySound();
+          //audio()->PlaySound();
         }
       }
     }
   }
 
+  this->set_position(this->position(), this->rotation()+0.01*delta_t);
+ 
   if (input_delegate_ptr_->GetMouseClick()) {
 		int x = std::abs(input_delegate_ptr_->GetMousePosition().x - this->position().x);
 		int y = std::abs(input_delegate_ptr_->GetMousePosition().y - this->position().y);
 
 		if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y ))
 		{
-      if(audio()){
+      if(audio()) {
         LOG("Button clicked\n");
         audio()->PlaySound();
       }
