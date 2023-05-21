@@ -2,6 +2,7 @@
 #include "glm.hpp"
 #include <string>
 #include <chrono>
+#include <vector>
 #include <functional>
 
 class ObjectInterface;
@@ -60,6 +61,15 @@ class RenderDelegate {
   virtual void Load(const char* filepath) = 0;// {}
 };
 
+class Invisible : public RenderDelegate {
+ public:
+  virtual void Draw() {}
+  virtual ObjectInterface* context() { return nullptr;}
+  virtual Renderer* renderer() {return nullptr;}  
+  virtual void Load() {}
+  virtual void Load(const char* filepath) {}
+};
+
 class AudioDelegate {
  public:
   virtual void PlaySound() = 0;
@@ -109,6 +119,7 @@ class Object : public ObjectInterface {
   virtual void PlaySound();
   virtual void LoadSound(const char*);
   virtual void Load(const char*) override;
+  virtual void PushNode(Object* obj); 
 
  public:
   virtual glm::vec2 position() override;
@@ -127,12 +138,15 @@ class Object : public ObjectInterface {
   RenderDelegate* render_delegate() override;
   UpdateDelegate* update_delegate() override;
   AudioDelegate* audio();
- 
+  void set_root(Object* root) {root_ = root;}
+
  private:
   ObjectData object_;
   UpdateDelegate* updateDelegate_ptr_;
   RenderDelegate* renderDelegate_ptr_;
   AudioDelegate* audio_;
+  Object* root_;
+  std::vector<Object*> nodes_;
 };
 
 
