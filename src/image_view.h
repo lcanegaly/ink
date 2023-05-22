@@ -45,6 +45,7 @@ class ImageView : public Object {
   void DrawLine(Vec2 start_point,Vec2 end_point);
   void Draw() override;
   void setBrush(Brush brush); 
+  void Clear();
 
  private:
   Vec2 size_;

@@ -27,6 +27,18 @@ void ImageView::setBrush(Brush brush){
   brush_ = brush;
 } 
 
+void ImageView::Clear(){
+  const int width = image_->width();
+  const int height = image_->height();
+  unsigned char* buffer = (unsigned char*)image_->data(); 
+
+  for (int x = 0; x < width; x++){
+    for (int y = 0; y < height; y++){
+      SetPixel(buffer, width, height, x, y, 0, 0, 0); 
+    }
+  }
+}
+
 void ImageView::Point(int diameter, Vec2 pos){
   const int width = image_->width();
   const int height = image_->height();

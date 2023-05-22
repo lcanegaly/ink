@@ -33,40 +33,38 @@ Button::Button(const char* filepath, glm::vec2 size, glm::vec2 position, Callbac
 // TODO - testing code, needs cleaned up. 
 void Button::Update(std::time_t delta_t) {
   elapsed_time_ += delta_t; 
-  if (elapsed_time_ > 15000){
+  if (elapsed_time_ > 500){
     if (input_delegate_ptr_){
       if (input_delegate_ptr_->GetKey(65)) {
         LOG("BUTTON PRESSED\n");
-        elapsed_time_ = 0;
         if(audio()){
           //audio()->PlaySound();
         }
       }
     }
-  }
-
-  this->set_position(this->position(), this->rotation()+0.01*delta_t);
  
-  if (input_delegate_ptr_->GetMouseClick()) {
-		int x = std::abs(input_delegate_ptr_->GetMousePosition().x - this->position().x);
-		int y = std::abs(input_delegate_ptr_->GetMousePosition().y - this->position().y);
+    if (input_delegate_ptr_->GetMouseClick()) {
+		  int x = std::abs(input_delegate_ptr_->GetMousePosition().x - this->position().x);
+		  int y = std::abs(input_delegate_ptr_->GetMousePosition().y - this->position().y);
 
-		if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y ))
-		{
-      if(audio()) {
-        LOG("Button clicked\n");
-        audio()->PlaySound();
-      }
+      elapsed_time_ = 0;
+		  if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y ))
+		  {
+        if(audio()) {
+          LOG("Button clicked\n");
+          //audio()->PlaySound();
+        }
       
-      if (execute != nullptr){
-        execute();
-      } 
-      input_delegate_ptr_->Reset();
-      if (callback_) {
-        callback_->Call();
-      } 
-    }
-	}
+        if (execute != nullptr){
+          execute();
+        } 
+        input_delegate_ptr_->Reset();
+        if (callback_) {
+          callback_->Call();
+        } 
+      }
+  	}
+  }
 }
 
 

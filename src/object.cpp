@@ -47,6 +47,12 @@ void Object::PushNode(Object* obj) {
   obj->set_root(this);
 }
 
+// TODO - rewrite to handle empty node lists and no matches
+Object& Object::Node(std::string name) {
+  for (auto &x : nodes_)
+    if (x->name() == name) return *x;
+}
+
 std::string Object::name() {
   return object_.name;
 }

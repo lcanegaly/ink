@@ -120,6 +120,7 @@ class Object : public ObjectInterface {
   virtual void LoadSound(const char*);
   virtual void Load(const char*) override;
   virtual void PushNode(Object* obj); 
+  virtual Object& Node( std::string name);
 
  public:
   virtual glm::vec2 position() override;
