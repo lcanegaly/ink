@@ -15,10 +15,11 @@ class Button : public Object {//, public ImageInterface {
   void Update(std::time_t delta_t) override;
   void RegisterCallback(Callback_T* callback);
   void SetExecute(std::function<void()> func);
+  bool active(); 
  private:
   InputDelegate* input_delegate_ptr_;
   Callback_T* callback_;
-  bool clicked_; 
+  bool clicked_ = false; 
   std::function<void()> execute; 
 };
 

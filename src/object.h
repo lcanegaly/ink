@@ -115,6 +115,7 @@ class Object : public ObjectInterface {
  
  public:
   virtual void Update(std::time_t delta_t) override;
+  virtual void OnUserUpdate(std::time_t delta_t) {}
   virtual void Draw() override;
   virtual void PlaySound();
   virtual void LoadSound(const char*);
@@ -140,6 +141,7 @@ class Object : public ObjectInterface {
   UpdateDelegate* update_delegate() override;
   AudioDelegate* audio();
   void set_root(Object* root) {root_ = root;}
+  Object* root() { return root_; }
 
  private:
   ObjectData object_;

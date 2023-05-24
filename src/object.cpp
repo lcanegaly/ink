@@ -57,6 +57,7 @@ std::string Object::name() {
   return object_.name;
 }
 void Object::Update(std::time_t delta_t) {
+  OnUserUpdate(delta_t); 
   updateDelegate_ptr_->Update(delta_t);
   for (auto x : nodes_)
     x->Update(delta_t);
