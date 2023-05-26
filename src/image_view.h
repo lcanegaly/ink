@@ -9,6 +9,10 @@
 void SetPixel(unsigned char* pixel_buffer, int buffer_width, 
               int buffer_height, int x, int y, uint8_t r, uint8_t g, uint8_t b);
 
+void SetPixel(unsigned char* pixel_buffer, int buffer_width, 
+              int buffer_height, int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+
 void LineVector(unsigned char* buffer, int width, 
                 int height, int x1, int y1, int vx, int vy, int magnitude);
 void LineSegment(unsigned char* buffer, int width, int height, 
@@ -50,6 +54,7 @@ class ImageView : public Object {
  private:
   Vec2 size_;
   Vec2 position_;
-  Targa::TgaImage* image_; 
+  //Targa::TgaImage* image_;
+  char* buffer_;
   Brush brush_; 
 };
