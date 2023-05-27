@@ -7,16 +7,19 @@
 #include "targa/targa.h"
 
 ImageView::ImageView(Vec2 size, Vec2 position) 
-  : Object(new NoUpdate(), new DrawTexture(this)), size_{size}, position_{position}, image_{nullptr}
+  : Object(new NoUpdate(), new DrawTexture(this)), size_{size}, position_{position}
 {
   set_position(glm::vec2{position_.x, position_.y}, 0);
   set_size(glm::vec2{size_.x, size_.y});
-  
-  image_ = new Targa::TgaImage("");
-  DrawTexture* renderer_ptr = (DrawTexture*)render_delegate();
-  if (renderer_ptr){
-    renderer_ptr->Load(image_);
-  }
+
+  const int color_channels = 4;
+  buffer_ = PixelBuffer{
+    new unsigned char [size_.x * size_.y * color_channels],
+    size_.x,
+    size_.y,
+    color_channels 
+  };
+  render_delegate()->Load(buffer_);
 }
 
 void ImageView::Draw(){
@@ -28,36 +31,36 @@ void ImageView::setBrush(Brush brush){
 } 
 
 void ImageView::Clear(){
-  const int width = image_->width();
-  const int height = image_->height();
-  unsigned char* buffer = (unsigned char*)image_->data(); 
+  const int width = buffer_.width;
+  const int height = buffer_.height;
+  unsigned char* buffer = (unsigned char*)buffer_.data; 
 
   for (int x = 0; x < width; x++){
     for (int y = 0; y < height; y++){
-      SetPixel(buffer, width, height, x, y, 0, 0, 0); 
+      SetPixel(buffer, width, height, x, y, 0, 0, 0, 0); 
     }
   }
 }
 
 void ImageView::Point(int diameter, Vec2 pos){
-  const int width = image_->width();
-  const int height = image_->height();
-  unsigned char* buffer = (unsigned char*)image_->data(); 
+  const int width = buffer_.width;
+  const int height = buffer_.height;
+  unsigned char* buffer = (unsigned char*)buffer_.data; 
   //test each pixel to see if it is in a radius.v
   for (int x = 0; x < width; x++){
     for (int y = 0; y < height; y++){
       Vec2 distance = pos - Vec2{x,y};
       if (std::sqrt(distance.x * distance.x + distance.y * distance.y) < diameter){ 
-        SetPixel(buffer, width, height, x, y, 0, 255, 0); 
+        SetPixel(buffer, width, height, x, y, 0, 255, 0, 255); 
       }
     }
   }
 }
 
 void ImageView::DrawLine(Vec2 start_point,Vec2 end_point) {
-  const int width = image_->width();
-  const int height = image_->height();
-  unsigned char* buffer = (unsigned char*)image_->data(); 
+  const int width = buffer_.width;
+  const int height = buffer_.height;
+  unsigned char* buffer = (unsigned char*)buffer_.data; 
   LineSegment(buffer, width, height, start_point.x, start_point.y, 
        end_point.x, end_point.y, brush_.stroke().thickness);
 }
@@ -83,7 +86,7 @@ void LineVector(unsigned char* buffer, int width, int height, int x1, int y1, in
       err += dx;
       y1 += sy;
     }
-    SetPixel(buffer, width, height, x1, y1, 0,255,0);
+    SetPixel(buffer, width, height, x1, y1, 0, 255, 0, 255);
     int tx = x1 - startx;
     int ty = y1 - starty;
     if (sqrt(ty * ty + tx * tx) > magnitude) break;
@@ -98,7 +101,7 @@ void LineSegment(unsigned char* buffer, int width, int height, int x1, int y1, i
   int sy = (y1 < y2) ? 1 : -1;
   int err = dx - dy;
   
-  SetPixel(buffer, width, height, x1, y1, 0,255,0);
+  SetPixel(buffer, width, height, x1, y1, 0,255,0, 255);
   while (x1 != x2 || y1 != y2) {
     int err2 = 2 * err;
     if (err2 > -dy) {
@@ -110,16 +113,29 @@ void LineSegment(unsigned char* buffer, int width, int height, int x1, int y1, i
       y1 += sy;
     }
     LineVector(buffer,width,height, x1, y1, normal.x, normal.y, thickness);
-    SetPixel(buffer, width, height, x1, y1, 0,255,0);
+    SetPixel(buffer, width, height, x1, y1, 0, 255, 0, 255);
   }
 }
 
-void SetPixel(unsigned char* pixel_buffer, int buffer_width, int buffer_height, int x, int y, uint8_t r, uint8_t g, uint8_t b) {
-    if (x >= 0 && x < buffer_width && y >= 0 && y < buffer_height) {
-        pixel_buffer[y * 3 * buffer_width + x * 3] = r;
-        pixel_buffer[y * 3 * buffer_width + x * 3+1] = g;
-        pixel_buffer[y * 3 * buffer_width + x * 3+2] = b;
-    }
+void SetPixel(unsigned char* pixel_buffer, int buffer_width, int buffer_height, 
+              int x, int y, uint8_t r, uint8_t g, uint8_t b) {
+  const int color_channels = 3; 
+  if (x >= 0 && x < buffer_width && y >= 0 && y < buffer_height) {
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels] = r;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 1] = g;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 2] = b;
+  }
+}
+
+void SetPixel(unsigned char* pixel_buffer, int buffer_width, int buffer_height, 
+              int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+  const int color_channels = 4; 
+  if (x >= 0 && x < buffer_width && y >= 0 && y < buffer_height) {
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels] = r;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 1] = g;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 2] = b;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 3] = a;
+  }
 }
 
 Vec2 NormalOfLine(int x1, int y1, int x2, int y2){

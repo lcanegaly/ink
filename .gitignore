@@ -45,7 +45,7 @@ Makefile
 # Directories
 CMakeFiles/
 resources/
-dependencies/
+dependencies/glew/
 Include/
 client/
 testapp/
