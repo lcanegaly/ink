@@ -5,6 +5,8 @@
 #include <vector>
 #include <functional>
 
+#include "targa/targa.h"
+
 class ObjectInterface;
 class Renderer;
 
@@ -59,6 +61,7 @@ class RenderDelegate {
   virtual Renderer* renderer() = 0; // {return renderer_ptr_;}  
   virtual void Load() = 0;// {}
   virtual void Load(const char* filepath) = 0;// {}
+  virtual void Load(PixelBuffer buffer) {} 
 };
 
 class Invisible : public RenderDelegate {

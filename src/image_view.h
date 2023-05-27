@@ -55,6 +55,6 @@ class ImageView : public Object {
   Vec2 size_;
   Vec2 position_;
   //Targa::TgaImage* image_;
-  char* buffer_;
+  PixelBuffer buffer_;
   Brush brush_; 
 };

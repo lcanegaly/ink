@@ -7,14 +7,18 @@
 #include "targa/targa.h"
 
 ImageView::ImageView(Vec2 size, Vec2 position) 
-  : Object(new NoUpdate(), new DrawTexture(this)), size_{size}, position_{position}, image_{nullptr}
+  : Object(new NoUpdate(), new DrawTexture(this)), size_{size}, position_{position}
 {
   set_position(glm::vec2{position_.x, position_.y}, 0);
   set_size(glm::vec2{size_.x, size_.y});
- 
+
   const int color_channels = 4;
-  //image_ = new Targa::TgaImage("");
-  buffer_ = new char[size_.x * size_.y * color_channels]; 
+  buffer_ = PixelBuffer{
+    new unsigned char [size_.x * size_.y * color_channels],
+    size_.x,
+    size_.y,
+    color_channels 
+  };
   render_delegate()->Load(buffer_);
 }
 
@@ -27,9 +31,9 @@ void ImageView::setBrush(Brush brush){
 } 
 
 void ImageView::Clear(){
-  const int width = image_->width();
-  const int height = image_->height();
-  unsigned char* buffer = (unsigned char*)image_->data(); 
+  const int width = buffer_.width;
+  const int height = buffer_.height;
+  unsigned char* buffer = (unsigned char*)buffer_.data; 
 
   for (int x = 0; x < width; x++){
     for (int y = 0; y < height; y++){
@@ -39,9 +43,9 @@ void ImageView::Clear(){
 }
 
 void ImageView::Point(int diameter, Vec2 pos){
-  const int width = image_->width();
-  const int height = image_->height();
-  unsigned char* buffer = (unsigned char*)image_->data(); 
+  const int width = buffer_.width;
+  const int height = buffer_.height;
+  unsigned char* buffer = (unsigned char*)buffer_.data; 
   //test each pixel to see if it is in a radius.v
   for (int x = 0; x < width; x++){
     for (int y = 0; y < height; y++){
@@ -54,9 +58,9 @@ void ImageView::Point(int diameter, Vec2 pos){
 }
 
 void ImageView::DrawLine(Vec2 start_point,Vec2 end_point) {
-  const int width = image_->width();
-  const int height = image_->height();
-  unsigned char* buffer = (unsigned char*)image_->data(); 
+  const int width = buffer_.width;
+  const int height = buffer_.height;
+  unsigned char* buffer = (unsigned char*)buffer_.data; 
   LineSegment(buffer, width, height, start_point.x, start_point.y, 
        end_point.x, end_point.y, brush_.stroke().thickness);
 }
