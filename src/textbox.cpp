@@ -1,21 +1,24 @@
 #include <chrono>
 
+#include "targa/targa.h"
 #include "textbox.h"
+#include "label.h"
 
 DrawText::DrawText(ObjectInterface* object, ImageData& image_data, Font& font):
   data_{image_data}, context_{object}, font_{font}, cursorPosition_{0} 
 {}
 
 void DrawText::Draw(){
-  //printf("In Text draw \n");
-  //TODO - should pull color depth
-  renderer_->LoadTexture((unsigned char*)spriteSheet_->data(), data_.bind_num, spriteSheet_->width(), spriteSheet_->height(), 3); 
+  Renderer::Get().LoadTexture((unsigned char*)spriteSheet_.data, 
+      1, spriteSheet_.width, spriteSheet_.height, 4); 
+  std::string text = ((Label*)context_)->GetText();
+  DrawString(text);
 }
 
-void DrawText::DrawString(std::string& text){
+void DrawText::DrawString(const std::string& text){
   for (auto& x : text) {
     if(SetChar(cursorPosition_, x)){
-      renderer_->Draw(data_);
+      Renderer::Get().Draw(data_);
       cursorPosition_++;
     }
   }
@@ -44,8 +47,8 @@ Renderer* DrawText::renderer(){
 void DrawText::Load(){}
 
 void DrawText::Load(const char* filepath){
-  spriteSheet_ = new Targa::TgaImage(filepath);
-  data_.tex = (unsigned char*)spriteSheet_->data();
+  spriteSheet_ = Targa::LoadTga(filepath);
+  data_.tex = (unsigned char *)spriteSheet_.data;
 }
 
 Vec2 DrawText::Lookup(char character){
@@ -134,6 +137,7 @@ void TextBox::SetupFont(){
 void TextBox::Update(std::time_t delta_t) {
   //TODO - dynamic cast this.
   ((DrawText*)render_delegate())->DrawString(text_);
+  std::cout << "DrawString \n";
 }
 
 void TextBox::SetText(const std::string text) {

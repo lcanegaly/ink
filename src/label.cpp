@@ -1,6 +1,6 @@
 #include "label.h"
 #include "object.h"
-
+#include <iostream>
 
 Label::Label(const char* filepath, int size, int X, int Y):
     Object(new NoUpdate(), new DrawText(this, character_, font_)),text_{0},
@@ -9,8 +9,9 @@ Label::Label(const char* filepath, int size, int X, int Y):
     set_position(glm::vec2(X,Y), 0);
     set_size(glm::vec2(size,size));
     Load(filepath);
+    //font_.filepath = filepath; 
     SetupFont();
-    character_.bind_num = 2;
+    character_.bind_num = 1;
     character_.texture_columns = font_.columns;
     character_.texture_rows = font_.rows;
     character_.pos_x = X;
@@ -23,7 +24,7 @@ Label::Label(const char* filepath, int size, int X, int Y):
 }
 
 void Label::SetupFont(){
-    font_.filepath = "font1.tga";
+    font_.filepath = "../client/assets/font1_t.tga";
     font_.columns = 16;
     font_.rows = 8;
     font_.characterMap['a'] = Vec2{7,0};
@@ -82,14 +83,14 @@ void Label::Update(std::time_t delta_t) {
   character_.width = size().x;
   character_.height = size().y;
   //TODO - dynamic cast this.
-  ((DrawText*)render_delegate())->DrawString(text_);
-  if(update_delegate() && tick_ < 1){
-    update_delegate()->Update(delta_t);
-    tick_ = ticks_per_update_;
-  }
-  tick_--;
+  
+  //if(update_delegate() && tick_ < 1){
+  //  update_delegate()->Update(delta_t);
+  //  tick_ = ticks_per_update_;
+  //}
+  //tick_--;
 }
 
-void Label::SetText(const std::string text) {
+void Label::SetText(const std::string& text) {
   text_ = text;
 }

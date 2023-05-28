@@ -12,8 +12,9 @@ class Label : public Object {
   Label(const char* filepath, int size, int X, int Y);
   void SetupFont();
   void Update(std::time_t delta_t) override; 
-  void SetText(const std::string text);
+  void SetText(const std::string& text);
   void SetUpdateFrequency(int ticks_per_update) {ticks_per_update_ = ticks_per_update;}
+  const std::string& GetText(){return text_;}
 private:
   //TODO - base class should have input delegate pointer.  
   std::string text_; 

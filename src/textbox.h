@@ -7,6 +7,7 @@
 #include <string>
 #include <chrono>
 #include "glm.hpp"
+#include "targa/targa.h"
 
 
 //TODO should be a seperate file/class
@@ -21,7 +22,7 @@ class DrawText : public RenderDelegate {
  public:
   DrawText(ObjectInterface* object, ImageData& image_data, Font& font);
   virtual void Draw();
-  virtual void DrawString(std::string& text);
+  virtual void DrawString(const std::string& text);
   virtual int SetChar(int position, char character);
   virtual ObjectInterface* context();
   virtual Renderer* renderer(); 
@@ -31,7 +32,7 @@ class DrawText : public RenderDelegate {
  private:
   ImageData& data_;
   Font& font_;
-  Targa::Image* spriteSheet_;
+  PixelBuffer spriteSheet_;
   ObjectInterface* context_;
   Renderer* renderer_;
   int cursorPosition_;
