@@ -47,6 +47,20 @@ void Object::PushNode(Object* obj) {
   obj->set_root(this);
 }
 
+void Object::PopNode( std::string name) {
+  int del = -1; 
+  Object* to_delete = nullptr; 
+  for (int i = 0; i < nodes_.size(); i++) {
+    if (nodes_[i]->name() == name)
+      del = i;
+  }  
+  if (del > -1){
+    to_delete = nodes_[del]; 
+    nodes_.erase(nodes_.begin() + del);
+    delete to_delete; 
+  }
+}
+
 // TODO - rewrite to handle empty node lists and no matches
 Object& Object::Node(std::string name) {
   for (auto &x : nodes_)

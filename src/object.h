@@ -125,6 +125,7 @@ class Object : public ObjectInterface {
   virtual void Load(const char*) override;
   virtual void PushNode(Object* obj); 
   virtual Object& Node( std::string name);
+  virtual void PopNode( std::string name);
 
  public:
   virtual glm::vec2 position() override;
