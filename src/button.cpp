@@ -13,7 +13,7 @@ Button::Button(const char* filepath):
 }
 
 Button::Button(const char* filepath, int width, int height, int X, int Y): 
-  Object(new ButtonUpdate, new DrawTexture(this), new SoundEffect("click.wav")), input_delegate_ptr_{new GLFWInput()}, 
+  Object(new ButtonUpdate, new DrawTexture(this), new Silent()), input_delegate_ptr_{new GLFWInput()}, 
   callback_{nullptr} 
 {
   set_size(glm::vec2(width, height));
@@ -38,13 +38,12 @@ bool Button::active() {
   return false;
 }
 
-// TODO - testing code, needs cleaned up. 
+// TODO - Fix this nexted if statement mess.. 
 void Button::Update(std::time_t delta_t) {
   elapsed_time_ += delta_t; 
   if (elapsed_time_ > 500){
     if (input_delegate_ptr_){
       if (input_delegate_ptr_->GetKey(65)) {
-        LOG("BUTTON PRESSED\n");
         if(audio()){
           //audio()->PlaySound();
         }
@@ -56,14 +55,11 @@ void Button::Update(std::time_t delta_t) {
 		  int y = std::abs(input_delegate_ptr_->GetMousePosition().y - this->position().y);
 
       elapsed_time_ = 0;
-		  if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y ))
-		  {
+		  if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y )) {
         clicked_ = true;
         if(audio()) {
-          LOG("Button clicked\n");
           //audio()->PlaySound();
         }
-      
         if (execute != nullptr){
           execute();
         } 
@@ -75,7 +71,6 @@ void Button::Update(std::time_t delta_t) {
   	}
   }
 }
-
 
 void Button::SetExecute(std::function<void()> f){
   execute = f;
