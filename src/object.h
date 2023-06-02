@@ -1,5 +1,6 @@
 #pragma once
 #include "glm.hpp"
+#include <memory>
 #include <string>
 #include <chrono>
 #include <vector>
@@ -16,8 +17,8 @@ class UpdateDelegate {
   //virtual void Update(int position_x, int position_y) = 0; // {}
   //virtual void Update(int position_x, int position_y, float rotation_r) = 0; // {}
   virtual ObjectInterface* context() = 0;// {return object_ptr_;}
- protected:
-  ~UpdateDelegate(){}
+ //protected:
+  //~UpdateDelegate(){}
 };
 
 class NoUpdate : public UpdateDelegate{
@@ -77,8 +78,8 @@ class AudioDelegate {
  public:
   virtual void PlaySound() = 0;
   virtual void LoadSound(const char*) = 0;
- protected:
-  ~AudioDelegate(){}
+// protected:
+ // ~AudioDelegate(){}
 };
 
 struct ObjectData {
@@ -106,8 +107,8 @@ class ObjectInterface : public AudioDelegate {
   virtual void set_position(glm::vec2 position, float rotation) = 0;
   virtual void set_size(glm::vec2 size) = 0;
 protected:
-  virtual RenderDelegate* render_delegate() = 0;
-  virtual UpdateDelegate* update_delegate() = 0;
+  virtual RenderDelegate& render_delegate() = 0;
+  virtual UpdateDelegate& update_delegate() = 0;
 };
 
 class Object : public ObjectInterface {
@@ -141,17 +142,17 @@ class Object : public ObjectInterface {
 
  protected:
   time_t elapsed_time_;
-  RenderDelegate* render_delegate() override;
-  UpdateDelegate* update_delegate() override;
-  AudioDelegate* audio();
+  RenderDelegate& render_delegate() override;
+  UpdateDelegate& update_delegate() override;
+  AudioDelegate& audio();
   void set_root(Object* root) {root_ = root;}
   Object* root() { return root_; }
 
  private:
   ObjectData object_;
-  UpdateDelegate* updateDelegate_ptr_;
-  RenderDelegate* renderDelegate_ptr_;
-  AudioDelegate* audio_;
+  std::unique_ptr<UpdateDelegate> update_delegate_; 
+  std::unique_ptr<RenderDelegate> render_delegate_;
+  std::unique_ptr<AudioDelegate> audio_delegate_;
   Object* root_;
   std::vector<Object*> nodes_;
 };

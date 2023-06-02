@@ -44,9 +44,6 @@ void Button::Update(std::time_t delta_t) {
   if (elapsed_time_ > 500){
     if (input_delegate_ptr_){
       if (input_delegate_ptr_->GetKey(65)) {
-        if(audio()){
-          //audio()->PlaySound();
-        }
       }
     }
  
@@ -57,9 +54,6 @@ void Button::Update(std::time_t delta_t) {
       elapsed_time_ = 0;
 		  if ( (x <= 0.5 * this->size().x) && ( y <= 0.5 * this->size().y )) {
         clicked_ = true;
-        if(audio()) {
-          //audio()->PlaySound();
-        }
         if (execute != nullptr){
           execute();
         } 

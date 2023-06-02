@@ -1,17 +1,18 @@
 #include <chrono>
+#include <memory>
 
 #include "object.h"
 #include "log.h"
 
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate): 
-  elapsed_time_{0}, updateDelegate_ptr_{update_delegate}, renderDelegate_ptr_{render_delegate} 
+  elapsed_time_{0}, update_delegate_{update_delegate}, render_delegate_{render_delegate} 
 {
-  audio_ = nullptr;
+  audio_delegate_ = nullptr;
 }
 
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate,
-         AudioDelegate* audio_delegate) : elapsed_time_{0}, updateDelegate_ptr_{update_delegate}, 
-  renderDelegate_ptr_{render_delegate}, audio_{audio_delegate}, root_{nullptr}{
+         AudioDelegate* audio_delegate) : elapsed_time_{0}, update_delegate_{update_delegate}, 
+  render_delegate_{render_delegate}, audio_delegate_{audio_delegate}, root_{nullptr}{
 } 
 
 glm::vec2 Object::position(){
@@ -27,19 +28,19 @@ float Object::rotation() {
 }
 
 void Object::PlaySound(){
-  if (!audio_){
+  if (!audio_delegate_){
     LOG("ERROR - NO AUDIO DELEGATE\n");
     return; 
   }
-  audio_->PlaySound();
+  audio_delegate_->PlaySound();
 } 
 
 void Object::LoadSound(const char* filename){
-  audio_->LoadSound(filename); 
+  audio_delegate_->LoadSound(filename); 
 } 
 
 void Object::Load(const char * filepath){
-  renderDelegate_ptr_->Load(filepath);
+  render_delegate_->Load(filepath);
 }
 
 void Object::PushNode(Object* obj) { 
@@ -72,7 +73,7 @@ std::string Object::name() {
 }
 void Object::Update(std::time_t delta_t) {
   OnUserUpdate(delta_t); 
-  updateDelegate_ptr_->Update(delta_t);
+  update_delegate_->Update(delta_t);
   for (auto x : nodes_)
     x->Update(delta_t);
 }
@@ -82,13 +83,13 @@ void Object::set_name(std::string name) {
 }
 
 void Object::Draw() {
-  renderDelegate_ptr_->Draw();
+  render_delegate_->Draw();
   for (auto x : nodes_)
     x->Draw();
 }
 
 //set_position and update all nodes
-void Object::set_position(glm::vec2 position, float rotation){
+void Object::set_position(glm::vec2 position, float rotation) {
   int dX = position.x - object_.positionX; 
   int dY = position.y - object_.positionY; 
   int dA = rotation - object_.rotation; 
@@ -97,30 +98,30 @@ void Object::set_position(glm::vec2 position, float rotation){
   object_.positionY = position.y; 
   object_.rotation = rotation;
 
-  for (auto x : nodes_){
+  for (auto x : nodes_) {
     x->set_position(glm::vec2{x->position().x + dX, 
                               x->position().y + dY}, 
                     x->rotation() + dA); 
   }
 }
 
-void Object::set_size(glm::vec2 size){
+void Object::set_size(glm::vec2 size) {
   object_.sizeX = size.x;
   object_.sizeY = size.y;
 }
 
-void Object::set_updateDelegate(UpdateDelegate* updateDelegate){
-  updateDelegate_ptr_ = updateDelegate;
+void Object::set_updateDelegate(UpdateDelegate* updateDelegate) {
+  update_delegate_.reset(updateDelegate);
 }
 
-RenderDelegate* Object::render_delegate() {
-  return renderDelegate_ptr_;
+RenderDelegate& Object::render_delegate() {
+  return *render_delegate_;
 }
 
-UpdateDelegate* Object::update_delegate() {
-  return updateDelegate_ptr_;
+UpdateDelegate& Object::update_delegate() {
+  return *update_delegate_;
 }
 
-AudioDelegate* Object::audio(){
-  return audio_;
+AudioDelegate& Object::audio() {
+  return *audio_delegate_;
 }

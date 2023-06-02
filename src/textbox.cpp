@@ -136,7 +136,7 @@ void TextBox::SetupFont(){
 
 void TextBox::Update(std::time_t delta_t) {
   //TODO - dynamic cast this.
-  ((DrawText*)render_delegate())->DrawString(text_);
+  ((DrawText&)render_delegate()).DrawString(text_);
   std::cout << "DrawString \n";
 }
 

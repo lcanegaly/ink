@@ -19,11 +19,11 @@ ImageView::ImageView(Vec2 size, Vec2 position)
     size_.y,
     color_channels 
   };
-  render_delegate()->Load(buffer_);
+  render_delegate().Load(buffer_);
 }
 
 void ImageView::Draw(){
-  render_delegate()->Draw();
+  render_delegate().Draw();
 } 
 
 void ImageView::setBrush(Brush brush){

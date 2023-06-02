@@ -28,7 +28,7 @@ Image::Image(const char* filepath, int width, int height, int X, int Y):
 void Image::Draw(int width, int height, int X, int Y) {
   set_size(glm::vec2(width, height));
   set_position(glm::vec2(X,Y), 0);
-  render_delegate()->Draw();
+  render_delegate().Draw();
 }
 
 
