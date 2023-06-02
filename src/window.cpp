@@ -31,9 +31,9 @@ GLFWContext::GLFWContext(int width, int height, const char* title) {
   glViewport(0, 0, w, h);
 }
   
-GLFWwindow* GLFWContext::context() {
+GLFWwindow& GLFWContext::context() {
   if (!window_){printf("window_ ptr not set \n");}
-  return window_;
+  return *window_;
 }
 
 void GLFWContext::Destroy() {

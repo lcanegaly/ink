@@ -58,8 +58,8 @@ private:
 class RenderDelegate {
  public:
   virtual void Draw() = 0;// {}
-  virtual ObjectInterface* context() = 0; //{return object_ptr_;}
-  virtual Renderer* renderer() = 0; // {return renderer_ptr_;}  
+  //virtual ObjectInterface* context() = 0; //{return object_ptr_;}
+  //virtual Renderer* renderer(){} // {return renderer_ptr_;}  
   virtual void Load() = 0;// {}
   virtual void Load(const char* filepath) = 0;// {}
   virtual void Load(PixelBuffer buffer) {} 
@@ -69,7 +69,7 @@ class Invisible : public RenderDelegate {
  public:
   virtual void Draw() {}
   virtual ObjectInterface* context() { return nullptr;}
-  virtual Renderer* renderer() {return nullptr;}  
+  //virtual Renderer* renderer() {return nullptr;}  
   virtual void Load() {}
   virtual void Load(const char* filepath) {}
 };
@@ -146,7 +146,7 @@ class Object : public ObjectInterface {
   UpdateDelegate& update_delegate() override;
   AudioDelegate& audio();
   void set_root(Object* root) {root_ = root;}
-  Object* root() { return root_; }
+  Object& root() { return *root_; }
 
  private:
   ObjectData object_;
@@ -154,7 +154,7 @@ class Object : public ObjectInterface {
   std::unique_ptr<RenderDelegate> render_delegate_;
   std::unique_ptr<AudioDelegate> audio_delegate_;
   Object* root_;
-  std::vector<Object*> nodes_;
+  std::vector<std::unique_ptr<Object>> nodes_;
 };
 
 

@@ -44,21 +44,21 @@ void Object::Load(const char * filepath){
 }
 
 void Object::PushNode(Object* obj) { 
-  nodes_.push_back(obj);
+  nodes_.emplace_back(obj);
   obj->set_root(this);
 }
 
 void Object::PopNode( std::string name) {
   int del = -1; 
-  Object* to_delete = nullptr; 
+  //Object* to_delete = nullptr; 
   for (int i = 0; i < nodes_.size(); i++) {
     if (nodes_[i]->name() == name)
       del = i;
   }  
   if (del > -1){
-    to_delete = nodes_[del]; 
+    //to_delete = nodes_[del]; 
     nodes_.erase(nodes_.begin() + del);
-    delete to_delete; 
+    //delete to_delete; 
   }
 }
 
@@ -74,7 +74,7 @@ std::string Object::name() {
 void Object::Update(std::time_t delta_t) {
   OnUserUpdate(delta_t); 
   update_delegate_->Update(delta_t);
-  for (auto x : nodes_)
+  for (auto& x : nodes_)
     x->Update(delta_t);
 }
 
@@ -84,7 +84,7 @@ void Object::set_name(std::string name) {
 
 void Object::Draw() {
   render_delegate_->Draw();
-  for (auto x : nodes_)
+  for (auto& x : nodes_)
     x->Draw();
 }
 
@@ -98,7 +98,7 @@ void Object::set_position(glm::vec2 position, float rotation) {
   object_.positionY = position.y; 
   object_.rotation = rotation;
 
-  for (auto x : nodes_) {
+  for (auto& x : nodes_) {
     x->set_position(glm::vec2{x->position().x + dX, 
                               x->position().y + dY}, 
                     x->rotation() + dA); 

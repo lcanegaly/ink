@@ -15,13 +15,13 @@ Renderer::Renderer()
 {};
 
 Renderer::~Renderer() {
-  delete window_ptr_;
+  //delete window_ptr_;
 }
 
 void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 	width_ = width;
 	height_ = height;
-  window_ptr_ = window_ptr;
+  window_ptr_.reset(window_ptr);
 
   GLuint vbo;
   glGenBuffers(1, &vbo);  
@@ -42,7 +42,7 @@ void Renderer::StartDraw() {
 }
 
 void Renderer::EndDraw() {
-  glfwSwapBuffers(window_ptr_->context());
+  glfwSwapBuffers(&window_ptr_->context());
 }
 
 void Renderer::SetClearColor(float r, float g, float b, float a) {

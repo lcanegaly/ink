@@ -30,13 +30,13 @@ class DrawTexture : public RenderDelegate {
     buffer_ = buffer;
   }
   virtual void Draw() override {
-    renderer()->LoadTexture((unsigned char*)buffer_.data, texture_slot_, buffer_.width, 
+    Renderer::Get().LoadTexture((unsigned char*)buffer_.data, texture_slot_, buffer_.width, 
                             buffer_.height, buffer_.color_channels);
-    renderer()->Draw((unsigned char*)buffer_.data, texture_slot_, context_->position().x , context_->position().y,
+    Renderer::Get().Draw((unsigned char*)buffer_.data, texture_slot_, context_->position().x , context_->position().y,
                      context_->size().x, context_->size().y, context_->rotation());
   }
-  virtual ObjectInterface* context() override {return context_;}
-  virtual Renderer* renderer() override {return renderer_;}  
+  //virtual ObjectInterface* context() override {return context_;}
+  //virtual Renderer* renderer() override {return renderer_;}  
   virtual void Load() override {}
   
   ~DrawTexture(){ delete buffer_.data; }
