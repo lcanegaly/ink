@@ -17,7 +17,7 @@ class Button : public Object {//, public ImageInterface {
   void SetExecute(std::function<void()> func);
   bool active(); 
  private:
-  InputDelegate* input_delegate_ptr_;
+  std::unique_ptr<InputDelegate> input_delegate_;
   Callback_T* callback_;
   bool clicked_ = false; 
   std::function<void()> execute; 

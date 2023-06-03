@@ -7,17 +7,14 @@ DrawSprite::DrawSprite(ObjectInterface* object, ImageData& image_data):
 
 void DrawSprite::Draw(){
   //TODO - LoadTexture should pull color depth
-  renderer_->LoadTexture((unsigned char*)spriteSheet_->data(), data_.bind_num, spriteSheet_->width(), spriteSheet_->height(), 3); 
-  renderer_->Draw(data_);
+  Renderer::Get().LoadTexture((unsigned char*)spriteSheet_->data(), data_.bind_num, spriteSheet_->width(), spriteSheet_->height(), 3); 
+  Renderer::Get().Draw(data_);
 }
-
+/*
 ObjectInterface* DrawSprite::context(){
   return context_;
 }
-Renderer* DrawSprite::renderer(){
-  return renderer_;
-}
-
+*/
 void DrawSprite::Load(){}
 
 void DrawSprite::Load(const char* filepath){

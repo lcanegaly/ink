@@ -24,8 +24,8 @@ class DrawText : public RenderDelegate {
   virtual void Draw();
   virtual void DrawString(const std::string& text);
   virtual int SetChar(int position, char character);
-  virtual ObjectInterface* context();
-  virtual Renderer* renderer(); 
+  //virtual ObjectInterface* context();
+  //virtual Renderer* renderer(); 
   virtual void Load();
   virtual void Load(const char* filepath); 
   Vec2 Lookup(char character);
@@ -34,7 +34,6 @@ class DrawText : public RenderDelegate {
   Font& font_;
   PixelBuffer spriteSheet_;
   ObjectInterface* context_;
-  Renderer* renderer_;
   int cursorPosition_;
   int columns_;
   int rows_;

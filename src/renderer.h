@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "GL/glew.h"
 #include "glm.hpp"
 #include <GLFW/glfw3.h>
@@ -47,7 +48,7 @@ private:
 	unsigned int vao_;
 	GLuint program_;
 	GLuint texture_[10];
-	WindowDelegate* window_ptr_;
+  WindowDelegate* window_ptr_;
 };
 
 

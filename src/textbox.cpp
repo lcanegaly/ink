@@ -37,12 +37,11 @@ int DrawText::SetChar(int position, char character){
 //    data_.column = font_.characterMap[character].y;
 }
 
+/*
 ObjectInterface* DrawText::context(){
   return context_;
 }
-Renderer* DrawText::renderer(){
-  return renderer_;
-}
+*/
 
 void DrawText::Load(){}
 
@@ -136,7 +135,7 @@ void TextBox::SetupFont(){
 
 void TextBox::Update(std::time_t delta_t) {
   //TODO - dynamic cast this.
-  ((DrawText*)render_delegate())->DrawString(text_);
+  ((DrawText&)render_delegate()).DrawString(text_);
   std::cout << "DrawString \n";
 }
 

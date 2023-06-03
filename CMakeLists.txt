@@ -38,7 +38,7 @@ endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   set_target_properties(ink PROPERTIES LINK_FLAGS 
-    "-O3 -o test.html -s USE_GLFW=3 --preload-file assets/accumulator.tga \
+    "-O3 -o out.html --shell-file shell_minimal.html -s USE_GLFW=3 --preload-file assets/accumulator.tga \
     --preload-file assets/data.tga --preload-file assets/instruction.tga \
     --preload-file assets/light.tga --preload-file assets/run.tga \
     --preload-file assets/win.tga --preload-file assets/addr.tga \

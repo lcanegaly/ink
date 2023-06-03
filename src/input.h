@@ -4,6 +4,8 @@
 
 #include "glm.hpp"
 #include "log.h"
+#include "window.h"
+#include "GLFW/glfw3.h"
 //#include <emscripten.h>
 //#include <emscripten/html5.h>
 
@@ -51,10 +53,12 @@ class GLFWInput : public InputDelegate {
   std::string GetKeys() override;
   virtual bool GetKey(int key_code) override;
   void Reset()override; 
+  static void SetWindowPointer(GLFWwindow* window); 
  private:
   static std::vector<KeyCallbackDelegate*> callback_;
   static bool init_;
   static InputData input_;
+  static GLFWwindow* window_;
 };
 
 class EmscriptenInput : public InputDelegate {

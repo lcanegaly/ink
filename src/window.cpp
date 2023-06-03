@@ -1,7 +1,8 @@
 #include <iostream>
+#include "input.h"
 #include "window.h"
 
-GLFWwindow* window_handle = nullptr;
+//GLFWwindow* window_handle = nullptr;
 
 //void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
 //}
@@ -22,7 +23,8 @@ GLFWContext::GLFWContext(int width, int height, const char* title) {
   if (!window_){
     glfwTerminate();
   }
-  window_handle = window_; 
+  GLFWInput::SetWindowPointer(window_); 
+  //window_handle = window_; 
   glfwMakeContextCurrent(window_);
   glewInit();
   int w, h;
@@ -31,9 +33,9 @@ GLFWContext::GLFWContext(int width, int height, const char* title) {
   glViewport(0, 0, w, h);
 }
   
-GLFWwindow* GLFWContext::context() {
+GLFWwindow& GLFWContext::context() {
   if (!window_){printf("window_ ptr not set \n");}
-  return window_;
+  return *window_;
 }
 
 void GLFWContext::Destroy() {

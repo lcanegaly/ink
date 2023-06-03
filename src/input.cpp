@@ -2,20 +2,19 @@
 #include <algorithm>
 #include "window.h"
 
-extern GLFWwindow* window_handle;
-
 std::vector<KeyCallbackDelegate*> GLFWInput::callback_;
 bool GLFWInput::init_ = false;
 InputData GLFWInput::input_ {0.0, 0.0, 0,0};
+GLFWwindow* GLFWInput::window_ = nullptr;
 
 glm::vec2 GLFWInput::GetMousePosition(){
   double xpos, ypos;
-  glfwGetCursorPos(window_handle, &xpos, &ypos); 
+  glfwGetCursorPos(GLFWInput::window_, &xpos, &ypos); 
   return glm::vec2{xpos, ypos};
 } 
 
 bool GLFWInput::GetMouseClick() {
-  if(glfwGetMouseButton(window_handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)  
+  if(glfwGetMouseButton(GLFWInput::window_, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)  
     return true;
   return false;
 }
@@ -25,7 +24,7 @@ std::string GLFWInput::GetKeys(){
 }
 
 bool GLFWInput::GetKey(int key_code){
-  int state = glfwGetKey(window_handle, key_code);
+  int state = glfwGetKey(GLFWInput::window_, key_code);
   if (state == GLFW_PRESS){
     return true;
   }
@@ -37,6 +36,11 @@ void GLFWInput::Reset() {
     input_.MouseX = 0;
     input_.LeftClick = 0;
 }
+
+
+void GLFWInput::SetWindowPointer(GLFWwindow* window) {
+  GLFWInput::window_ = window;  
+} 
 
 std::vector<KeyCallbackDelegate*> EmscriptenInput::callback_;
 bool EmscriptenInput::init_ = false;

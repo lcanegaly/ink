@@ -1,7 +1,9 @@
 #pragma once
-#include <vector>
-#include "window.h"
 #include <chrono>
+#include <memory>
+#include <vector>
+
+#include "window.h"
 
 class Object;
 class Renderer;
@@ -14,17 +16,15 @@ class Application {
   void Draw();
   void RegisterObject(Object* object);
   void RegisterObjectList(); 
-  Renderer* renderer_ptr();
   virtual void OnUserUpdate(){}
   bool shouldClose(){return window_->shouldClose();}
   void Close(){window_->Destroy();}
  private:
-  WindowDelegate* window_;
-  Renderer* renderer_ptr_;
-  std::vector<Object*> objects_;
+  std::unique_ptr<WindowDelegate> window_;
+  std::vector<std::unique_ptr<Object>> objects_;
   int width_;
   int height_;
 };
 
 //to be defined by client app
-extern Application* CreateApplication();
+extern std::unique_ptr<Application> CreateApplication();

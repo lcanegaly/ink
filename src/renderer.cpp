@@ -15,7 +15,7 @@ Renderer::Renderer()
 {};
 
 Renderer::~Renderer() {
-  delete window_ptr_;
+  //delete window_ptr_;
 }
 
 void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
@@ -42,7 +42,7 @@ void Renderer::StartDraw() {
 }
 
 void Renderer::EndDraw() {
-  glfwSwapBuffers(window_ptr_->context());
+  glfwSwapBuffers(&window_ptr_->context());
 }
 
 void Renderer::SetClearColor(float r, float g, float b, float a) {
