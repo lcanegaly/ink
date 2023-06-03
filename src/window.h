@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 
-extern GLFWwindow* window_handle;
+//extern GLFWwindow* window_handle;
 
 class WindowDelegate {
  public:

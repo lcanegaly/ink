@@ -21,7 +21,7 @@ Renderer::~Renderer() {
 void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 	width_ = width;
 	height_ = height;
-  window_ptr_.reset(window_ptr);
+  window_ptr_ = window_ptr;
 
   GLuint vbo;
   glGenBuffers(1, &vbo);  

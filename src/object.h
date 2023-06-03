@@ -18,7 +18,7 @@ class UpdateDelegate {
   //virtual void Update(int position_x, int position_y, float rotation_r) = 0; // {}
   virtual ObjectInterface* context() = 0;// {return object_ptr_;}
  //protected:
-  //~UpdateDelegate(){}
+  virtual ~UpdateDelegate(){}
 };
 
 class NoUpdate : public UpdateDelegate{
@@ -26,8 +26,8 @@ class NoUpdate : public UpdateDelegate{
   //virtual void Update(int position_x, int position_y) {}
   //virtual void Update(int position_x, int position_y, float rotation_r) {}
   virtual ObjectInterface* context() {return nullptr;}
- protected:
-  ~NoUpdate(){}
+ //protected:
+  virtual ~NoUpdate(){}
 }; 
 
 class ScriptUpdate : public UpdateDelegate{
@@ -63,6 +63,7 @@ class RenderDelegate {
   virtual void Load() = 0;// {}
   virtual void Load(const char* filepath) = 0;// {}
   virtual void Load(PixelBuffer buffer) {} 
+  virtual ~RenderDelegate(){}
 };
 
 class Invisible : public RenderDelegate {

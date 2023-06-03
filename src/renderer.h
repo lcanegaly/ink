@@ -48,7 +48,7 @@ private:
 	unsigned int vao_;
 	GLuint program_;
 	GLuint texture_[10];
-  std::unique_ptr<WindowDelegate> window_ptr_;
+  WindowDelegate* window_ptr_;
 };
 
 
