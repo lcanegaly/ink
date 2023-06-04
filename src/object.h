@@ -1,5 +1,6 @@
 #pragma once
 #include "glm.hpp"
+
 #include <memory>
 #include <string>
 #include <chrono>
@@ -13,33 +14,24 @@ class Renderer;
 
 class UpdateDelegate {
  public:
-  virtual void Update(std::time_t delta_t) =0; //{}
-  //virtual void Update(int position_x, int position_y) = 0; // {}
-  //virtual void Update(int position_x, int position_y, float rotation_r) = 0; // {}
-  virtual ObjectInterface* context() = 0;// {return object_ptr_;}
- //protected:
+  virtual void Update(std::time_t delta_t) =0; 
+  virtual ObjectInterface* context() = 0;
   virtual ~UpdateDelegate(){}
 };
 
 class NoUpdate : public UpdateDelegate{
   virtual void Update(std::time_t delta_t) {}
-  //virtual void Update(int position_x, int position_y) {}
-  //virtual void Update(int position_x, int position_y, float rotation_r) {}
   virtual ObjectInterface* context() {return nullptr;}
- //protected:
   virtual ~NoUpdate(){}
 }; 
 
 class ScriptUpdate : public UpdateDelegate{
  public:
-  ScriptUpdate(std::function<void()> func):onUpdate_{func}
-  {}
+  ScriptUpdate(std::function<void()> func):onUpdate_{func} {}
   virtual void Update(std::time_t delta_t) {
     if (onUpdate_ != nullptr)
       onUpdate_();
   }
-  //virtual void Update(int position_x, int position_y) {}
-  //virtual void Update(int position_x, int position_y, float rotation_r) {}
   virtual ObjectInterface* context() {return nullptr;}
  private:
   std::function<void()> onUpdate_;
@@ -47,19 +39,16 @@ class ScriptUpdate : public UpdateDelegate{
 
 //TODO - constructor..
 class ButtonUpdate : public UpdateDelegate {
+ public:
   virtual void Update(std::time_t delta_t) {}
-  //virtual void Update(int position_x, int position_y) {}
-  //virtual void Update(int position_x, int position_y, float rotation_r) {}
   virtual ObjectInterface* context() {return object_ptr_;}
-private:
+ private:
   ObjectInterface* object_ptr_;
 };
 
 class RenderDelegate {
  public:
   virtual void Draw() = 0;// {}
-  //virtual ObjectInterface* context() = 0; //{return object_ptr_;}
-  //virtual Renderer* renderer(){} // {return renderer_ptr_;}  
   virtual void Load() = 0;// {}
   virtual void Load(const char* filepath) = 0;// {}
   virtual void Load(PixelBuffer buffer) {} 
@@ -70,7 +59,6 @@ class Invisible : public RenderDelegate {
  public:
   virtual void Draw() {}
   virtual ObjectInterface* context() { return nullptr;}
-  //virtual Renderer* renderer() {return nullptr;}  
   virtual void Load() {}
   virtual void Load(const char* filepath) {}
 };
@@ -79,14 +67,12 @@ class AudioDelegate {
  public:
   virtual void PlaySound() = 0;
   virtual void LoadSound(const char*) = 0;
-// protected:
- // ~AudioDelegate(){}
+  virtual ~AudioDelegate() {}
 };
 
 struct ObjectData {
   ObjectData():name{0}, positionX{0}, positionY{0}, 
-    sizeX{0}, sizeY{0}, rotation{0}
-  {}
+    sizeX{0}, sizeY{0}, rotation{0} {}
   std::string name;
   int positionX, positionY;
   int sizeX;
@@ -107,7 +93,8 @@ class ObjectInterface : public AudioDelegate {
   virtual void set_name(std::string name) = 0;
   virtual void set_position(glm::vec2 position, float rotation) = 0;
   virtual void set_size(glm::vec2 size) = 0;
-protected:
+
+ protected:
   virtual RenderDelegate& render_delegate() = 0;
   virtual UpdateDelegate& update_delegate() = 0;
 };
@@ -122,8 +109,8 @@ class Object : public ObjectInterface {
   virtual void Update(std::time_t delta_t) override;
   virtual void OnUserUpdate(std::time_t delta_t) {}
   virtual void Draw() override;
-  virtual void PlaySound();
-  virtual void LoadSound(const char*);
+  virtual void PlaySound() override;
+  virtual void LoadSound(const char*) override;
   virtual void Load(const char*) override;
   virtual void PushNode(Object* obj); 
   virtual Object& Node( std::string name);
