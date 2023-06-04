@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+
 #include "object.h"
 #include "image.h"
 #include "vec2.h"
@@ -8,18 +10,15 @@
 //TODO - update these functions to take Vec2 and Color
 void SetPixel(unsigned char* pixel_buffer, int buffer_width, 
               int buffer_height, int x, int y, uint8_t r, uint8_t g, uint8_t b);
-
 void SetPixel(unsigned char* pixel_buffer, int buffer_width, 
               int buffer_height, int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-
-
 void LineVector(unsigned char* buffer, int width, 
                 int height, int x1, int y1, int vx, int vy, int magnitude);
 void LineSegment(unsigned char* buffer, int width, int height, 
                  int x1, int y1, int x2, int y2, int thickness);
-
 Vec2 NormalOfLine(int x1, int y1, int x2, int y2);
-bool isPointOnLine(int x, int y, int x1, int y1, int x2, int y2); 
+bool IsPointOnLine(int x, int y, int x1, int y1, int x2, int y2); 
+bool IsInRadius(int radius, Vec2 position, int x, int y);
 
 struct Color{
   uint8_t r, g, b;
@@ -52,9 +51,12 @@ class ImageView : public Object {
   void Clear();
 
  private:
+  void ForEachPixel(std::function<bool(int,int)> test_condition, 
+      std::function<void(int,int)> action);
+
+ private:
   Vec2 size_;
   Vec2 position_;
-  //Targa::TgaImage* image_;
   PixelBuffer buffer_;
   Brush brush_; 
 };

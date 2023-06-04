@@ -1,4 +1,4 @@
-#include <iostream>
+#include <functional>
 
 #include "image_view.h"
 #include "vec2.h"
@@ -6,12 +6,10 @@
 #include "cmath"
 #include "targa/targa.h"
 
-ImageView::ImageView(Vec2 size, Vec2 position) 
-  : Object(new NoUpdate(), new DrawTexture(this)), size_{size}, position_{position}
-{
+ImageView::ImageView(Vec2 size, Vec2 position) : Object(new NoUpdate(), 
+    new DrawTexture(this)), size_{size}, position_{position} {
   set_position(glm::vec2{position_.x, position_.y}, 0);
   set_size(glm::vec2{size_.x, size_.y});
-
   const int color_channels = 4;
   buffer_ = PixelBuffer{
     new unsigned char [size_.x * size_.y * color_channels],
@@ -22,39 +20,42 @@ ImageView::ImageView(Vec2 size, Vec2 position)
   render_delegate().Load(buffer_);
 }
 
-void ImageView::Draw(){
-  render_delegate().Draw();
-} 
+void ImageView::Draw(){ render_delegate().Draw(); } 
 
-void ImageView::setBrush(Brush brush){
-  brush_ = brush;
-} 
+void ImageView::setBrush(Brush brush){ brush_ = brush; } 
 
 void ImageView::Clear(){
-  const int width = buffer_.width;
-  const int height = buffer_.height;
-  unsigned char* buffer = (unsigned char*)buffer_.data; 
-
-  for (int x = 0; x < width; x++){
-    for (int y = 0; y < height; y++){
-      SetPixel(buffer, width, height, x, y, 0, 0, 0, 0); 
-    }
-  }
+  PixelBuffer& buff = buffer_;
+  ForEachPixel([](int, int){return true;}, [buff](int x, int y){
+      SetPixel((unsigned char*)buff.data , buff.width, buff.height, x, y, 
+          0,0,0,0); } 
+      );
 }
 
-void ImageView::Point(int diameter, Vec2 pos){
+void ImageView::ForEachPixel(std::function<bool(int x, int y)> test_condition,
+    std::function<void(int x,int y)> action) {
   const int width = buffer_.width;
   const int height = buffer_.height;
-  unsigned char* buffer = (unsigned char*)buffer_.data; 
-  //test each pixel to see if it is in a radius.v
   for (int x = 0; x < width; x++){
     for (int y = 0; y < height; y++){
-      Vec2 distance = pos - Vec2{x,y};
-      if (std::sqrt(distance.x * distance.x + distance.y * distance.y) < diameter){ 
-        SetPixel(buffer, width, height, x, y, 0, 255, 0, 255); 
-      }
+      if (test_condition(x,y))
+        action(x,y);
     }
   }
+} 
+
+void ImageView::Point(int diameter, Vec2 pos) {
+  PixelBuffer& buff = buffer_;
+  std::function<bool(int,int)> test = [diameter, pos, buff](int x, int y) {
+      if (IsInRadius(diameter / 2, pos, x, y))
+        return true;
+      return false; 
+  };
+  std::function<void(int,int)> action = [buff](int x, int y) {
+      SetPixel((unsigned char*)buff.data , buff.width, buff.height, x, y, 
+          255,0,0,255); 
+  };
+  ForEachPixel(test, action);
 }
 
 void ImageView::DrawLine(Vec2 start_point,Vec2 end_point) {
@@ -146,6 +147,14 @@ Vec2 NormalOfLine(int x1, int y1, int x2, int y2){
   return Vec2{ nx, ny };
 }
 
-bool isPointOnLine(int x, int y, int x1, int y1, int x2, int y2) {
+bool IsPointOnLine(int x, int y, int x1, int y1, int x2, int y2) {
     return (y - y1) * (x2 - x1) == (y2 - y1) * (x - x1);
+}
+
+
+bool IsInRadius(int radius, Vec2 position, int x, int y){
+  Vec2 distance = position - Vec2{x,y};
+  if (std::sqrt(distance.x * distance.x + distance.y * distance.y) < radius * 2)
+    return true;
+  return false;
 }
