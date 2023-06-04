@@ -1,12 +1,12 @@
 
-#include "GL/glew.h"
-#include "window.h"
-#include "renderer.h"
-#include <stdio.h>
-#include <iostream>
 #include "glm.hpp"
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
+#include <stdio.h>
+
+#include "GL/glew.h"
+#include "window.h"
+#include "renderer.h"
 #include "shaders.h"
 
 
@@ -14,9 +14,7 @@ Renderer::Renderer()
 	: width_{ 0 }, height_{ 0 }, vbo_{ 0 }, vao_{ 0 }, program_{ 0 }, texture_{ 0 }
 {};
 
-Renderer::~Renderer() {
-  //delete window_ptr_;
-}
+Renderer::~Renderer() {}
 
 void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 	width_ = width;
@@ -121,12 +119,10 @@ void Renderer::Draw(ImageData& image_data) {
 	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  //glfwSwapBuffers(window_ptr_->context());
 }
 
 void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height, int color_depth) {
   glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
-
   // set texture wrapping
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -142,45 +138,43 @@ void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int 
 }
 
 GLuint Renderer::LoadShader(GLenum type, const char* source) {
-    // create shader
-    GLuint shader = glCreateShader(type);
-    if(shader == 0) {
-        printf("Error creating shader\n");
-        return 0;
-    }
-
-    // load the shader source to the shader object and compile it;
-    glShaderSource(shader, 1, &source, NULL);
-    glCompileShader(shader);
-
-    // check if the shader compiled successfully
-    GLint compiled;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-    if (!compiled) {
-        printf("Shader compilation error\n");
-        glDeleteShader(shader);
-        return 0;
-    }
-    return shader;
+  // create shader
+  GLuint shader = glCreateShader(type);
+  if(shader == 0) {
+    printf("Error creating shader\n");
+    return 0;
+  }
+  // load the shader source to the shader object and compile it;
+  glShaderSource(shader, 1, &source, NULL);
+  glCompileShader(shader);
+  // check if the shader compiled successfully
+  GLint compiled;
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+  if (!compiled) {
+    printf("Shader compilation error\n");
+    glDeleteShader(shader);
+    return 0;
+  }
+  return shader;
 }
 
-GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char * vertex_position_name) {
-   // create a GL program and link it
-    GLuint program = glCreateProgram();
-    glAttachShader(program, vertex_shader);
-    glAttachShader(program, fragment_shader);
-    glBindAttribLocation(program, 0, vertex_position_name);
-    glLinkProgram(program);
-
-    // check if the program linked successfully
-    GLint linked;
-    glGetProgramiv(program, GL_LINK_STATUS, &linked);
-    if(!linked) {
-        printf("Program link error\n");
-        glDeleteProgram(program);
-        return 0;
-    }
-    return program;
+GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader, 
+  const char * vertex_position_name) {
+  // create a GL program and link it
+  GLuint program = glCreateProgram();
+  glAttachShader(program, vertex_shader);
+  glAttachShader(program, fragment_shader);
+  glBindAttribLocation(program, 0, vertex_position_name);
+  glLinkProgram(program);
+  // check if the program linked successfully
+  GLint linked;
+  glGetProgramiv(program, GL_LINK_STATUS, &linked);
+  if(!linked) {
+    printf("Program link error\n");
+    glDeleteProgram(program);
+    return 0;
+  }
+  return program;
 }
 
 glm::vec2 Renderer::ConvertNormToPixel(glm::vec2 xy) {
@@ -194,7 +188,6 @@ glm::vec2 Renderer::ConvertPixelToNorm(int x, int y) {
 	float out_x = (((float)x / (float)width_)*2) - 1;
 	float out_y = (((float)y / (float)height_) * 2) - 1;
 	out_y = out_y * -1; //flip y for drawing
-
 	return glm::vec2(out_x, out_y);
 }
 
