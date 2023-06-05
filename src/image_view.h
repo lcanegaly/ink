@@ -16,9 +16,9 @@ void LineVector(unsigned char* buffer, int width,
                 int height, int x1, int y1, int vx, int vy, int magnitude);
 void LineSegment(unsigned char* buffer, int width, int height, 
                  int x1, int y1, int x2, int y2, int thickness);
-Vec2 NormalOfLine(int x1, int y1, int x2, int y2);
+IVec2 NormalOfLine(int x1, int y1, int x2, int y2);
 bool IsPointOnLine(int x, int y, int x1, int y1, int x2, int y2); 
-bool IsInRadius(int radius, Vec2 position, int x, int y);
+bool IsInRadius(int radius, IVec2 position, int x, int y);
 
 struct Color{
   uint8_t r, g, b;
@@ -43,9 +43,9 @@ class Brush {
 
 class ImageView : public Object {
  public:
-  ImageView(Vec2 size, Vec2 position);
-  void Point(int size, Vec2 position); 
-  void DrawLine(Vec2 start_point,Vec2 end_point);
+  ImageView(IVec2 size, IVec2 position);
+  void Point(int size, IVec2 position); 
+  void DrawLine(IVec2 start_point, IVec2 end_point);
   void Draw() override;
   void setBrush(Brush brush); 
   void Clear();
@@ -55,8 +55,8 @@ class ImageView : public Object {
       std::function<void(int,int)> action);
 
  private:
-  Vec2 size_;
-  Vec2 position_;
+  IVec2 size_;
+  IVec2 position_;
   PixelBuffer buffer_;
   Brush brush_; 
 };

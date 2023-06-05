@@ -6,7 +6,7 @@
 #include "cmath"
 #include "targa/targa.h"
 
-ImageView::ImageView(Vec2 size, Vec2 position) : Object(new NoUpdate(), 
+ImageView::ImageView(IVec2 size, IVec2 position) : Object(new NoUpdate(), 
     new DrawTexture(this)), size_{size}, position_{position} {
   set_position(glm::vec2{position_.x, position_.y}, 0);
   set_size(glm::vec2{size_.x, size_.y});
@@ -44,7 +44,7 @@ void ImageView::ForEachPixel(std::function<bool(int x, int y)> test_condition,
   }
 } 
 
-void ImageView::Point(int diameter, Vec2 pos) {
+void ImageView::Point(int diameter, IVec2 pos) {
   PixelBuffer& buff = buffer_;
   std::function<bool(int,int)> test = [diameter, pos, buff](int x, int y) {
       if (IsInRadius(diameter / 2, pos, x, y))
@@ -58,7 +58,7 @@ void ImageView::Point(int diameter, Vec2 pos) {
   ForEachPixel(test, action);
 }
 
-void ImageView::DrawLine(Vec2 start_point,Vec2 end_point) {
+void ImageView::DrawLine(IVec2 start_point,IVec2 end_point) {
   const int width = buffer_.width;
   const int height = buffer_.height;
   unsigned char* buffer = (unsigned char*)buffer_.data; 
@@ -95,7 +95,7 @@ void LineVector(unsigned char* buffer, int width, int height, int x1, int y1, in
 }
 
 void LineSegment(unsigned char* buffer, int width, int height, int x1, int y1, int x2, int y2, int thickness){
-  Vec2 normal = NormalOfLine(x1,y1,x2,y2); 
+  IVec2 normal = NormalOfLine(x1,y1,x2,y2); 
   int dx = abs(x2 - x1);
   int dy = abs(y2 - y1);
   int sx = (x1 < x2) ? 1 : -1;
@@ -139,12 +139,12 @@ void SetPixel(unsigned char* pixel_buffer, int buffer_width, int buffer_height,
   }
 }
 
-Vec2 NormalOfLine(int x1, int y1, int x2, int y2){
+IVec2 NormalOfLine(int x1, int y1, int x2, int y2){
   int dx = x2 - x1;
   int dy = y2 - y1;
   int ny = dx;
   int nx = -dy;
-  return Vec2{ nx, ny };
+  return IVec2{ nx, ny };
 }
 
 bool IsPointOnLine(int x, int y, int x1, int y1, int x2, int y2) {
@@ -152,8 +152,8 @@ bool IsPointOnLine(int x, int y, int x1, int y1, int x2, int y2) {
 }
 
 
-bool IsInRadius(int radius, Vec2 position, int x, int y){
-  Vec2 distance = position - Vec2(x,y);
+bool IsInRadius(int radius, IVec2 position, int x, int y){
+  IVec2 distance = position - IVec2(x,y);
   if (std::sqrt(distance.x * distance.x + distance.y * distance.y) < radius * 2)
     return true;
   return false;

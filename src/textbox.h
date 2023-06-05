@@ -15,7 +15,7 @@ struct Font {
   const char* filepath;
   int columns;
   int rows;
-  std::unordered_map<char, Vec2> characterMap; 
+  std::unordered_map<char, IVec2> characterMap; 
 };
 
 class DrawText : public RenderDelegate {
@@ -28,7 +28,7 @@ class DrawText : public RenderDelegate {
   //virtual Renderer* renderer(); 
   virtual void Load();
   virtual void Load(const char* filepath); 
-  Vec2 Lookup(char character);
+  IVec2 Lookup(char character);
  private:
   ImageData& data_;
   Font& font_;
