@@ -12,7 +12,7 @@ ImageView::ImageView(Vec2 size, Vec2 position) : Object(new NoUpdate(),
   set_size(glm::vec2{size_.x, size_.y});
   const int color_channels = 4;
   buffer_ = PixelBuffer{
-    new unsigned char [size_.x * size_.y * color_channels],
+    new unsigned char [static_cast<int>(size_.x) * static_cast<int>(size_.y) * color_channels],
     size_.x,
     size_.y,
     color_channels 
@@ -153,7 +153,7 @@ bool IsPointOnLine(int x, int y, int x1, int y1, int x2, int y2) {
 
 
 bool IsInRadius(int radius, Vec2 position, int x, int y){
-  Vec2 distance = position - Vec2{x,y};
+  Vec2 distance = position - Vec2(x,y);
   if (std::sqrt(distance.x * distance.x + distance.y * distance.y) < radius * 2)
     return true;
   return false;
