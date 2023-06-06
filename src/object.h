@@ -121,6 +121,7 @@ class Object : public ObjectInterface {
   virtual glm::vec2 size() override;
   virtual float rotation() override;
   virtual std::string name() override;
+  Object& root() { return *root_; }
  
  public: 
   virtual void set_name(std::string name) override;
@@ -134,7 +135,6 @@ class Object : public ObjectInterface {
   UpdateDelegate& update_delegate() override;
   AudioDelegate& audio();
   void set_root(Object* root) {root_ = root;}
-  Object& root() { return *root_; }
 
  private:
   ObjectData object_;
