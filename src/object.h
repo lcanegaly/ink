@@ -15,13 +15,11 @@ class Renderer;
 class UpdateDelegate {
  public:
   virtual void Update(std::time_t delta_t) =0; 
-  virtual ObjectInterface* context() = 0;
   virtual ~UpdateDelegate(){}
 };
 
 class NoUpdate : public UpdateDelegate{
   virtual void Update(std::time_t delta_t) {}
-  virtual ObjectInterface* context() {return nullptr;}
   virtual ~NoUpdate(){}
 }; 
 
@@ -32,19 +30,9 @@ class ScriptUpdate : public UpdateDelegate{
     if (onUpdate_ != nullptr)
       onUpdate_();
   }
-  virtual ObjectInterface* context() {return nullptr;}
  private:
   std::function<void()> onUpdate_;
 }; 
-
-//TODO - constructor..
-class ButtonUpdate : public UpdateDelegate {
- public:
-  virtual void Update(std::time_t delta_t) {}
-  virtual ObjectInterface* context() {return object_ptr_;}
- private:
-  ObjectInterface* object_ptr_;
-};
 
 class RenderDelegate {
  public:
@@ -58,7 +46,6 @@ class RenderDelegate {
 class Invisible : public RenderDelegate {
  public:
   virtual void Draw() {}
-  virtual ObjectInterface* context() { return nullptr;}
   virtual void Load() {}
   virtual void Load(const char* filepath) {}
 };
@@ -101,6 +88,7 @@ class ObjectInterface : public AudioDelegate {
 
 class Object : public ObjectInterface {
  public:
+  Object(); 
   Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate);
   Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate,
          AudioDelegate* audio_delegate);
@@ -128,9 +116,10 @@ class Object : public ObjectInterface {
   virtual void set_position(glm::vec2 position, float rotation) override;
   virtual void set_size(glm::vec2 size) override;
   void set_updateDelegate(UpdateDelegate* updateDelegate);
+  // TODO getter 
+  time_t elapsed_time_;
 
  protected:
-  time_t elapsed_time_;
   RenderDelegate& render_delegate() override;
   UpdateDelegate& update_delegate() override;
   AudioDelegate& audio();
@@ -141,7 +130,7 @@ class Object : public ObjectInterface {
   std::unique_ptr<UpdateDelegate> update_delegate_; 
   std::unique_ptr<RenderDelegate> render_delegate_;
   std::unique_ptr<AudioDelegate> audio_delegate_;
-  Object* root_;
+  Object* root_ = nullptr;
   std::vector<std::unique_ptr<Object>> nodes_;
 };
 

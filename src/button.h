@@ -7,24 +7,28 @@
 #include "callback.h"
 #include "vec2.h"
 
+class Clickable : public UpdateDelegate {
+ public:
+  Clickable();
+  Clickable(Object* context);
+  virtual void Update(std::time_t delta_t);
+  void SetExecute(std::function<void()> func);
+  bool clicked_ = false; 
+
+ private:
+  bool IsClicked();
+  Object* context_;
+  std::unique_ptr<InputDelegate> input_delegate_;
+  std::function<void()> execute_; 
+};
+
 class Button : public Object {
  public:
   Button(const char* filepath); 
   Button(const char* filepath, int width, int height, int x, int y); 
-  Button(const char* filepath, glm::vec2 size, glm::vec2 position, 
-      Callback_T* callback); 
-  void Update(std::time_t delta_t) override;
-  void RegisterCallback(Callback_T* callback);
+  void Update(std::time_t delta_t) override  
+  {update_delegate().Update(delta_t);}
   void SetExecute(std::function<void()> func);
   bool active(); 
- 
- private:
-  bool IsClicked();
-
- private:
-  std::unique_ptr<InputDelegate> input_delegate_;
-  Callback_T* callback_;
-  bool clicked_ = false; 
-  std::function<void()> execute; 
 };
 

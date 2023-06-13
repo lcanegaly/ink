@@ -4,16 +4,17 @@
 #include "object.h"
 #include "log.h"
 
+Object::Object() : update_delegate_{new NoUpdate}, 
+  render_delegate_{new Invisible}, audio_delegate_{nullptr} {}
+
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate): 
     elapsed_time_{0}, update_delegate_{update_delegate}, 
-    render_delegate_{render_delegate} {
-  audio_delegate_ = nullptr;
-}
+    render_delegate_{render_delegate}, audio_delegate_{nullptr} {}
 
 Object::Object(UpdateDelegate* update_delegate, RenderDelegate* render_delegate,
     AudioDelegate* audio_delegate) : elapsed_time_{0}, 
     update_delegate_{update_delegate}, render_delegate_{render_delegate}, 
-    audio_delegate_{audio_delegate}, root_{nullptr} {} 
+    audio_delegate_{audio_delegate} {} 
 
 glm::vec2 Object::position() {
   return glm::vec2(object_.positionX, object_.positionY);
