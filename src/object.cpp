@@ -49,6 +49,11 @@ void Object::PushNode(Object* obj) {
   obj->set_root(this);
 }
 
+void Object::PushNode(Object* obj, std::string name) {
+  PushNode(obj);
+  obj->set_name(name);
+}
+
 void Object::PopNode( std::string name) {
   int del = -1; 
   for (int i = 0; i < nodes_.size(); i++) {

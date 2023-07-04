@@ -101,6 +101,7 @@ class Object : public ObjectInterface {
   virtual void LoadSound(const char*) override;
   virtual void Load(const char*) override;
   virtual void PushNode(Object* obj); 
+  virtual void PushNode(Object* obj, std::string name); 
   virtual Object& Node( std::string name);
   virtual void PopNode( std::string name);
 
