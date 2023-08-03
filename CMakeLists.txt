@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11.0)
 project(ink VERSION 0.0.1)
 
-set(BUILD_DEMO "FALSE")
+set(BUILD_DEMO "TRUE")
 
 include(CTest)
 enable_testing()
