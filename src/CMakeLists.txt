@@ -1,17 +1,19 @@
-target_sources(ink PRIVATE 
- ${PROJECT_SOURCE_DIR}/src/renderer.cpp
- ${PROJECT_SOURCE_DIR}/src/targa/targa.cpp
- ${PROJECT_SOURCE_DIR}/src/object.cpp
- ${PROJECT_SOURCE_DIR}/src/image.cpp
- ${PROJECT_SOURCE_DIR}/src/image_view.cpp
- ${PROJECT_SOURCE_DIR}/src/window.cpp
- ${PROJECT_SOURCE_DIR}/src/application.cpp
- ${PROJECT_SOURCE_DIR}/src/input.cpp
- ${PROJECT_SOURCE_DIR}/src/button.cpp
- ${PROJECT_SOURCE_DIR}/src/sprite.cpp
- ${PROJECT_SOURCE_DIR}/src/label.cpp
- ${PROJECT_SOURCE_DIR}/src/textbox.cpp
- ${PROJECT_SOURCE_DIR}/src/audio.cpp
+message(DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+
+target_sources(${PROJECT_NAME} PRIVATE 
+ ${CMAKE_CURRENT_SOURCE_DIR}/renderer.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/targa/targa.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/object.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/image.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/image_view.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/window.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/application.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/input.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/button.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/sprite.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/label.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/textbox.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/audio.cpp
 )
 
 
