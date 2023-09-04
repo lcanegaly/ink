@@ -24,11 +24,11 @@ void ImageView::Draw(){ render_delegate().Draw(); }
 
 void ImageView::setBrush(Brush brush){ brush_ = brush; } 
 
-void ImageView::Clear(){
+void ImageView::Clear(Color color) { 
   PixelBuffer& buff = buffer_;
-  ForEachPixel([](int, int){return true;}, [buff](int x, int y){
-      SetPixel((unsigned char*)buff.data , buff.width, buff.height, x, y, 
-          0,0,0,0); } 
+  ForEachPixel([](int, int){return true;}, [buff, color](int x, int y){
+      SetPixel((unsigned char*)buff.data, buff.width, buff.height, IVec2{x, y}, 
+          color); } 
       );
 }
 
@@ -51,14 +51,15 @@ void ImageView::Point(int diameter, IVec2 pos) {
         return true;
       return false; 
   };
-  std::function<void(int,int)> action = [buff](int x, int y) {
-      SetPixel((unsigned char*)buff.data , buff.width, buff.height, x, y, 
-          255,0,0,255); 
+  Color color = brush_.color(); 
+  std::function<void(int,int)> action = [buff, color](int x, int y) {
+      SetPixel((unsigned char*)buff.data , buff.width, buff.height, IVec2{x, y}, 
+          color); 
   };
   ForEachPixel(test, action);
 }
 
-void ImageView::DrawLine(IVec2 start_point,IVec2 end_point) {
+void ImageView::Line(IVec2 start_point,IVec2 end_point) {
   const int width = buffer_.width;
   const int height = buffer_.height;
   unsigned char* buffer = (unsigned char*)buffer_.data; 
@@ -87,7 +88,7 @@ void LineVector(unsigned char* buffer, int width, int height, int x1, int y1, in
       err += dx;
       y1 += sy;
     }
-    SetPixel(buffer, width, height, x1, y1, 0, 255, 0, 255);
+    SetPixel(buffer, width, height, IVec2{x1, y1}, Color{0, 255, 0, 255});
     int tx = x1 - startx;
     int ty = y1 - starty;
     if (sqrt(ty * ty + tx * tx) > magnitude) break;
@@ -102,7 +103,7 @@ void LineSegment(unsigned char* buffer, int width, int height, int x1, int y1, i
   int sy = (y1 < y2) ? 1 : -1;
   int err = dx - dy;
   
-  SetPixel(buffer, width, height, x1, y1, 0,255,0, 255);
+  SetPixel(buffer, width, height, IVec2{x1, y1}, Color{0, 255, 0, 255});
   while (x1 != x2 || y1 != y2) {
     int err2 = 2 * err;
     if (err2 > -dy) {
@@ -114,28 +115,20 @@ void LineSegment(unsigned char* buffer, int width, int height, int x1, int y1, i
       y1 += sy;
     }
     LineVector(buffer,width,height, x1, y1, normal.x, normal.y, thickness);
-    SetPixel(buffer, width, height, x1, y1, 0, 255, 0, 255);
+    SetPixel(buffer, width, height, IVec2{x1, y1}, Color{0, 255, 0, 255});
   }
 }
 
 void SetPixel(unsigned char* pixel_buffer, int buffer_width, int buffer_height, 
-              int x, int y, uint8_t r, uint8_t g, uint8_t b) {
-  const int color_channels = 3; 
-  if (x >= 0 && x < buffer_width && y >= 0 && y < buffer_height) {
-    pixel_buffer[y * color_channels * buffer_width + x * color_channels] = r;
-    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 1] = g;
-    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 2] = b;
-  }
-}
-
-void SetPixel(unsigned char* pixel_buffer, int buffer_width, int buffer_height, 
-              int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+              IVec2 position, Color color) {
   const int color_channels = 4; 
+  int x = position.x;
+  int y = position.y;
   if (x >= 0 && x < buffer_width && y >= 0 && y < buffer_height) {
-    pixel_buffer[y * color_channels * buffer_width + x * color_channels] = r;
-    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 1] = g;
-    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 2] = b;
-    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 3] = a;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels] = color.r;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 1] = color.g;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 2] = color.b;
+    pixel_buffer[y * color_channels * buffer_width + x * color_channels + 3] = color.a;
   }
 }
 
