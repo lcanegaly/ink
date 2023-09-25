@@ -25,9 +25,10 @@ Ball::Ball(){
   // Set position of ball object.
   set_position(glm::vec2(10,50), 0);
   // Create an ImageView to draw the ball with.
-  ImageView* canvas = new ImageView(IVec2{128,128}, IVec2{400,300});
-  canvas->setBrush(Brush(Color{0,255,0}, Stroke{6}));
-  canvas->Point(50, IVec2{64,64}); 
+  ImageView* canvas = new ImageView(IVec2{256,256}, IVec2{400,300});
+  canvas->Clear();
+  canvas->setBrush(Brush(Color{0,255,0,255}, Stroke{2}));
+  canvas->Point(50, IVec2{128,128}); 
   // Add the canvas as a child node of ball.
   PushNode(canvas);
 }
