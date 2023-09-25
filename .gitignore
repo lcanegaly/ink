@@ -46,6 +46,7 @@ Makefile
 CMakeFiles/
 resources/
 dependencies/glew/
+dependencies/math/
 Include/
 client/
 testapp/
