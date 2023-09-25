@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "window.h"
-
-class Object;
+#include "object.h"
+//class Object;
 class Renderer;
 
 class Application {

@@ -1,3 +1,4 @@
+
 if( CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR )
   # We are building as stand-alone project
   cmake_minimum_required(VERSION 3.11.0)

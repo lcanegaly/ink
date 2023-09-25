@@ -69,6 +69,7 @@ void Object::PopNode( std::string name) {
 Object& Object::Node(std::string name) {
   for (auto &x : nodes_)
     if (x->name() == name) return *x;
+  return *nodes_[0];
 }
 
 std::string Object::name() {
