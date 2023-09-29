@@ -54,6 +54,7 @@ build*/
 x64/
 vs/
 .vs/
+.cache/
 
 # Visual studio
 /Debug/

@@ -1,3 +1,4 @@
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if( CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR )
   # We are building as stand-alone project
