@@ -1,5 +1,29 @@
 #pragma once
 //shaders updated to work with webGL/emscripten
+static const char* vertex_shader_source2 = {
+  "attribute vec4 a_position;                                      \n"
+	"uniform mat4 translate;                                         \n"
+  "varying vec4 pos;                                        \n"
+  "void main()                                                     \n"
+  "{                                                               \n"
+	" gl_Position = translate * vec4(a_position.x, a_position.y, a_position.z, a_position.a);\n"
+  "   pos = a_position;                                     \n"
+  "}                                                               \0"
+};
+
+static const char* fragment_shader_source2 = {
+  "precision mediump float;                                        \n"
+  "varying vec4 pos;                                        \n"
+  
+  "void main()                                                     \n"
+	"{                                                               \n"
+	"  gl_FragColor = vec4(1.0 - (pos.z * 0.3), 0.3, 1.0, 1.0);                                 \n"
+	"}                                                               \0"
+};
+
+
+
+//shaders updated to work with webGL/emscripten
 static const char* vertex_shader_source = {
   "attribute vec4 a_position;                                      \n"
   "attribute vec2 a_texCoord;                                      \n"

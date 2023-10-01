@@ -13,3 +13,4 @@
 #include "../src/vec2.h"
 #include "../src/image_view.h"
 #include "../src/audio.h"
+#include "../src/node_2d.h"

@@ -38,7 +38,7 @@ class RenderDelegate {
  public:
   virtual void Draw() = 0;// {}
   virtual void Load() = 0;// {}
-  virtual void Load(const char* filepath) = 0;// {}
+  virtual void Load(const char* filepath) {}
   virtual void Load(PixelBuffer buffer) {} 
   virtual ~RenderDelegate(){}
 };
@@ -94,9 +94,9 @@ class Object : public ObjectInterface {
          AudioDelegate* audio_delegate);
  
  public:
-  virtual void Update(std::time_t delta_t) override;
+  void Update(std::time_t delta_t) override;
   virtual void OnUserUpdate(std::time_t delta_t) {}
-  virtual void Draw() override;
+  void Draw() override;
   virtual void PlaySound() override;
   virtual void LoadSound(const char*) override;
   virtual void Load(const char*) override;
@@ -123,8 +123,9 @@ class Object : public ObjectInterface {
  protected:
   RenderDelegate& render_delegate() override;
   UpdateDelegate& update_delegate() override;
-  AudioDelegate& audio();
+  //AudioDelegate& audio();
   void set_root(Object* root) {root_ = root;}
+  std::vector<std::unique_ptr<Object>> nodes_;
 
  private:
   ObjectData object_;
@@ -132,7 +133,6 @@ class Object : public ObjectInterface {
   std::unique_ptr<RenderDelegate> render_delegate_;
   std::unique_ptr<AudioDelegate> audio_delegate_;
   Object* root_ = nullptr;
-  std::vector<std::unique_ptr<Object>> nodes_;
 };
 
 

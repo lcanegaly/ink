@@ -8,8 +8,8 @@
 #include "window.h"
 #include "renderer.h"
 #include "shaders.h"
-
-
+#include "transform.h"
+#include <iostream>
 Renderer::Renderer() 
 	: width_{ 0 }, height_{ 0 }, vbo_{ 0 }, vao_{ 0 }, program_{ 0 }, texture_{ 0 }
 {};
@@ -21,9 +21,8 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 	height_ = height;
   window_ptr_ = window_ptr;
 
-  GLuint vbo;
-  glGenBuffers(1, &vbo);  
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);  
+  glGenBuffers(1, &vbo_);  
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);  
   glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
@@ -84,6 +83,80 @@ void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int 
 	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+// TODO should load from file
+void Renderer::LoadShader(){
+  GLuint vertex_shader = LoadShader(GL_VERTEX_SHADER, vertex_shader_source2);
+  GLuint fragment_shader = LoadShader(GL_FRAGMENT_SHADER, fragment_shader_source2);
+  program_ = BuildProgram(vertex_shader, fragment_shader, "iPosition");
+}
+
+void Renderer::Draw(Transform2D transform ) {
+  
+   const float vert[120] = {
+  // front face	
+  // first triangle
+	 0.5f,  0.5f, 0.5f, 1.0f, 1.0f,  // top right
+	 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
+	-0.5f,  0.5f, 0.5f, 0.0f, 1.0f, // top left 
+	// second triangle
+	 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
+	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, // bottom left
+	-0.5f,  0.5f, 0.5f, 0.0f, 1.0f, // top left
+ 
+  // back face
+  // first triangle
+	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  // top right
+	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left 
+	// second triangle
+	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left
+	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left
+  
+  // left face	
+  // first triangle
+	 -0.5f,  0.5f, 0.5f, 1.0f, 1.0f,  // top right
+	 -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
+	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left 
+	// second triangle
+  -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left
+	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left
+ 
+  // right face
+  // first triangle
+	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  // top right
+	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+	 0.5f,  0.5f, 0.5f, 0.0f, 1.0f, // top left 
+	// second triangle
+	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom left
+	 0.5f,  0.5f, 0.5f, 0.0f, 1.0f // top left
+   };
+ 
+  glUseProgram(program_);
+  
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);  
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(vert), vert, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
+  
+  glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -20.0f));
+	model = glm::rotate(model, glm::radians(glm::degrees(transform.x.x)), glm::vec3(0.1f, 1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+  glm::mat4 projection;
+  projection = glm::perspective(glm::radians(40.0f), (float)width_/(float)height_, 0.1f, 100.0f);
+  model = projection * model; 
+  GLint uniform_translate = glGetUniformLocation(program_, "translate");
+	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
+
+  glDrawArrays(GL_TRIANGLES, 0, 24);
 }
 
 void Renderer::Draw(ImageData& image_data) {

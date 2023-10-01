@@ -6,6 +6,7 @@
 #include "glm.hpp"
 #include "window.h"
 #include "GL/gl.h"
+#include "transform.h"
 
 struct ImageData {
   unsigned char* tex; 
@@ -36,7 +37,9 @@ class Renderer
   void SetClearColor(float r, float g, float b, float a);
 	void Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, 
       int height, float rotation = 0);
-	void Draw(ImageData& image_data);
+  void LoadShader();
+  void Draw(Transform2D transform ); 
+  void Draw(ImageData& image_data);
   glm::vec2 ConvertNormToPixel(glm::vec2 xy);
   glm::vec2 ConvertPixelToNorm(int x, int y);
   void LoadTexture(unsigned char* texture, int bind_num, int width, int height,

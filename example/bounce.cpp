@@ -11,7 +11,9 @@ Bounce::Bounce(const char* name, int width, int height) :
     Application(name, width, height) 
 {
   Renderer::Get().SetClearColor(0.25, 0.501, 0.749, 1.0); 
-  Load();
+  
+  RegisterObject(new Node2D);
+  //Load();
 }
 
 void Bounce::OnUserUpdate() {}
@@ -22,19 +24,24 @@ void Bounce::Load() {
 }
 
 Ball::Ball(){
-  // Set position of ball object.
-  set_position(glm::vec2(10,50), 0);
   // Create an ImageView to draw the ball with.
   ImageView* canvas = new ImageView(IVec2{256,256}, IVec2{400,300});
   canvas->Clear();
   canvas->setBrush(Brush(Color{0,255,0,255}, Stroke{2}));
   canvas->Point(50, IVec2{128,128}); 
   // Add the canvas as a child node of ball.
-  PushNode(canvas);
+ 
+  set_position(glm::vec2(10,50), 0);
+  Node2D* test = new Node2D;
+  test->PushNode(canvas);
+  test->transform.origin.x = 50;
+  test->transform.origin.y = 50;
+  PushNode(test);
 }
  
 // check and update position if out of bounds. 
 void Ball::OnUserUpdate(time_t delta_t) {
+ /* 
   // Flip y velocity if past bounds.
   if (position().y > 300 && velocity_.y > 0){
     velocity_.y *= -1.0;
@@ -50,5 +57,6 @@ void Ball::OnUserUpdate(time_t delta_t) {
   // Update position based on new velocity
   set_position(glm::vec2(position().x + velocity_.x * delta_t, 
         position().y + velocity_.y * delta_t), 0.0);
-} 
+*/
+ } 
 
