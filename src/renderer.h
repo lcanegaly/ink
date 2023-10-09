@@ -38,13 +38,15 @@ class Renderer
 	void Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, 
       int height, float rotation = 0);
   void LoadShader();
-  void Draw(Transform2D transform ); 
+  void Draw(Transform2D transform, unsigned int vao, int indices ); 
   void Draw(ImageData& image_data);
   glm::vec2 ConvertNormToPixel(glm::vec2 xy);
   glm::vec2 ConvertPixelToNorm(int x, int y);
   void LoadTexture(unsigned char* texture, int bind_num, int width, int height,
       int color_depth);
- 
+  unsigned int VertexArray(); 
+  void DrawWireframe(bool enable);
+
  private:
   GLuint BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char* vertex_position_name );
   GLuint LoadShader(GLenum type, const char* shader_source);
@@ -53,6 +55,7 @@ class Renderer
 	Renderer();
 	int width_, height_;
 	GLuint vbo_;
+	GLuint ebo_;
 	unsigned int vao_;
 	GLuint program_;
 	GLuint texture_[10];

@@ -3,6 +3,7 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 #include <stdio.h>
+#include <vector>
 
 #include "GL/glew.h"
 #include "window.h"
@@ -20,17 +21,14 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 	width_ = width;
 	height_ = height;
   window_ptr_ = window_ptr;
-
+  glGenVertexArrays(1, &vao_);  
+  glBindVertexArray(vao_); 
   glGenBuffers(1, &vbo_);  
+  glGenBuffers(1, &ebo_);  
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);  
   glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
-
-  GLuint vertex_shader = LoadShader(GL_VERTEX_SHADER, vertex_shader_source);
-  GLuint fragment_shader = LoadShader(GL_FRAGMENT_SHADER, fragment_shader_source);
-  program_ = BuildProgram(vertex_shader, fragment_shader, "iPosition");
-
   glGenTextures(6, texture_);
 };
 
@@ -44,6 +42,63 @@ void Renderer::EndDraw() {
 
 void Renderer::SetClearColor(float r, float g, float b, float a) {
   glClearColor(r,g,b,a);  
+}
+
+void Renderer::DrawWireframe(bool enable){
+  if(enable)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  else
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+unsigned int Renderer::VertexArray() {
+  GLuint vao;
+  GLuint vbo;
+  GLuint ebo;
+  glGenVertexArrays(1, &vao);  
+  glGenBuffers(1, &vbo);  
+  glGenBuffers(1, &ebo);  
+  const float vertices [] = {
+    // front face 
+    0.5f,  0.5f, 0.5f, 1.0f, 1.0f,  //0 top right
+	  0.5f, -0.5f, 0.5f, 1.0f, 0.0f,  //1 bottom right
+	  -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, //2 bottom left
+	  -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, //3 top left 
+    // back face 
+    0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  //4 top right
+	  0.5f, -0.5f, -0.5f, 1.0f, 0.0f, //5 bottom right
+	  -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, //6 bottom left
+	  -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, //7 top left 
+  };
+  
+  unsigned int indices [] = {
+    0,1,3,
+    1,2,3,
+    2,3,7,
+    2,6,7,
+    4,5,7,
+    5,6,7,
+    4,0,5,
+    1,0,5,
+    0,3,4,
+    3,7,4,
+    1,2,5,
+    2,6,5
+  };
+
+  glBindVertexArray(vao);  
+  
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);  
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
+  glBindVertexArray(0); 
+  return vao;
 }
 
 void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation) {
@@ -90,65 +145,13 @@ void Renderer::LoadShader(){
   GLuint vertex_shader = LoadShader(GL_VERTEX_SHADER, vertex_shader_source2);
   GLuint fragment_shader = LoadShader(GL_FRAGMENT_SHADER, fragment_shader_source2);
   program_ = BuildProgram(vertex_shader, fragment_shader, "iPosition");
-}
+ }
 
-void Renderer::Draw(Transform2D transform ) {
-  
-   const float vert[120] = {
-  // front face	
-  // first triangle
-	 0.5f,  0.5f, 0.5f, 1.0f, 1.0f,  // top right
-	 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
-	-0.5f,  0.5f, 0.5f, 0.0f, 1.0f, // top left 
-	// second triangle
-	 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
-	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, // bottom left
-	-0.5f,  0.5f, 0.5f, 0.0f, 1.0f, // top left
- 
-  // back face
-  // first triangle
-	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  // top right
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left 
-	// second triangle
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left
-  
-  // left face	
-  // first triangle
-	 -0.5f,  0.5f, 0.5f, 1.0f, 1.0f,  // top right
-	 -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left 
-	// second triangle
-  -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left
- 
-  // right face
-  // first triangle
-	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  // top right
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right
-	 0.5f,  0.5f, 0.5f, 0.0f, 1.0f, // top left 
-	// second triangle
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right
-	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom left
-	 0.5f,  0.5f, 0.5f, 0.0f, 1.0f // top left
-   };
- 
+void Renderer::Draw(Transform2D transform, unsigned int vao, int indices) {
   glUseProgram(program_);
-  
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);  
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(vert), vert, GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
-  glEnableVertexAttribArray(1);
-  
   glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -20.0f));
-	model = glm::rotate(model, glm::radians(glm::degrees(transform.x.x)), glm::vec3(0.1f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(glm::degrees(transform.x.x)), glm::vec3(1.0f, 0.2f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
   glm::mat4 projection;
   projection = glm::perspective(glm::radians(40.0f), (float)width_/(float)height_, 0.1f, 100.0f);
@@ -156,7 +159,8 @@ void Renderer::Draw(Transform2D transform ) {
   GLint uniform_translate = glGetUniformLocation(program_, "translate");
 	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
 
-  glDrawArrays(GL_TRIANGLES, 0, 24);
+  glBindVertexArray(vao);  
+  glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
 }
 
 void Renderer::Draw(ImageData& image_data) {
@@ -225,7 +229,15 @@ GLuint Renderer::LoadShader(GLenum type, const char* source) {
   glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
   if (!compiled) {
     printf("Shader compilation error\n");
+    GLint maxLength = 0;
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
+    std::vector<GLchar> infoLog(maxLength);
+    glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
     glDeleteShader(shader);
+    for (auto x : infoLog){
+      std::cout << x;
+    }
+    std::cout << "\n";
     return 0;
   }
   return shader;
@@ -244,7 +256,16 @@ GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader,
   glGetProgramiv(program, GL_LINK_STATUS, &linked);
   if(!linked) {
     printf("Program link error\n");
+    GLint maxLength = 0;
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
+    std::vector<GLchar> infoLog(maxLength);
+    glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
+
     glDeleteProgram(program);
+    for (auto x : infoLog){
+      std::cout << x;
+    }
+    std::cout << "\n";
     return 0;
   }
   return program;

@@ -8,6 +8,7 @@
 #include <functional>
 
 #include "targa/targa.h"
+#include "transform.h"
 
 class ObjectInterface;
 class Renderer;
@@ -111,6 +112,7 @@ class Object : public ObjectInterface {
   virtual float rotation() override;
   virtual std::string name() override;
   Object& root() { return *root_; }
+  Transform2D transform;
  
  public: 
   virtual void set_name(std::string name) override;

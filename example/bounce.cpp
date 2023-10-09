@@ -12,7 +12,7 @@ Bounce::Bounce(const char* name, int width, int height) :
 {
   Renderer::Get().SetClearColor(0.25, 0.501, 0.749, 1.0); 
   
-  RegisterObject(new Node2D);
+  RegisterObject(new Mesh);
   //Load();
 }
 

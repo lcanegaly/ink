@@ -6,11 +6,14 @@ GLFWContext::GLFWContext(int width, int height, const char* title) {
   if (!glfwInit())
       return;
   glfwDefaultWindowHints();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-  glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+  //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2); //wasm support may need this.
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  //glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API); //wasm support may need this.
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+  //glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
   window_ = glfwCreateWindow(width, height, title, NULL, NULL);
+  assert(window_ != nullptr);
   if (!window_){
     glfwTerminate();
   }

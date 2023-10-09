@@ -14,6 +14,7 @@ target_sources(${PROJECT_NAME} PRIVATE
  ${CMAKE_CURRENT_SOURCE_DIR}/label.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/textbox.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/audio.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/mesh_renderer.cpp
 )
 
 
