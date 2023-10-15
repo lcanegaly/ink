@@ -21,13 +21,7 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 	width_ = width;
 	height_ = height;
   window_ptr_ = window_ptr;
-  glGenVertexArrays(1, &vao_);  
-  glBindVertexArray(vao_); 
-  glGenBuffers(1, &vbo_);  
-  glGenBuffers(1, &ebo_);  
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);  
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+  
   glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
   glGenTextures(6, texture_);
 };
@@ -140,25 +134,7 @@ void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int 
   glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-// TODO should load from file
-void Renderer::LoadShader(){
-  GLuint vertex_shader = LoadShader(GL_VERTEX_SHADER, vertex_shader_source2);
-  GLuint fragment_shader = LoadShader(GL_FRAGMENT_SHADER, fragment_shader_source2);
-  program_ = BuildProgram(vertex_shader, fragment_shader, "iPosition");
- }
-
 void Renderer::Draw(Transform2D transform, unsigned int vao, int indices) {
-  glUseProgram(program_);
-  glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -20.0f));
-	model = glm::rotate(model, glm::radians(glm::degrees(transform.x.x)), glm::vec3(1.0f, 0.2f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-  glm::mat4 projection;
-  projection = glm::perspective(glm::radians(40.0f), (float)width_/(float)height_, 0.1f, 100.0f);
-  model = projection * model; 
-  GLint uniform_translate = glGetUniformLocation(program_, "translate");
-	glUniformMatrix4fv(uniform_translate, 1, GL_FALSE, glm::value_ptr(model));
-
   glBindVertexArray(vao);  
   glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
 }
@@ -212,63 +188,6 @@ void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int 
   else{
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture); 
   }
-}
-
-GLuint Renderer::LoadShader(GLenum type, const char* source) {
-  // create shader
-  GLuint shader = glCreateShader(type);
-  if(shader == 0) {
-    printf("Error creating shader\n");
-    return 0;
-  }
-  // load the shader source to the shader object and compile it;
-  glShaderSource(shader, 1, &source, NULL);
-  glCompileShader(shader);
-  // check if the shader compiled successfully
-  GLint compiled;
-  glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-  if (!compiled) {
-    printf("Shader compilation error\n");
-    GLint maxLength = 0;
-    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
-    std::vector<GLchar> infoLog(maxLength);
-    glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
-    glDeleteShader(shader);
-    for (auto x : infoLog){
-      std::cout << x;
-    }
-    std::cout << "\n";
-    return 0;
-  }
-  return shader;
-}
-
-GLuint Renderer::BuildProgram(GLuint vertex_shader, GLuint fragment_shader, 
-  const char * vertex_position_name) {
-  // create a GL program and link it
-  GLuint program = glCreateProgram();
-  glAttachShader(program, vertex_shader);
-  glAttachShader(program, fragment_shader);
-  glBindAttribLocation(program, 0, vertex_position_name);
-  glLinkProgram(program);
-  // check if the program linked successfully
-  GLint linked;
-  glGetProgramiv(program, GL_LINK_STATUS, &linked);
-  if(!linked) {
-    printf("Program link error\n");
-    GLint maxLength = 0;
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
-    std::vector<GLchar> infoLog(maxLength);
-    glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
-
-    glDeleteProgram(program);
-    for (auto x : infoLog){
-      std::cout << x;
-    }
-    std::cout << "\n";
-    return 0;
-  }
-  return program;
 }
 
 glm::vec2 Renderer::ConvertNormToPixel(glm::vec2 xy) {
