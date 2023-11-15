@@ -17,6 +17,6 @@ class Ball : public Object {
    Ball();
  private:
   void OnUserUpdate(time_t delta_t) override; 
-  Vec2 velocity_ {0.5, 0.5};
+  Vec2 velocity_ {0.01, 0.01};
 };
 

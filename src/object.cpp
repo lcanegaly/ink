@@ -78,8 +78,8 @@ std::string Object::name() {
 void Object::Update(std::time_t delta_t) {
   OnUserUpdate(delta_t); 
   update_delegate_->Update(delta_t);
-  //for (auto& x : nodes_)
-  //  x->Update(delta_t);
+  for (auto& x : nodes_)
+    x->Update(delta_t);
 }
 
 void Object::set_name(std::string name) {

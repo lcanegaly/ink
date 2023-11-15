@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <vector>
 
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
@@ -38,7 +39,7 @@ class Renderer
 	void Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, 
       int height, float rotation = 0);
   void LoadShader();
-  void Draw(Transform2D transform, unsigned int vao, int indices ); 
+  void Draw(Transform transform, unsigned int vao, int indices ); 
   void Draw(ImageData& image_data);
   glm::vec2 ConvertNormToPixel(glm::vec2 xy);
   glm::vec2 ConvertPixelToNorm(int x, int y);
@@ -46,6 +47,10 @@ class Renderer
       int color_depth);
   unsigned int VertexArray(); 
   void DrawWireframe(bool enable);
+  unsigned int UploadMesh(std::vector<float> vert, std::vector<unsigned int> index);
+  glm::mat4 ProjectionMaxtrix(){
+    return glm::perspective(glm::radians(100.0f), 800.0f/600.0f, 1.0f, 500.0f);
+  }
 
  private:
   GLuint BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char* vertex_position_name );

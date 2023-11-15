@@ -12,11 +12,13 @@
 
 class ObjectInterface;
 class Renderer;
+class Object;
 
 class UpdateDelegate {
  public:
   virtual void Update(std::time_t delta_t) =0; 
   virtual ~UpdateDelegate(){}
+  Object* parent = nullptr;
 };
 
 class NoUpdate : public UpdateDelegate{
@@ -112,7 +114,7 @@ class Object : public ObjectInterface {
   virtual float rotation() override;
   virtual std::string name() override;
   Object& root() { return *root_; }
-  Transform2D transform;
+  Transform transform;
  
  public: 
   virtual void set_name(std::string name) override;
@@ -126,7 +128,9 @@ class Object : public ObjectInterface {
   RenderDelegate& render_delegate() override;
   UpdateDelegate& update_delegate() override;
   //AudioDelegate& audio();
-  void set_root(Object* root) {root_ = root;}
+  void set_root(Object* root) {root_ = root;
+    transform.parent = &root->transform;
+  }
   std::vector<std::unique_ptr<Object>> nodes_;
 
  private:
