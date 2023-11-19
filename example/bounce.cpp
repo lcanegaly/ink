@@ -1,5 +1,7 @@
 #include "../include/ink.h"
 #include "bounce.h"
+#include "gtc/matrix_transform.hpp"
+#include "gtx/transform.hpp"
 #include <string>
 #include <iostream>
 
@@ -26,16 +28,45 @@ Bounce::Bounce(const char* name, int width, int height) :
 
   Object* world = new Object();
   world->transform.rotation_axis = glm::vec3(0, 1, 0);
-  world->transform.position.z = -300.0f;
-  world->transform.angle = 90.0f;
   RegisterObject(world);
   
   world->PushNode(new Ball());
-  //Load();
+  camera_.Position = glm::vec3(0.0f, 0.0f, 8.0f);
 }
 
 void Bounce::OnUserUpdate() {
-
+   
+  auto key = GLFWInput::Get().GetKey(GLFW_KEY_W);
+  if (key){
+    camera_.Translate(glm::vec3(0.0f, 0.0f, 0.1f), 0.1f); 
+    Renderer::Get().Camera()= camera_.GetViewMatrix(); 
+  }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_S);
+  if (key){
+    camera_.Translate(glm::vec3(0.0f, 0.0f, -0.1f), 0.1f); 
+    Renderer::Get().Camera()= camera_.GetViewMatrix(); 
+  }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_A);
+  if (key){
+    camera_.Translate(glm::vec3(0.1f, 0.0f, 0.0f), 0.1f); 
+    Renderer::Get().Camera()= camera_.GetViewMatrix(); 
+  }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_D);
+  if (key){
+    camera_.Translate(glm::vec3(-0.1f, 0.0f, 0.0f), 0.1f); 
+    Renderer::Get().Camera()= camera_.GetViewMatrix(); 
+  }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_Q);
+  if (key){
+    camera_.Rotate(-0.1f, 0.0f); 
+    Renderer::Get().Camera()= camera_.GetViewMatrix(); 
+  }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_E);
+  if (key){
+    std::cout << camera_.Yaw << "\n";
+    camera_.Rotate(0.1f, 0.0f); 
+    Renderer::Get().Camera()= camera_.GetViewMatrix(); 
+  }
 }
 
 void Bounce::Load() {
@@ -46,6 +77,8 @@ Ball::Ball(){
   Shader* shader = new Shader("/home/lee/code/ink/build/vertex.sh",
       "/home/lee/code/ink/build/fragment.sh");
   Mesh* dog = new Mesh(shader, "/home/lee/code/ink/build/test.obj");
+  dog->transform.scale = glm::vec3( 0.01f, 0.01f, 0.01f);
+  this->transform.rotation_axis = glm::vec3(0, 1, 0 );
   UpdateDelegate* update = new EdgeBounce();
   update->parent = this;
   //set_updateDelegate(update);

@@ -15,3 +15,4 @@
 #include "../src/audio.h"
 #include "../src/node_2d.h"
 #include "../src/mesh.h"
+#include "../src/camera.h"

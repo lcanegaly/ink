@@ -8,12 +8,13 @@ class Bounce: public Application {
   Bounce(const char* name, int width, int height); 
   void OnUserUpdate() override;
  private:
-  void Load(); 
+  void Load();
+  Camera camera_;
 };
 
 // Ball class had an ImageView child node.
 class Ball : public Object {
- public:
+ public: 
    Ball();
  private:
   void OnUserUpdate(time_t delta_t) override; 

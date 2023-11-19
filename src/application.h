@@ -19,9 +19,9 @@ class Application {
   virtual void OnUserUpdate(){}
   bool shouldClose(){return window_->shouldClose();}
   void Close(){window_->Destroy();}
+  std::vector<std::unique_ptr<Object>> objects_;
  private:
   std::unique_ptr<WindowDelegate> window_;
-  std::vector<std::unique_ptr<Object>> objects_;
   int width_;
   int height_;
 };

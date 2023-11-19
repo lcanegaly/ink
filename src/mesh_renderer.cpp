@@ -16,8 +16,9 @@ void MeshRenderer::Draw(){
   shader_->use(); 
   vao_ = Renderer::Get().UploadMesh(mesh_.vertex_, mesh_.index_); 
   glm::mat4 model = glm::mat4(1.0f);
-  glm::mat4 projection = Renderer::Get().ProjectionMaxtrix();
-  model = projection * mesh_.transform.GlobalMatrix(); 
+    glm::mat4 projection = Renderer::Get().ProjectionMaxtrix();
+  
+  model = projection * Renderer::Get().Camera() *  mesh_.transform.GlobalMatrix(); 
   shader_->setMatrix("translate", model); 
   
   glBindVertexArray(vao_);  

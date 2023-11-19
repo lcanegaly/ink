@@ -47,13 +47,23 @@ class InputDelegate {
 
 class GLFWInput : public InputDelegate {
  public: 
-  GLFWInput() = default;
+  GLFWInput() = default; 
+  static GLFWInput& Get(){ 
+    static GLFWInput* instance; 
+    if (!instance) {
+      instance = new GLFWInput();
+    }
+    return *instance;
+  } 
   glm::vec2 GetMousePosition() override; 
   bool GetMouseClick() override;
   std::string GetKeys() override;
   virtual bool GetKey(int key_code) override;
   void Reset()override; 
   static void SetWindowPointer(GLFWwindow* window); 
+  void KeyName(){
+    glfwGetKeyName(30, 2);
+  }
  private:
   static std::vector<KeyCallbackDelegate*> callback_;
   static bool init_;
@@ -84,4 +94,5 @@ private:
   static bool init_;
   static InputData input_;
 };
+
 

@@ -106,6 +106,7 @@ class Object : public ObjectInterface {
   virtual void PushNode(Object* obj); 
   virtual void PushNode(Object* obj, std::string name); 
   virtual Object& Node( std::string name);
+  virtual Object& Node( int index) { return *nodes_[index];};
   virtual void PopNode( std::string name);
 
  public:

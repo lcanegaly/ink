@@ -51,13 +51,16 @@ class Renderer
   glm::mat4 ProjectionMaxtrix(){
     return glm::perspective(glm::radians(100.0f), 800.0f/600.0f, 1.0f, 500.0f);
   }
-
+  glm::mat4& Camera(){
+    return view_; 
+  }
  private:
   GLuint BuildProgram(GLuint vertex_shader, GLuint fragment_shader, const char* vertex_position_name );
   GLuint LoadShader(GLenum type, const char* shader_source);
 
  private:
 	Renderer();
+  glm::mat4 view_;
 	int width_, height_;
 	GLuint vbo_;
 	GLuint ebo_;

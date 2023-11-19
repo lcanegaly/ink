@@ -25,6 +25,7 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
   glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
   glGenTextures(6, texture_);
   glEnable(GL_DEPTH_TEST);
+  view_ = glm::lookAt(glm::vec3(0.0f, 0.0f, 30.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0)); 
 };
 
 void Renderer::StartDraw() {
