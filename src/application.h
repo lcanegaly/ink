@@ -17,13 +17,16 @@ class Application {
   void RegisterObject(Object* object);
   void RegisterObjectList(); 
   virtual void OnUserUpdate(){}
-  bool shouldClose(){return window_->shouldClose();}
-  void Close(){window_->Destroy();}
+  bool shouldClose(){return window_->shouldClose() | !running_;}
+  void Close(){
+    running_ = false;
+    window_->Destroy();}
   std::vector<std::unique_ptr<Object>> objects_;
  private:
   std::unique_ptr<WindowDelegate> window_;
   int width_;
   int height_;
+  bool running_;
 };
 
 //to be defined by client app

@@ -32,28 +32,31 @@ Bounce::Bounce(const char* name, int width, int height) :
   
   world->PushNode(new Ball());
   camera_.Position = glm::vec3(0.0f, 0.0f, 8.0f);
+  GLFWInput::Get().CaptureMouse(true);
 }
 
 void Bounce::OnUserUpdate() {
-   
+  auto mouse_pos = GLFWInput::Get().GetMousePosition();
+  
+  std::cout << "mouse pos: " << mouse_pos.x << "," << mouse_pos.y << "\n";
   auto key = GLFWInput::Get().GetKey(GLFW_KEY_W);
   if (key){
-    camera_.Translate(glm::vec3(0.0f, 0.0f, 0.1f), 0.1f); 
+    camera_.Translate(camera_.Front, 0.1f);
     Renderer::Get().Camera()= camera_.GetViewMatrix(); 
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_S);
   if (key){
-    camera_.Translate(glm::vec3(0.0f, 0.0f, -0.1f), 0.1f); 
+    camera_.Translate(camera_.Front, -0.1f);
     Renderer::Get().Camera()= camera_.GetViewMatrix(); 
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_A);
   if (key){
-    camera_.Translate(glm::vec3(0.1f, 0.0f, 0.0f), 0.1f); 
+    camera_.Translate(camera_.Right, -0.1f);
     Renderer::Get().Camera()= camera_.GetViewMatrix(); 
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_D);
   if (key){
-    camera_.Translate(glm::vec3(-0.1f, 0.0f, 0.0f), 0.1f); 
+    camera_.Translate(camera_.Right, 0.1f);
     Renderer::Get().Camera()= camera_.GetViewMatrix(); 
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_Q);
@@ -63,9 +66,14 @@ void Bounce::OnUserUpdate() {
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_E);
   if (key){
-    std::cout << camera_.Yaw << "\n";
     camera_.Rotate(0.1f, 0.0f); 
     Renderer::Get().Camera()= camera_.GetViewMatrix(); 
+  }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_ESCAPE);
+  if (key){
+    std::cout << "esc\n"; 
+    GLFWInput::Get().CaptureMouse(false);
+    Close();
   }
 }
 

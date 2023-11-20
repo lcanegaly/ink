@@ -54,7 +54,13 @@ class GLFWInput : public InputDelegate {
       instance = new GLFWInput();
     }
     return *instance;
-  } 
+  }
+  void CaptureMouse(bool captured){
+    if(captured)
+      glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    else
+      glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+  }
   glm::vec2 GetMousePosition() override; 
   bool GetMouseClick() override;
   std::string GetKeys() override;

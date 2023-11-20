@@ -10,6 +10,7 @@
 Application::Application(const char* name, int width, int height)
   :window_{new GLFWContext(width, height, name)}, width_{width}, height_{height}
 {
+  running_ = true;
   GLFWInput input; 
   Renderer::Get().Init(width, height, window_.get());
   RegisterObjectList();
