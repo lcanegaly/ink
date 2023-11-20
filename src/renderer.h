@@ -49,7 +49,7 @@ class Renderer
   void DrawWireframe(bool enable);
   unsigned int UploadMesh(std::vector<float> vert, std::vector<unsigned int> index);
   glm::mat4 ProjectionMaxtrix(){
-    return glm::perspective(glm::radians(100.0f), 800.0f/600.0f, 1.0f, 500.0f);
+    return glm::perspective(glm::radians(200.0f), 800.0f/600.0f, 0.1f, 1000.0f);
   }
   glm::mat4& Camera(){
     return view_; 

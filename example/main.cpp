@@ -1,6 +1,6 @@
 #include "../include/ink.h"
 
-#include "bounce.h"
+#include "merge.h"
 #include <iostream>
 #include <chrono>
 

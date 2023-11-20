@@ -5,6 +5,6 @@ else()
 endif()
 
 target_sources(${PROJECT_NAME} PUBLIC 
-  example/bounce.h 
-  example/bounce.cpp
+  example/merge.h 
+  example/merge.cpp
   )

@@ -3,13 +3,14 @@
 #include "../include/ink.h"
 
 // Super basic screensaver example 
-class Bounce: public Application {
+class Merge: public Application {
  public:
-  Bounce(const char* name, int width, int height); 
-  void OnUserUpdate() override;
+  Merge(const char* name, int width, int height); 
+  void OnUserUpdate(std::time_t delta_t) override;
  private:
   void Load();
   Camera camera_;
+  glm::vec2 mouse_pos_;
 };
 
 // Ball class had an ImageView child node.

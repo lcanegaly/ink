@@ -27,7 +27,7 @@ void Application::Update(std::time_t delta_t ) {
   for (auto& x : objects_){
     x->Update(delta_t);
   }
-  OnUserUpdate();
+  OnUserUpdate(delta_t);
 }
 void Application::Draw() {
   Renderer::Get().StartDraw();

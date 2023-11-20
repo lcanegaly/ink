@@ -16,7 +16,7 @@ class Application {
   void Draw();
   void RegisterObject(Object* object);
   void RegisterObjectList(); 
-  virtual void OnUserUpdate(){}
+  virtual void OnUserUpdate(std::time_t delta_t){}
   bool shouldClose(){return window_->shouldClose() | !running_;}
   void Close(){
     running_ = false;
