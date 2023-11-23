@@ -6,6 +6,7 @@
 #include "mesh_renderer.h"
 #include "glm.hpp"
 #include "objimp/obj.h"
+#include "targa/targa.h"
 
 // TODO - a model would have many meshes and possibly materials.
 class Mesh : public Object {
@@ -30,6 +31,8 @@ class Mesh : public Object {
       }
     }
   }
+  GLuint tex_ = 0;
+  Targa::TgaImage* texture_ = nullptr;
   objimp::Model model_;
   std::vector<float> vertex_;
   std::vector<unsigned int> index_;

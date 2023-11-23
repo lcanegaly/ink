@@ -23,12 +23,13 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
   window_ptr_ = window_ptr;
   
   glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
-  glGenTextures(6, texture_);
+  glGenTextures(1, &texture_);
   glEnable(GL_DEPTH_TEST);
   view_ = glm::lookAt(glm::vec3(0.0f, 0.0f, 30.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0)); 
 };
 
 void Renderer::StartDraw() {
+  glFrontFace(GL_CW);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -196,7 +197,7 @@ void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int 
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
   glEnableVertexAttribArray(1);
-  glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
+  //glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
   glUniform1i (texture_uniform, 0 );
   
   glm::vec2 position = ConvertPixelToNorm(pos_x, pos_y);
@@ -236,7 +237,7 @@ void Renderer::Draw(ImageData& image_data) {
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
   glEnableVertexAttribArray(1);
-  glBindTexture(GL_TEXTURE_2D, texture_[image_data.bind_num]);
+  //glBindTexture(GL_TEXTURE_2D, texture_[image_data.bind_num]);
   glUniform1i(texture_uniform, 0 );
   
   glm::vec2 position = ConvertPixelToNorm(image_data.pos_x, image_data.pos_y);
@@ -255,20 +256,24 @@ void Renderer::Draw(ImageData& image_data) {
   glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height, int color_depth) {
-  glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
+GLuint Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height, int color_depth) {
+  //glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
+  glActiveTexture(GL_TEXTURE0); 
+  glBindTexture(GL_TEXTURE_2D, texture_);
   // set texture wrapping
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   if (color_depth == 3) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture); 
   }
   else{
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture); 
+    glGenerateMipmap(GL_TEXTURE_2D);
   }
+  return texture_;
 }
 
 glm::vec2 Renderer::ConvertNormToPixel(glm::vec2 xy) {

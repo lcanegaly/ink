@@ -7,7 +7,7 @@ class MeshRenderer : public RenderDelegate {
  public: 
   MeshRenderer(Mesh& parent_mesh, Shader* shader);
   void Draw() override; 
-  void Load() override; 
+  void Load() override;
  private:
   Mesh& mesh_;
   Shader* shader_;
