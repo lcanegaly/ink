@@ -9,14 +9,14 @@
 
 namespace objimp{
 struct Vertex{
-  double x = 0.0;
-  double y = 0.0;
-  double z = 0.0;
+  float x = 0.0;
+  float y = 0.0;
+  float z = 0.0;
 };
 
 struct Texture{
-  double x = 0.0;
-  double y = 0.0;
+  float x = 0.0;
+  float y = 0.0;
 };
 
 struct Face{
@@ -70,7 +70,7 @@ class Model{
                       end = line.length(); 
                     }
                     i = end; 
-                    double* value_ptr = &t.x;
+                    float* value_ptr = &t.x;
                     std::string out = line.substr(marker+1, end - marker);
                     *(value_ptr + index++) = std::stod(out);
                   }
@@ -93,7 +93,7 @@ class Model{
                     end = line.length(); 
                   }
                   i = end; 
-                  double* value_ptr = &v.x;
+                  float* value_ptr = &v.x;
                   std::string out = line.substr(marker+1, end - marker);
                   *(value_ptr + index++) = std::stod(out);
                 }

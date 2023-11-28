@@ -11,6 +11,8 @@
 #include "shaders.h"
 #include "transform.h"
 #include <iostream>
+#include "vertex.h"
+
 Renderer::Renderer() 
 	: width_{ 0 }, height_{ 0 }, vbo_{ 0 }, vao_{ 0 }, program_{ 0 }, texture_{ 0 }
 {};
@@ -29,7 +31,7 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 };
 
 void Renderer::StartDraw() {
-  glFrontFace(GL_CW);
+  //glFrontFace(GL_CCW);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -49,15 +51,7 @@ void Renderer::DrawWireframe(bool enable){
 }
 
 //TODO is this a good name for this func.
-unsigned int Renderer::UploadMesh(std::vector<float> vert, std::vector<unsigned int> index){
- /* 
-  std::cout << "mesh uploaded \n vertex \n";
-  for (auto x : vert)
-    std::cout << x << " ";
-  std::cout << "index.. \n";
-  for (auto y : index)
-    std::cout << y << " ";
- */ 
+unsigned int Renderer::UploadMesh(std::vector<Vertex> vert, std::vector<unsigned int> index){
   GLuint vao;
   GLuint vbo;
   GLuint ebo;
@@ -79,7 +73,6 @@ unsigned int Renderer::UploadMesh(std::vector<float> vert, std::vector<unsigned 
 	  -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, //7 top left 
   };
 
-
   unsigned int indices [] = {
     0,1,3,
     1,2,3,
@@ -97,10 +90,11 @@ unsigned int Renderer::UploadMesh(std::vector<float> vert, std::vector<unsigned 
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  
   glBindBuffer(GL_ARRAY_BUFFER, vbo);  
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * index.size(), &index[0], GL_STATIC_DRAW);
- // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
   //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vert.size(), &vert[0], GL_STATIC_DRAW);
+  
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * index.size(), &index[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vert.size() * sizeof(float) * 5, &vert[0], GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
   glEnableVertexAttribArray(0);
@@ -108,8 +102,8 @@ unsigned int Renderer::UploadMesh(std::vector<float> vert, std::vector<unsigned 
   glEnableVertexAttribArray(1);
   glBindVertexArray(0); 
   return vao;
-
 }
+
 unsigned int Renderer::VertexArray() {
   GLuint vao;
   GLuint vbo;

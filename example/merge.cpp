@@ -12,12 +12,12 @@ class EdgeMerge : public UpdateDelegate {
   public:
     void Update(std::time_t delta_t) override {
       if (parent)
-        parent->transform.angle = parent->transform.angle + 0.1f; 
+        parent->transform.angle = parent->transform.angle + 0.2f; 
     }
 };
 
 std::unique_ptr<Application> CreateApplication(){
-  return std::make_unique<Merge>("pup", 1280, 1024);
+  return std::make_unique<Merge>("pup", 1280, 800);
 }
 
 Merge::Merge(const char* name, int width, int height) : 
@@ -25,25 +25,23 @@ Merge::Merge(const char* name, int width, int height) :
 {
     
   Renderer::Get().SetClearColor(0.25, 0.501, 0.749, 1.0); 
- 
   Shader* shader = new Shader("/home/lee/code/ink/build/tex_vertex.sh",
       "/home/lee/code/ink/build/tex_fragment.sh");
   shader->setInt("tex", 0);
-  //Mesh* floor = new Mesh(shader, "/home/lee/code/ink/build/floor.obj");
-  //floor->texture_ = new Targa::TgaImage("/home/lee/code/ink/build/test.tga");
-  //floor->tex_ = Renderer::Get().LoadTexture((unsigned char*)floor->texture_->data(), 1, floor->texture_->width(),floor->texture_->height(), 4); 
-
-  //floor->transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-  //floor->transform.position.y = -0.1f;
-  //RegisterObject(floor);
+  Mesh* floor = new Mesh(shader, "/home/lee/code/ink/build/floor.obj");
+  floor->texture_ = new Targa::TgaImage("/home/lee/code/ink/build/test2.tga");
+  floor->tex_ = Renderer::Get().LoadTexture((unsigned char*)floor->texture_->data(), 0, floor->texture_->width(),floor->texture_->height(), 4); 
+  floor->transform.scale = glm::vec3(50.0f, 50.0f, 50.0f);
+  RegisterObject(floor);
   
-  //floor->PushNode(new Ball());
-  Mesh* test = new Mesh(shader, "/home/lee/code/ink/build/quad2.obj"); 
-  test->texture_ = new Targa::TgaImage("/home/lee/code/ink/build/brick.tga");
-  test->tex_ = Renderer::Get().LoadTexture((unsigned char*)test->texture_->data(), 0, test->texture_->width(),test->texture_->height(), 4); 
-  test->transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-  RegisterObject(test);
-  camera_.Position = glm::vec3(0.0f, 50.0f, 0.0f);
+  floor->PushNode(new Ball());
+  
+  //Mesh* test = new Mesh(shader, "/home/lee/code/ink/build/quad2.obj"); 
+  //test->texture_ = new Targa::TgaImage("/home/lee/code/ink/build/brick.tga");
+  //test->tex_ = Renderer::Get().LoadTexture((unsigned char*)test->texture_->data(), 0, test->texture_->width(),test->texture_->height(), 4); 
+  //test->transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
+  //RegisterObject(test);
+  camera_.Position = glm::vec3(0.0f, 0.0f, -10.0f);
   camera_.Translate(camera_.Front, 0.1f);
   GLFWInput::Get().CaptureMouse(true);
   mouse_pos_ = GLFWInput::Get().GetMousePosition();
@@ -53,7 +51,7 @@ Merge::Merge(const char* name, int width, int height) :
 void Merge::OnUserUpdate(std::time_t delta_t) {
   auto mouse_pos = GLFWInput::Get().GetMousePosition();
   auto delta = mouse_pos_ - mouse_pos;
-  camera_.Rotate(delta.x * delta_t * -0.001f, delta.y * delta_t * 0.001f); 
+  camera_.Rotate(delta.x * delta_t * -0.005f, delta.y * delta_t * 0.005f); 
   auto key = GLFWInput::Get().GetKey(GLFW_KEY_W);
   if (key){
     camera_.Translate(camera_.Front, 0.1f * delta_t);
@@ -78,6 +76,10 @@ void Merge::OnUserUpdate(std::time_t delta_t) {
   if (key){
     camera_.Translate(camera_.Up, -0.01f * delta_t);
   }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_Z);
+  if (key){
+    Renderer::Get().Camera()= glm::lookAt(camera_.Position, objects_[0]->transform.position, glm::vec3(0.0,1.0,0.0)); 
+  }
   key = GLFWInput::Get().GetKey(GLFW_KEY_ESCAPE);
   if (key){
     std::cout << "esc\n"; 
@@ -85,8 +87,7 @@ void Merge::OnUserUpdate(std::time_t delta_t) {
     Close();
   }
   mouse_pos_ = mouse_pos;
-  //Renderer::Get().Camera()= camera_.GetViewMatrix(); 
-  Renderer::Get().Camera()= glm::lookAt(camera_.Position, objects_[0]->transform.position, glm::vec3(0.0,1.0,0.0)); 
+  Renderer::Get().Camera()= camera_.GetViewMatrix(); 
 }
 
 void Merge::Load() {
@@ -96,12 +97,12 @@ void Merge::Load() {
 Ball::Ball(){ 
   Shader* shader = new Shader("/home/lee/code/ink/build/vertex.sh",
       "/home/lee/code/ink/build/fragment.sh");
-  Mesh* dog = new Mesh(shader, "/home/lee/code/ink/build/test.obj");
-  dog->transform.position = glm::vec3( 0.0f, 1.5f, 0.0f);
+  Mesh* dog = new Mesh(shader, "/home/lee/code/ink/build/doge.obj");
+  dog->transform.position = glm::vec3( 0.0f, 1.0f, 0.0f);
   this->transform.rotation_axis = glm::vec3(0, 1, 0 );
   UpdateDelegate* update = new EdgeMerge();
   update->parent = this;
-  //set_updateDelegate(update);
+  set_updateDelegate(update);
   this->PushNode(dog);
 }
  
