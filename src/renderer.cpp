@@ -24,7 +24,7 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 	height_ = height;
   window_ptr_ = window_ptr;
   
-  glClearColor(0.65f, 0.45f, 0.65f, 1.0f);
+  glClearColor(0.25, 0.501, 0.749, 1.0);
   glGenTextures(1, &texture_);
   glEnable(GL_DEPTH_TEST);
   view_ = glm::lookAt(glm::vec3(0.0f, 0.0f, 30.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0)); 
@@ -252,6 +252,7 @@ void Renderer::Draw(ImageData& image_data) {
 
 GLuint Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height, int color_depth) {
   //glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
+  glGenTextures(1, &texture_);
   glActiveTexture(GL_TEXTURE0); 
   glBindTexture(GL_TEXTURE_2D, texture_);
   // set texture wrapping

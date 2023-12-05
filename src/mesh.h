@@ -6,14 +6,15 @@
 #include "mesh_renderer.h"
 #include "glm.hpp"
 #include "objimp/obj.h"
-#include "targa/targa.h"
 #include "vertex.h"
-     
+#include "texture.h"
+
 // TODO - a model would have many meshes and possibly materials.
 class Mesh : public Object {
  public:
-  Mesh(Shader* shader, objimp::Model model)
-          : Object(new NoUpdate, new MeshRenderer(*this, shader)), model_{model}{
+  Mesh(Shader* shader, objimp::Model model, Texture texture = Texture())
+          : Object(new NoUpdate, new MeshRenderer(*this, shader)), model_{model},
+            texture_{texture}{
     // TODO this is loading texture coords wrong.
 
     for (int i = 0; i < model_.faces_.size(); i++) {
@@ -38,18 +39,12 @@ class Mesh : public Object {
   int findVertex(Vertex v){
     for (int i = 0; i < vertices_.size(); i++){
       auto vert = vertices_[i];
-      if (vert.Position.x == v.Position.x &&
-          vert.Position.y == v.Position.y &&
-          vert.Position.z == v.Position.z && 
-          vert.TexCoords.x == v.TexCoords.x &&
-          vert.TexCoords.y == v.TexCoords.y){
+      if (vert == v) 
           return i;
-      }
     } 
     return -1;
   }
-  GLuint tex_ = 0;
-  Targa::TgaImage* texture_ = nullptr;
+  Texture texture_;
   objimp::Model model_;
   std::vector<Vertex> vertices_;
   std::vector<unsigned int> index_;

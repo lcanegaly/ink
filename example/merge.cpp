@@ -11,8 +11,9 @@
 class EdgeMerge : public UpdateDelegate {
   public:
     void Update(std::time_t delta_t) override {
-      if (parent)
-        parent->transform.angle = parent->transform.angle + 0.2f; 
+      if (parent){
+          parent->transform.angle = (parent->transform.angle > 360.0f) ? parent->transform.angle + 0.4f : 0.4f; 
+      }
     }
 };
 
@@ -23,29 +24,32 @@ std::unique_ptr<Application> CreateApplication(){
 Merge::Merge(const char* name, int width, int height) : 
     Application(name, width, height) 
 {
-    
-  Renderer::Get().SetClearColor(0.25, 0.501, 0.749, 1.0); 
-  Shader* shader = new Shader("/home/lee/code/ink/build/tex_vertex.sh",
-      "/home/lee/code/ink/build/tex_fragment.sh");
-  shader->setInt("tex", 0);
-  Mesh* floor = new Mesh(shader, "/home/lee/code/ink/build/floor.obj");
-  floor->texture_ = new Targa::TgaImage("/home/lee/code/ink/build/test2.tga");
-  floor->tex_ = Renderer::Get().LoadTexture((unsigned char*)floor->texture_->data(), 0, floor->texture_->width(),floor->texture_->height(), 4); 
+  auto& assets = AssetManager::Get();   
+  Mesh* floor = new Mesh(&assets.GetShader("texture"), assets.GetModel("floor"), assets.GetTexture("test2"));
   floor->transform.scale = glm::vec3(50.0f, 50.0f, 50.0f);
   RegisterObject(floor);
   
   floor->PushNode(new Ball());
+
+  auto w = 10;
+  auto l = 10;
+  auto h = 10;
+  for (int i = 0; i < w; i++){
+    for (int j = 0; j < l; j++){ 
+      for (int k = 0; k < h; k++){ 
+        Mesh* dog = new Mesh(&AssetManager::Get().GetShader("color"), AssetManager::Get().GetModel("doge"));
+        dog->transform.position = glm::vec3( 1.0f + i, 1.0f + k, 1.0f + j);
+        dog->transform.scale = glm::vec3( 0.3f, 0.3f, 0.3f);
+        dog->set_updateDelegate(new EdgeMerge());
+        floor->PushNode(dog);
+      }
+    }
+  }
   
-  //Mesh* test = new Mesh(shader, "/home/lee/code/ink/build/quad2.obj"); 
-  //test->texture_ = new Targa::TgaImage("/home/lee/code/ink/build/brick.tga");
-  //test->tex_ = Renderer::Get().LoadTexture((unsigned char*)test->texture_->data(), 0, test->texture_->width(),test->texture_->height(), 4); 
-  //test->transform.scale = glm::vec3(1.0f, 1.0f, 1.0f);
-  //RegisterObject(test);
-  camera_.Position = glm::vec3(0.0f, 0.0f, -10.0f);
+  camera_.Position = glm::vec3(0.0f, 150.0f, -100.0f);
   camera_.Translate(camera_.Front, 0.1f);
   GLFWInput::Get().CaptureMouse(true);
   mouse_pos_ = GLFWInput::Get().GetMousePosition();
-
 }
 
 void Merge::OnUserUpdate(std::time_t delta_t) {
@@ -54,27 +58,27 @@ void Merge::OnUserUpdate(std::time_t delta_t) {
   camera_.Rotate(delta.x * delta_t * -0.005f, delta.y * delta_t * 0.005f); 
   auto key = GLFWInput::Get().GetKey(GLFW_KEY_W);
   if (key){
-    camera_.Translate(camera_.Front, 0.1f * delta_t);
+    camera_.Translate(camera_.Front, 0.03f * delta_t);
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_S);
   if (key){
-    camera_.Translate(camera_.Front, -0.1f * delta_t);
+    camera_.Translate(camera_.Front, -0.03f * delta_t);
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_A);
   if (key){
-    camera_.Translate(camera_.Right, -0.01f * delta_t);
+    camera_.Translate(camera_.Right, -0.03f * delta_t);
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_D);
   if (key){
-    camera_.Translate(camera_.Right, 0.01f * delta_t);
+    camera_.Translate(camera_.Right, 0.03f * delta_t);
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_SPACE);
   if (key){
-    camera_.Translate(camera_.Up, 0.01f * delta_t);
+    camera_.Translate(camera_.Up, 0.03f * delta_t);
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_X);
   if (key){
-    camera_.Translate(camera_.Up, -0.01f * delta_t);
+    camera_.Translate(camera_.Up, -0.03f * delta_t);
   }
   key = GLFWInput::Get().GetKey(GLFW_KEY_Z);
   if (key){
@@ -91,38 +95,17 @@ void Merge::OnUserUpdate(std::time_t delta_t) {
 }
 
 void Merge::Load() {
-  // Add ball object as the root node for the application.
 }
 
 Ball::Ball(){ 
-  Shader* shader = new Shader("/home/lee/code/ink/build/vertex.sh",
-      "/home/lee/code/ink/build/fragment.sh");
-  Mesh* dog = new Mesh(shader, "/home/lee/code/ink/build/doge.obj");
+  Mesh* dog = new Mesh(&AssetManager::Get().GetShader("color"), AssetManager::Get().GetModel("doge"));
   dog->transform.position = glm::vec3( 0.0f, 1.0f, 0.0f);
   this->transform.rotation_axis = glm::vec3(0, 1, 0 );
   UpdateDelegate* update = new EdgeMerge();
-  update->parent = this;
   set_updateDelegate(update);
   this->PushNode(dog);
-}
+  }
  
 void Ball::OnUserUpdate(time_t delta_t) {
-/* 
-  // Flip y velocity if past bounds.
-  if (transform.position.y > 4 && velocity_.y > 0){
-    velocity_.y *= -1.0;
-  }else if (transform.position.y < -4 && velocity_.y < 0){
-    velocity_.y *= -1.0;
-  }
-  // Flip x velocity if past bounds.
-  if (transform.position.x > 4 && velocity_.x > 0){
-    velocity_.x *= -1.0;
-  }else if (transform.position.x < -4 && velocity_.x < 0){
-    velocity_.x *= -1.0;
-  }
-  // Update position based on new velocity
-  transform.position.x  = transform.position.x  + velocity_.x * delta_t; 
-  transform.position.y  = transform.position.y  + velocity_.y * delta_t; 
-*/
-  } 
+} 
 

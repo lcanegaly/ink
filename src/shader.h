@@ -10,6 +10,7 @@
 class Shader {
  public:
   unsigned int ID;
+  Shader(){  } // noop
   Shader(const char* vertexPath, const char* fragmentPath) {
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
@@ -77,7 +78,6 @@ class Shader {
 	  glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE,
         glm::value_ptr(value));
   }
-
 
  private:
   void checkCompileErrors(unsigned int shader, std::string type) {

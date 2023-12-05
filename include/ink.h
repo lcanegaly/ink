@@ -16,3 +16,4 @@
 #include "../src/node_2d.h"
 #include "../src/mesh.h"
 #include "../src/camera.h"
+#include "../src/asset_manager.h"
