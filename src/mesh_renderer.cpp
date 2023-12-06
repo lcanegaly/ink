@@ -8,6 +8,7 @@ MeshRenderer::MeshRenderer(Mesh& parent_mesh, Shader* shader )
     : mesh_{parent_mesh},
       shader_{shader} {
   Renderer::Get().DrawWireframe(false);
+  vao_ = Renderer::Get().UploadMesh(mesh_.vertices_, mesh_.index_); 
 }
 
 void MeshRenderer::Load(){
@@ -15,7 +16,6 @@ void MeshRenderer::Load(){
 
 void MeshRenderer::Draw(){
   shader_->use(); 
-  vao_ = Renderer::Get().UploadMesh(mesh_.vertices_, mesh_.index_); 
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 projection = Renderer::Get().ProjectionMaxtrix();
   model = projection * Renderer::Get().Camera() *  mesh_.transform.GlobalMatrix(); 

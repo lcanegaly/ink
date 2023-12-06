@@ -50,7 +50,6 @@ void Renderer::DrawWireframe(bool enable){
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-//TODO is this a good name for this func.
 unsigned int Renderer::UploadMesh(std::vector<Vertex> vert, std::vector<unsigned int> index){
   GLuint vao;
   GLuint vbo;
@@ -60,38 +59,8 @@ unsigned int Renderer::UploadMesh(std::vector<Vertex> vert, std::vector<unsigned
   glGenBuffers(1, &ebo);  
   
   glBindVertexArray(vao);  
-  const float vertices [] = {
-    // front face 
-    0.5f,  0.5f, 0.5f, 1.0f, 1.0f,  //0 top right
-	  0.5f, -0.5f, 0.5f, 1.0f, 0.0f,  //1 bottom right
-	  -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, //2 bottom left
-	  -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, //3 top left 
-    // back face 
-    0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  //4 top right
-	  0.5f, -0.5f, -0.5f, 1.0f, 0.0f, //5 bottom right
-	  -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, //6 bottom left
-	  -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, //7 top left 
-  };
-
-  unsigned int indices [] = {
-    0,1,3,
-    1,2,3,
-    2,3,7,
-    2,6,7,
-    4,5,7,
-    5,6,7,
-    4,0,5,
-    1,0,5,
-    0,3,4,
-    3,7,4,
-    1,2,5,
-    2,6,5
-  };
-
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  
   glBindBuffer(GL_ARRAY_BUFFER, vbo);  
-  //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-  //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * index.size(), &index[0], GL_STATIC_DRAW);
   glBufferData(GL_ARRAY_BUFFER, vert.size() * sizeof(float) * 5, &vert[0], GL_STATIC_DRAW);
@@ -105,71 +74,8 @@ unsigned int Renderer::UploadMesh(std::vector<Vertex> vert, std::vector<unsigned
 }
 
 unsigned int Renderer::VertexArray() {
-  GLuint vao;
-  GLuint vbo;
-  GLuint ebo;
-  glGenVertexArrays(1, &vao);  
-  glGenBuffers(1, &vbo);  
-  glGenBuffers(1, &ebo);  
-  const float vertices [] = {
-    // front face 
-    0.5f,  0.5f, 0.5f, 1.0f, 1.0f,  //0 top right
-	  0.5f, -0.5f, 0.5f, 1.0f, 0.0f,  //1 bottom right
-	  -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, //2 bottom left
-	  -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, //3 top left 
-    // back face 
-    0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  //4 top right
-	  0.5f, -0.5f, -0.5f, 1.0f, 0.0f, //5 bottom right
-	  -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, //6 bottom left
-	  -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, //7 top left 
-  };
-
-  std::vector<float> v;
-  std::cout << "vertex begin \n ";
-  for (auto x : vertices){
-    std::cout << x << " ";
-    v.push_back(x);
-  }
-  //  std::cout << sizeof(float) * v.size() << " " << sizeof(vertices) << " sizes.. \n"; 
-    std::cout << "\n vertex end \n";
-   
-
-  unsigned int indices [] = {
-    0,1,3,
-    1,2,3,
-    2,3,7,
-    2,6,7,
-    4,5,7,
-    5,6,7,
-    4,0,5,
-    1,0,5,
-    0,3,4,
-    3,7,4,
-    1,2,5,
-    2,6,5
-  };
-
-  std::vector<unsigned int> i;
-  for (auto x : indices)
-    i.push_back(x);
-  //std::cout << sizeof(unsigned int) * i.size() << " " << sizeof(indices) << " sizes.. \n"; 
-  
-  glBindVertexArray(vao);  
-  
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);  
-  //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) *i.size(), &i[0], GL_STATIC_DRAW);
-  //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  glBufferData(GL_ARRAY_BUFFER, (v.size() * sizeof(float)), &v[0], GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
-  glEnableVertexAttribArray(1);
-  glBindVertexArray(0); 
-  return vao;
-}
+  return 0;
+};
 
 void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation) {
   glUseProgram(program_);

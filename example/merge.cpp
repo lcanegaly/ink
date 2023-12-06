@@ -12,7 +12,7 @@ class EdgeMerge : public UpdateDelegate {
   public:
     void Update(std::time_t delta_t) override {
       if (parent){
-          parent->transform.angle = (parent->transform.angle > 360.0f) ? parent->transform.angle + 0.4f : 0.4f; 
+          parent->transform.angle = (parent->transform.angle < 360.0f) ? parent->transform.angle + 0.4f : 0.4f; 
       }
     }
 };
@@ -40,7 +40,7 @@ Merge::Merge(const char* name, int width, int height) :
         Mesh* dog = new Mesh(&AssetManager::Get().GetShader("color"), AssetManager::Get().GetModel("doge"));
         dog->transform.position = glm::vec3( 1.0f + i, 1.0f + k, 1.0f + j);
         dog->transform.scale = glm::vec3( 0.3f, 0.3f, 0.3f);
-        dog->set_updateDelegate(new EdgeMerge());
+        dog->set_update_delegate(new EdgeMerge());
         floor->PushNode(dog);
       }
     }
@@ -84,6 +84,14 @@ void Merge::OnUserUpdate(std::time_t delta_t) {
   if (key){
     Renderer::Get().Camera()= glm::lookAt(camera_.Position, objects_[0]->transform.position, glm::vec3(0.0,1.0,0.0)); 
   }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_1);
+  if (key){
+    GLFWInput::Get().CaptureMouse(true);
+  }
+  key = GLFWInput::Get().GetKey(GLFW_KEY_TAB);
+  if (key){
+    GLFWInput::Get().CaptureMouse(false);
+  }
   key = GLFWInput::Get().GetKey(GLFW_KEY_ESCAPE);
   if (key){
     std::cout << "esc\n"; 
@@ -102,7 +110,7 @@ Ball::Ball(){
   dog->transform.position = glm::vec3( 0.0f, 1.0f, 0.0f);
   this->transform.rotation_axis = glm::vec3(0, 1, 0 );
   UpdateDelegate* update = new EdgeMerge();
-  set_updateDelegate(update);
+  set_update_delegate(update);
   this->PushNode(dog);
   }
  

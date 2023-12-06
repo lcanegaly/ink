@@ -29,6 +29,10 @@ public:
     void Rotate(float deltaYaw, float deltaPitch) {
         Yaw += deltaYaw;
         Pitch += deltaPitch;
+        if (Pitch <-80.0f)
+          Pitch = -80.0f;
+        if (Pitch > 80.0f)
+          Pitch = 80.0f;
         updateCameraVectors();
     }
 

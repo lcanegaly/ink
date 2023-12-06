@@ -121,7 +121,8 @@ class Object : public ObjectInterface {
   virtual void set_name(std::string name) override;
   virtual void set_position(glm::vec2 position, float rotation) override;
   virtual void set_size(glm::vec2 size) override;
-  void set_updateDelegate(UpdateDelegate* updateDelegate);
+  void set_update_delegate(UpdateDelegate* update_delegate);
+  void set_render_delegate(RenderDelegate* render_delegate);
   // TODO getter 
   time_t elapsed_time_;
 

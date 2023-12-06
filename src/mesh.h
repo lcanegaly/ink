@@ -13,7 +13,7 @@
 class Mesh : public Object {
  public:
   Mesh(Shader* shader, objimp::Model model, Texture texture = Texture())
-          : Object(new NoUpdate, new MeshRenderer(*this, shader)), model_{model},
+          : Object(new NoUpdate, nullptr ), model_{model},
             texture_{texture}{
     // TODO this is loading texture coords wrong.
 
@@ -35,6 +35,7 @@ class Mesh : public Object {
         }
       }
     }
+    set_render_delegate(new MeshRenderer(*this, shader)); 
   }
   int findVertex(Vertex v){
     for (int i = 0; i < vertices_.size(); i++){
