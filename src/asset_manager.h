@@ -53,6 +53,14 @@ class AssetManager {
       texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), 0, texture->width(), texture->height(), 4); 
       textures_["brick"] = Texture{texture_id, texture}; 
       
+      texture = new Targa::TgaImage("/home/lee/code/ink/build/concrete.tga");
+      texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), 0, texture->width(), texture->height(), 4); 
+      textures_["concrete"] = Texture{texture_id, texture}; 
+ 
+      texture = new Targa::TgaImage("/home/lee/code/ink/build/concrete_tiles.tga");
+      texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), 0, texture->width(), texture->height(), 4); 
+      textures_["concrete_tile"] = Texture{texture_id, texture}; 
+
 
       // ------------ SHADERS ------------
       auto shader = Shader("/home/lee/code/ink/build/tex_vertex.sh",
