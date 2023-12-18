@@ -44,7 +44,7 @@ class Renderer
   void Draw(ImageData& image_data);
   glm::vec2 ConvertNormToPixel(glm::vec2 xy);
   glm::vec2 ConvertPixelToNorm(int x, int y);
-  GLuint LoadTexture(unsigned char* texture, int bind_num, int width, int height,
+  GLuint LoadTexture(unsigned char* texture, int width, int height,
       int color_depth);
   unsigned int VertexArray(); 
   void DrawWireframe(bool enable);

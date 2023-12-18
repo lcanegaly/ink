@@ -156,8 +156,7 @@ void Renderer::Draw(ImageData& image_data) {
   glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-GLuint Renderer::LoadTexture(unsigned char *texture, int bind_num, int width, int height, int color_depth) {
-  //glBindTexture(GL_TEXTURE_2D, texture_[bind_num]);
+GLuint Renderer::LoadTexture(unsigned char *texture, int width, int height, int color_depth) {
   glGenTextures(1, &texture_);
   glActiveTexture(GL_TEXTURE0); 
   glBindTexture(GL_TEXTURE_2D, texture_);

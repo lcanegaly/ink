@@ -3,6 +3,7 @@
 #include "button.h"
 #include "audio.h"
 #include "log.h"
+#include "object.h"
 
 Clickable::Clickable() : input_delegate_{new GLFWInput()}{}
 
@@ -40,12 +41,12 @@ void Clickable::SetExecute(std::function<void()> f){
 }
 
 Button::Button(const char* filepath):
-    Object(new Clickable(this), new DrawTexture(this)) {
+    Object(new Clickable(this), new Invisible()) {
   Load(filepath);
 }
 
 Button::Button(const char* filepath, int width, int height, int X, int Y): 
-    Object(new Clickable(this), new DrawTexture(this), new Silent()) {
+    Object(new Clickable(this), new Invisible(), new Silent()) {
   set_size(glm::vec2(width, height));
   set_position(glm::vec2(X,Y), 0); //TODO - fix, should take rotation from constructor.
   Load(filepath);

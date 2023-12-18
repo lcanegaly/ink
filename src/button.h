@@ -3,9 +3,9 @@
 #include <chrono>
 
 #include "object.h"
-#include "image.h"
 #include "callback.h"
 #include "vec2.h"
+#include "input.h"
 
 class Clickable : public UpdateDelegate {
  public:

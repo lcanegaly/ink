@@ -2,12 +2,11 @@
 
 #include "image_view.h"
 #include "vec2.h"
-#include "image.h"
 #include "cmath"
 #include "targa/targa.h"
 
 ImageView::ImageView(IVec2 size, IVec2 position) : Object(new NoUpdate(), 
-    new DrawTexture(this)), size_{size}, position_{position} {
+    new Invisible()) {
   set_position(glm::vec2{position_.x, position_.y}, 0);
   set_size(glm::vec2{size_.x, size_.y});
   const int color_channels = 4;
@@ -17,9 +16,10 @@ ImageView::ImageView(IVec2 size, IVec2 position) : Object(new NoUpdate(),
     size_.y,
     color_channels 
   };
-  render_delegate().Load(buffer_);
+  //render_delegate().Load(buffer_);
 }
 
+// TODO needs refactored
 void ImageView::Draw(){ render_delegate().Draw(); } 
 
 void ImageView::setBrush(Brush brush){ brush_ = brush; } 

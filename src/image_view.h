@@ -2,7 +2,6 @@
 #include <functional>
 
 #include "object.h"
-#include "image.h"
 #include "vec2.h"
 #include "targa/targa.h"
 #include "glm.hpp"
@@ -46,6 +45,7 @@ class ImageView : public Object {
   void Draw() override;
   void setBrush(Brush brush); 
   void Clear(Color color = Color{0,0,0,0});
+  // TODO - should have functions to get buffer so it can be uploaded as a texture
 
  private:
   void ForEachPixel(std::function<bool(int,int)> test_condition, 

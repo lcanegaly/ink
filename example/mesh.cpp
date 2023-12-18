@@ -34,18 +34,14 @@ Merge::Merge(const char* name, int width, int height) :
 
   {
   // Tile floor objects
-  auto w = 60;
-  auto l = 60;
+  auto w = 30;
+  auto l = 30;
   auto h = 1;
   for (int i = 0; i < w; i++){
     for (int j = 0; j < l; j++){ 
       for (int k = 0; k < h; k++){ 
           Mesh* floor = new Mesh(&assets.GetShader("texture"), assets.GetModel("floor"), assets.GetTexture("concrete_tile"));
           floor->transform.position = glm::vec3(2 * i, 2 * k, 2 * j);
-          std::cout << i << " " << j << " " << k << " " << 
-            floor->transform.position.x << " " <<  
-            floor->transform.position.y << " " << 
-            floor->transform.angle << "\n";
           world->PushNode(floor);
       }
     }

@@ -4,15 +4,11 @@ target_sources(${PROJECT_NAME} PRIVATE
  ${CMAKE_CURRENT_SOURCE_DIR}/renderer.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/targa/targa.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/object.cpp
- ${CMAKE_CURRENT_SOURCE_DIR}/image.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/image_view.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/window.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/application.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/input.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/button.cpp
- ${CMAKE_CURRENT_SOURCE_DIR}/sprite.cpp
- ${CMAKE_CURRENT_SOURCE_DIR}/label.cpp
- ${CMAKE_CURRENT_SOURCE_DIR}/textbox.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/audio.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/mesh_renderer.cpp
 )

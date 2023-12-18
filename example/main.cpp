@@ -20,10 +20,10 @@ int main()
     startTime = currentTime; 
     app->Draw();
     app->Update(delta_time);
-    if (counter++ > 1000) {
-      std::cout << "delta = " << delta_time << " \n"; 
-      counter = 0;
-    } 
+    //if (counter++ > 1000) {
+    //  std::cout << "delta = " << delta_time << " \n"; 
+    //  counter = 0;
+    //} 
   }
   app->Close();
   return 0;
