@@ -70,15 +70,3 @@ class Renderer
 	GLuint texture_;
   WindowDelegate* window_ptr_;
 };
-
-static const float vertices[30] = {
-	// first triangle
-	 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,  // top right
-	 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-	-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, // top left 
-	// second triangle
-	 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-	-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, // bottom left
-	-1.0f,  1.0f, 0.0f, 0.0f, 1.0f // top left
-};
-

@@ -1,6 +1,6 @@
 message(DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
-target_sources(${PROJECT_NAME} PRIVATE 
+target_sources(${LIB_NAME} PRIVATE 
  ${CMAKE_CURRENT_SOURCE_DIR}/renderer.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/targa/targa.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/object.cpp

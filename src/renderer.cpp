@@ -31,7 +31,6 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
 };
 
 void Renderer::StartDraw() {
-  //glFrontFace(GL_CCW);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -72,10 +71,6 @@ unsigned int Renderer::UploadMesh(std::vector<Vertex> vert, std::vector<unsigned
   glBindVertexArray(0); 
   return vao;
 }
-
-unsigned int Renderer::VertexArray() {
-  return 0;
-};
 
 void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation) {
   glUseProgram(program_);
