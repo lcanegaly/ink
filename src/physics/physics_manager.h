@@ -12,7 +12,6 @@
 class PhysicsManager{
   public:
     PhysicsManager(){
-        std::cout << "pm init.. \n";
     }
     RigidBody* CreateRigidBody(glm::vec3 origin, double radius, double mass){
       bodies_.emplace_back(new RigidBody(origin, radius, mass));
@@ -22,14 +21,11 @@ class PhysicsManager{
     void Start(){
       if (!running_){
         running_ = true;
-        std::cout << "pm start.. \n";
         update_thread_ = std::thread (&PhysicsManager::Update, this);
-        std::cout << "pm thread start.. \n";
       }
     } 
     void Update(){
       while (true){
-        //std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         for (auto& b : bodies_){
           Transform bt = b->GetTransform();
@@ -38,13 +34,11 @@ class PhysicsManager{
             if (b == b2)
               continue;
             glm::vec3 distance = bt.position - b2t.position;
-            if (std::abs(distance.x) > 2.0 || std::abs(distance.y) > 2.0 || std::abs(distance.z) > 2.0)
+            if (std::abs(distance.x) > 2.0 || std::abs(distance.y) > 2.0 
+                || std::abs(distance.z) > 2.0)
               continue;
             glm::vec3 intersection = b->Collides(*b2);
             if (intersection != glm::vec3(0)){
-              std::cout << "colliding " << bt.position.x << " " 
-                << bt.position.z << " with " << b2t.position.x 
-                << " " << b2t.position.z << "intersection of " << intersection.x << " " << intersection.z <<  "\n";
               b->ApplyForce(intersection * glm::vec3(1.0));
               b2->ApplyForce(-intersection * glm::vec3(1.0)); }  
           }

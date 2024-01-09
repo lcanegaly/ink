@@ -22,7 +22,7 @@ class Collider{
       double o_mesh_radius = other.sphere_radius;
       double t_mesh_radius = sphere_radius;
       glm::vec3 t_mesh = sphere_origin;
-      glm::vec3 diff_vector = glm::vec3((o_mesh.x - t_mesh.x),(o_mesh.y - t_mesh.y),(o_mesh.z - t_mesh.z));
+      glm::vec3 diff_vector = o_mesh - t_mesh;
       double d = std::sqrt(
           std::pow((diff_vector.x), 2) + 
           std::pow((diff_vector.y), 2) + 

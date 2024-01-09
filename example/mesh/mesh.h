@@ -11,7 +11,6 @@ class MeshDemo : public Application {
   PhysicsManager pm_; 
   void Load();
   Camera& camera_;
-  Mesh* ram_;
   glm::vec2 mouse_pos_;
 };
 

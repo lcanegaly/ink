@@ -13,16 +13,12 @@ class Mass {
     glm::vec3 Update(std::time_t timestep){
       std::lock_guard<std::mutex> lock(physics_lock_);
       double timestepSeconds = timestep / 1000.0;
-      if (force_ == glm::vec3(0.0))
-        return velocity_; 
       glm::vec3 acceleration = force_ / glm::vec3(mass_);
       velocity_ += acceleration * glm::vec3(timestepSeconds);
-      // Apply damping (adjust dampingFactor as needed)
-      double dampingFactor = 0.5; // Example value
+      double dampingFactor = 0.5;
       velocity_ *= dampingFactor;
       // Reset force for the next update
       force_ = glm::vec3(0.0);
-      std::cout << velocity_.x << velocity_.y << velocity_.z << "\n"; 
       return velocity_;
     } 
     glm::vec3 Velocity(){
