@@ -12,3 +12,4 @@
 #include "../src/mesh.h"
 #include "../src/camera.h"
 #include "../src/asset_manager.h"
+#include "../src/physics/physics_manager.h"

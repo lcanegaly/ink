@@ -17,10 +17,10 @@ void MeshRenderer::Load(){
 void MeshRenderer::Draw(){
   shader_->use(); 
   glm::mat4 model = glm::mat4(1.0f);
-  glm::mat4 projection = Renderer::Get().ProjectionMaxtrix();
-  model = projection * Renderer::Get().Camera() *  mesh_.transform.GlobalMatrix(); 
+  auto& renderer = Renderer::Get(); 
+  model = renderer.GetViewProjMaxtrix() *  mesh_.transform.GlobalMatrix(); 
   shader_->setMatrix("translate", model);
-  glBindVertexArray(vao_);  
+  glBindVertexArray(vao_); 
   if (mesh_.texture_.texture)
     glBindTexture(GL_TEXTURE_2D, mesh_.texture_.texture_id);
   glDrawElements(GL_TRIANGLES, mesh_.index_.size(), GL_UNSIGNED_INT, 0);

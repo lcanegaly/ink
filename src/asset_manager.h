@@ -45,8 +45,12 @@ class AssetManager {
       // TODO should load this from a file.
       
       // ------------ TEXTURES ------------
-      auto texture = new Targa::TgaImage("/home/lee/code/ink/build/test2.tga");
+      auto texture = new Targa::TgaImage("/home/lee/code/ink/build/gate.tga");
       auto texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), texture->width(), texture->height(), 4); 
+      textures_["gate"] = Texture{texture_id, texture}; 
+
+      texture = new Targa::TgaImage("/home/lee/code/ink/build/test2.tga");
+      texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), texture->width(), texture->height(), 4); 
       textures_["test2"] = Texture{texture_id, texture}; 
       
       texture = new Targa::TgaImage("/home/lee/code/ink/build/brick.tga");
@@ -74,6 +78,8 @@ class AssetManager {
       
       // ------------ Models ------------
       models_["floor"] = objimp::Model("/home/lee/code/ink/build/floor.obj");
+      models_["line"] = objimp::Model("/home/lee/code/ink/build/line.obj");
+      models_["gate"] = objimp::Model("/home/lee/code/ink/build/gate.obj");
       models_["doge"] = objimp::Model("/home/lee/code/ink/build/doge.obj");
     }
 };

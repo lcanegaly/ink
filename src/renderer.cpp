@@ -27,11 +27,11 @@ void Renderer::Init(int width, int height, WindowDelegate* window_ptr) {
   glClearColor(0.25, 0.501, 0.749, 1.0);
   glGenTextures(1, &texture_);
   glEnable(GL_DEPTH_TEST);
-  view_ = glm::lookAt(glm::vec3(0.0f, 0.0f, 30.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0)); 
 };
 
 void Renderer::StartDraw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  view_proj_matrix_ = projMatrix_ * camera_.GetViewMatrix();
 }
 
 void Renderer::EndDraw() {
@@ -70,6 +70,24 @@ unsigned int Renderer::UploadMesh(std::vector<Vertex> vert, std::vector<unsigned
   glEnableVertexAttribArray(1);
   glBindVertexArray(0); 
   return vao;
+}
+
+glm::vec3 Renderer::RayCast(glm::vec3 origin, glm::vec3 direction, int distance){
+  return origin + (direction * glm::vec3(distance)); 
+} 
+
+glm::vec2 Renderer::ScreenToNDC(glm::vec2 screen_coord, int screen_width, int screen_height) {
+// going from NDC to screen..
+// NDC i -1 to 1, screen is 0 to width or height etc.
+// xpos = x * width/2 + width/2 
+// ypos = y * height/2 + height/2
+// xpos - (width/2) = x * width/2
+// xpos - (width/2) / (width/2) = x
+// 2 * xpos - width / width = x
+// 2 * ypos - height / height = y
+  double screen_x = (2.0f * screen_coord.x - (double)screen_width)  / (double)screen_width; 
+  double screen_y = (2.0f * screen_coord.y - (double)screen_height)  / (double)screen_height; 
+  return glm::vec2(screen_x, screen_y); 
 }
 
 void Renderer::Draw(unsigned char* tex, int bind_num, int pos_x, int pos_y, int width, int height, float rotation) {

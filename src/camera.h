@@ -13,7 +13,7 @@ public:
     float Pitch;
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), 
            glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), 
-           float yaw = 250.0f, float pitch = 0.0f) 
+           float yaw = 0.0f, float pitch = 0.0f) 
         : Front(glm::vec3(0.0f, 0.0f, 1.0f)), 
           Position(position), 
           WorldUp(up), 
@@ -26,13 +26,15 @@ public:
         return glm::lookAt(Position, Position + Front, Up);
     }
 
-    void Rotate(float deltaYaw, float deltaPitch) {
+    void Rotate(float deltaYaw, float deltaPitch, bool limit = true) {
         Yaw += deltaYaw;
         Pitch += deltaPitch;
-        if (Pitch <-80.0f)
-          Pitch = -80.0f;
-        if (Pitch > 80.0f)
-          Pitch = 80.0f;
+        if (limit){
+          if (Pitch <-80.0f)
+            Pitch = -80.0f;
+          if (Pitch > 80.0f)
+            Pitch = 80.0f;
+        } 
         updateCameraVectors();
     }
 
@@ -40,8 +42,7 @@ public:
         float velocity = MovementSpeed * deltaTime;
         Position += direction * velocity;
     }
-
-private:
+  private:
     float MovementSpeed = 1.0f;
     void updateCameraVectors() {
         glm::vec3 front;
