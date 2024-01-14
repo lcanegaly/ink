@@ -1,9 +1,6 @@
 [submodule "Source/targa"]
 	path = src/targa
 	url = git@github.com:lcanegaly/targa.git
-[submodule "dependencies/glm"]
-	path = dependencies/glm
-	url = https://github.com/Groovounet/glm.git
 [submodule "dependencies/glfw"]
 	path = dependencies/glfw
 	url = https://github.com/glfw/glfw.git
