@@ -1,6 +1,5 @@
 #include "../include/ink.h"
 #include "GLFW/glfw3.h"
-#include "core/type.hpp"
 #include "mesh.h"
 #include "gtc/matrix_transform.hpp"
 #include "gtx/transform.hpp"

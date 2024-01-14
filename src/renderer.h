@@ -65,7 +65,7 @@ class Renderer
     projMatrix_ = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 5000.0f);
   }
   void SetModePerspective(){
-    projMatrix_ = glm::perspective(65.0f, 1280.0f/800.0f, 0.1f, 1500.0f);
+    projMatrix_ = glm::perspective(45.0f, 1280.0f/800.0f, 0.1f, 1500.0f);
   }
 
  private:
@@ -74,7 +74,7 @@ class Renderer
 
  private:
 	Renderer();
-  glm::mat4 projMatrix_ = glm::perspective(65.0f, 800.0f/600.0f, 0.0f, 5000.0f);
+  glm::mat4 projMatrix_ = glm::perspective(45.0f, 800.0f/600.0f, 0.0f, 5000.0f);
   glm::mat4 view_proj_matrix_;
 	int width_, height_;
 	GLuint vbo_;
