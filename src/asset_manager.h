@@ -45,41 +45,41 @@ class AssetManager {
       // TODO should load this from a file.
       
       // ------------ TEXTURES ------------
-      auto texture = new Targa::TgaImage("/home/lee/code/ink/build/gate.tga");
+      auto texture = new Targa::TgaImage("gate.tga");
       auto texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), texture->width(), texture->height(), 4); 
       textures_["gate"] = Texture{texture_id, texture}; 
 
-      texture = new Targa::TgaImage("/home/lee/code/ink/build/test2.tga");
+      texture = new Targa::TgaImage("test2.tga");
       texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), texture->width(), texture->height(), 4); 
       textures_["test2"] = Texture{texture_id, texture}; 
       
-      texture = new Targa::TgaImage("/home/lee/code/ink/build/brick.tga");
+      texture = new Targa::TgaImage("brick.tga");
       texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), texture->width(), texture->height(), 4); 
       textures_["brick"] = Texture{texture_id, texture}; 
       
-      texture = new Targa::TgaImage("/home/lee/code/ink/build/concrete.tga");
+      texture = new Targa::TgaImage("concrete.tga");
       texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), texture->width(), texture->height(), 4); 
       textures_["concrete"] = Texture{texture_id, texture}; 
  
-      texture = new Targa::TgaImage("/home/lee/code/ink/build/concrete_tiles.tga");
+      texture = new Targa::TgaImage("concrete_tiles.tga");
       texture_id = Renderer::Get().LoadTexture((unsigned char*)texture->data(), texture->width(), texture->height(), 4); 
       textures_["concrete_tile"] = Texture{texture_id, texture}; 
 
 
       // ------------ SHADERS ------------
-      auto shader = Shader("/home/lee/code/ink/build/tex_vertex.sh",
-      "/home/lee/code/ink/build/tex_fragment.sh");
+      auto shader = Shader("tex_vertex.sh",
+      "tex_fragment.sh");
       shader.setInt("tex", 0);
       shaders_["texture"] = shader; 
       
-      shader = Shader("/home/lee/code/ink/build/vertex.sh",
-      "/home/lee/code/ink/build/fragment.sh");
+      shader = Shader("vertex.sh",
+      "fragment.sh");
       shaders_["color"] = shader; 
       
       // ------------ Models ------------
-      models_["floor"] = objimp::Model("/home/lee/code/ink/build/floor.obj");
-      models_["line"] = objimp::Model("/home/lee/code/ink/build/line.obj");
-      models_["gate"] = objimp::Model("/home/lee/code/ink/build/gate.obj");
-      models_["doge"] = objimp::Model("/home/lee/code/ink/build/doge.obj");
+      models_["floor"] = objimp::Model("floor.obj");
+      models_["line"] = objimp::Model("line.obj");
+      models_["gate"] = objimp::Model("gate.obj");
+      models_["doge"] = objimp::Model("doge.obj");
     }
 };
