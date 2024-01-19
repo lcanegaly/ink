@@ -26,22 +26,29 @@ class PhysicsManager{
     } 
     void Update(){
       while (true){
-
         for (auto& b : bodies_){
           Transform bt = b->GetTransform();
           for (auto& b2 : bodies_){
             Transform b2t = b2->GetTransform();
+            // If comparing the same rigidbody skip.
             if (b == b2)
               continue;
+            // Get distance vector between transforms
             glm::vec3 distance = bt.position - b2t.position;
+            // If rigidbodies are not close skip
             if (std::abs(distance.x) > 2.0 || std::abs(distance.y) > 2.0 
                 || std::abs(distance.z) > 2.0)
               continue;
+            // Get a intersection vector from collision check.
             glm::vec3 intersection = b->Collides(*b2);
+            // if intersection is not 0, collision has occured.
             if (intersection != glm::vec3(0)){
+              // Apply equal force proportional to intersection depth to each 
+              // object.
               b->ApplyForce(intersection * glm::vec3(1.0));
               b2->ApplyForce(-intersection * glm::vec3(1.0)); }  
           }
+        // Apply gravity to body
         b->ApplyForce(glm::vec3(0.0, -9.8, 0.0));
         b->Update(timestep_); 
         }

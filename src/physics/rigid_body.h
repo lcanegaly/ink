@@ -3,6 +3,7 @@
 #include "physics.h"
 #include "collider.h"
 #include "../transform.h"
+#include "../objimp/obj.h"
 #include <mutex>
 
 class RigidBody{
@@ -11,6 +12,9 @@ class RigidBody{
       collider_ = new Collider(radius, position); 
       transform.position = position;
     }
+    RigidBody(glm::vec3 position, objimp::Model mesh, double mass): mass_{Mass(mass)}{
+      
+    } 
     void ApplyForce(glm::vec3 force){
       mass_.ApplyForce(force);
     }

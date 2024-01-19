@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <vector>
 
+#include "objimp/obj.h"
 #include "GL/glew.h"
 #include "window.h"
 #include "renderer.h"
@@ -47,6 +48,29 @@ void Renderer::DrawWireframe(bool enable){
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   else
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+unsigned int Renderer::UploadMesh(objimp::Mesh mesh){
+  GLuint vao;
+  GLuint vbo;
+  GLuint ebo;
+  glGenVertexArrays(1, &vao);  
+  glGenBuffers(1, &vbo);  
+  glGenBuffers(1, &ebo);  
+  
+  glBindVertexArray(vao);  
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);  
+  
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh.Indices.size(), &mesh.Indices[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, mesh.Vertices.size() * sizeof(float) * 5, &mesh.Vertices[0], GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)(3*sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
+  glBindVertexArray(0); 
+  return vao;
 }
 
 unsigned int Renderer::UploadMesh(std::vector<Vertex> vert, std::vector<unsigned int> index){

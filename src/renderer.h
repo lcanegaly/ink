@@ -10,6 +10,7 @@
 #include "transform.h"
 #include "vertex.h"
 #include "camera.h"
+#include "objimp/obj.h"
 
 struct ImageData {
   unsigned char* tex; 
@@ -52,6 +53,7 @@ class Renderer
   unsigned int VertexArray(); 
   void DrawWireframe(bool enable);
   unsigned int UploadMesh(std::vector<Vertex> vert, std::vector<unsigned int> index);
+  unsigned int UploadMesh(objimp::Mesh mesh);
   glm::mat4 GetViewProjMaxtrix(){
     return view_proj_matrix_;
     //return glm::perspective(65.0f, 800.0f/600.0f, 0.1f, 5000.0f)

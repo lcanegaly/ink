@@ -8,7 +8,7 @@ MeshRenderer::MeshRenderer(Mesh& parent_mesh, Shader* shader )
     : mesh_{parent_mesh},
       shader_{shader} {
   Renderer::Get().DrawWireframe(false);
-  vao_ = Renderer::Get().UploadMesh(mesh_.vertices_, mesh_.index_); 
+  vao_ = Renderer::Get().UploadMesh(mesh_.model_.meshes_[0]); 
 }
 
 void MeshRenderer::Load(){
@@ -23,6 +23,6 @@ void MeshRenderer::Draw(){
   glBindVertexArray(vao_); 
   if (mesh_.texture_.texture)
     glBindTexture(GL_TEXTURE_2D, mesh_.texture_.texture_id);
-  glDrawElements(GL_TRIANGLES, mesh_.index_.size(), GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, mesh_.model_.meshes_[0].Indices.size(), GL_UNSIGNED_INT, 0);
 }
 

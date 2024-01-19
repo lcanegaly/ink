@@ -11,6 +11,8 @@ target_sources(${LIB_NAME} PRIVATE
  ${CMAKE_CURRENT_SOURCE_DIR}/button.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/audio.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/mesh_renderer.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/objimp/obj.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/physics/collider.cpp
 )
 
 

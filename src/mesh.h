@@ -15,15 +15,15 @@ class Mesh : public Object {
   Mesh(Shader* shader, objimp::Model model, Texture texture = Texture())
           : Object(new NoUpdate, nullptr ), model_{model},
             texture_{texture}{
-    // TODO this is loading texture coords wrong.
 
+    /*
     for (int i = 0; i < model_.faces_.size(); i++) {
       for (int j = 0; j < model_.faces_[i].vertex_index.size(); j++) {
         //for each face, push the vertex and texture indices values to a Vertex struct
         Vertex v;
         auto face_index = model_.faces_[i].vertex_index[j] - 1;
         auto face_tex = model_.faces_[i].texture_index[j] - 1;
-        auto vertex = model_.vertices_[face_index]; 
+        auto vertex = model_.points_[face_index]; 
         auto texture_coord = model_.texture_coords_[face_tex]; 
         v.Position = {(float)vertex.x, (float)vertex.y, (float)vertex.z};
         v.TexCoords = {(float)texture_coord.x, (float)texture_coord.y};
@@ -35,8 +35,11 @@ class Mesh : public Object {
         }
       }
     }
+    */
+
     set_render_delegate(new MeshRenderer(*this, shader)); 
   }
+  /* 
   int findVertex(Vertex v){
     for (int i = 0; i < vertices_.size(); i++){
       auto vert = vertices_[i];
@@ -45,10 +48,11 @@ class Mesh : public Object {
     } 
     return -1;
   }
+  */
   Texture texture_;
   objimp::Model model_;
-  std::vector<Vertex> vertices_;
-  std::vector<unsigned int> index_;
+  //std::vector<Vertex> vertices_;
+  //std::vector<unsigned int> index_;
   void OnUserUpdate(std::time_t delta_t) override {
   }
 };
