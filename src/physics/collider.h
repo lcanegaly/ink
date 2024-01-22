@@ -7,9 +7,10 @@
 #include "physics.h"
 #include "glm.hpp"
 #include "../objimp/obj.h"
+#include "../transform.h"
 
-enum ColliderMesh {
-  sphere = 0, plane
+enum ColliderMeshType {
+  sphere = 0, plane, aabb, mesh
 };
 
 class Collider{
@@ -18,11 +19,18 @@ class Collider{
     Collider(glm::vec3 position, objimp::Mesh mesh); 
     void SetPosition(glm::vec3 position);
     glm::vec3 OnCollide(Collider& other);
-    ColliderMesh collider_mesh_ = ColliderMesh::sphere;
-    glm::vec3 sphere_origin = glm::vec3(0);
+    ColliderMeshType collider_mesh_type_ = ColliderMeshType::sphere;
+    objimp::Mesh collision_mesh;
+    glm::vec3 origin = glm::vec3(0);
+    Transform t;
     double sphere_radius = 1.0;
+
   private:
     std::mutex collider_lock_;
 };
 
 glm::vec3 SphereToSphere(Collider& primary, Collider& other);
+glm::vec3 SphereToMesh(Collider& sphere, Collider& mesh);
+
+glm::vec3 SupportPointSphere(glm::vec3 position, double radius, glm::vec3 direction);
+glm::vec3 SupportPointMesh(glm::vec3 position, objimp::Mesh, glm::vec3 direction);

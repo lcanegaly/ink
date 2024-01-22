@@ -1,3 +1,7 @@
 #!/bin/bash
-g++ main.cpp -o phyx
-./phyx
+#
+cmake -S . -B build
+cd build
+make
+./physx
+cd ..

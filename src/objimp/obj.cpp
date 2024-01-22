@@ -54,7 +54,9 @@ void objimp::Model::CreateMesh(){
         }
       }
     }
+  m.Points = points_; 
   meshes_.push_back(m);
+
 }
 
 bool objimp::Model::sort(std::string line){

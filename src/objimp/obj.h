@@ -41,6 +41,7 @@ struct Face{
 struct Mesh{
     std::vector<Vertex> Vertices;
     std::vector<int> Indices;
+    std::vector<Point> Points;
 };
 
 class Model{
