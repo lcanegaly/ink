@@ -12,28 +12,13 @@ void test_mesh_support_point(glm::vec3 position, objimp::Mesh mesh, glm::vec3 di
 }
 
 int main(){
-  //test_sphere_support_point(glm::vec3(0,0,0), 4.0, glm::vec3(0.4,0.5,0.0));
-  //test_sphere_support_point(glm::vec3(0,0,0), 4.0, glm::vec3(0.1,0.9,0.0));
-  //test_sphere_support_point(glm::vec3(1,1,0), 4.0, glm::vec3(0.4,0.5,0.0));
-  //test_sphere_support_point(glm::vec3(0,0,0), 4.0, glm::vec3(1.8,2.4,0.0));
 
   auto test =  objimp::Model("test.obj");
   auto mesh = test.meshes_[0];
   
-  glm::vec3 position = glm::vec3(5.0,0.0,0.0);
-  Transform t;
-  t.position = position;
-  t.angle = 45.0f; 
-
-  for (auto &v : mesh.Points){
-    glm::vec4 point = glm::vec4(v.x, v.y, v.z, 1.0); 
-    point = t.GlobalMatrix()* point;
-    v.x = point.x;
-    v.y = point.y;
-    v.z = point.z;
-    std::cout << v.x << " " << v.y << " " << v.z << "\n";
-  }
-  std::cout << "\n\n";
-  glm::vec3 direction = glm::vec3(1.0, 0.0, 0.0);
-  test_mesh_support_point(position, mesh, direction);
+  Collider mcollider = Collider(glm::vec3(1.0,0.0,0.0), mesh);
+  Collider scollider = Collider(0.5, glm::vec3(0, 2.1, 0));
+ 
+  auto collision = scollider.OnCollide(mcollider);
+  std::cout << collision.x << " " << collision.y << " " << collision.z << "\n"; 
 }

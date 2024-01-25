@@ -20,12 +20,12 @@ class Collider{
     void SetPosition(glm::vec3 position);
     glm::vec3 OnCollide(Collider& other);
     ColliderMeshType collider_mesh_type_ = ColliderMeshType::sphere;
-    objimp::Mesh collision_mesh;
-    glm::vec3 origin = glm::vec3(0);
     Transform t;
     double sphere_radius = 1.0;
-
+    objimp::Mesh GetMesh();
+    
   private:
+    objimp::Mesh collision_mesh;
     std::mutex collider_lock_;
 };
 
