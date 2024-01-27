@@ -16,9 +16,11 @@ int main(){
   auto test =  objimp::Model("test.obj");
   auto mesh = test.meshes_[0];
   
-  Collider mcollider = Collider(glm::vec3(1.0,0.0,0.0), mesh);
-  Collider scollider = Collider(0.5, glm::vec3(0, 2.1, 0));
+  Collider mcollider = Collider(glm::vec3(0.0,0.0,0.0), mesh);
+  Collider m2collider = Collider(glm::vec3(2.0,0.0,0.0), mesh);
+  //Collider scollider = Collider(0.5, glm::vec3(1.3, 0, 0));
  
-  auto collision = scollider.OnCollide(mcollider);
+  //auto collision = scollider.OnCollide(mcollider);
+  auto collision = mcollider.OnCollide(m2collider);
   std::cout << collision.x << " " << collision.y << " " << collision.z << "\n"; 
 }

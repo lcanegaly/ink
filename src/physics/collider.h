@@ -30,7 +30,11 @@ class Collider{
 };
 
 glm::vec3 SphereToSphere(Collider& primary, Collider& other);
-glm::vec3 SphereToMesh(Collider& sphere, Collider& mesh);
+//glm::vec3 SphereToMesh(Collider& sphere, Collider& mesh);
+glm::vec3 MeshToMesh(Collider& mesh, Collider& mesh_other);
 
+glm::vec3 GetDirection(glm::vec3 vec, glm::vec3 vec_other);
+bool PastOrigin(glm::vec3 point, glm::vec3 point_other);
+glm::vec3 GetSimplexPoint(Collider& mesh, Collider& mesh_other, glm::vec3 direction);
 glm::vec3 SupportPointSphere(glm::vec3 position, double radius, glm::vec3 direction);
 glm::vec3 SupportPointMesh(glm::vec3 position, objimp::Mesh, glm::vec3 direction);
