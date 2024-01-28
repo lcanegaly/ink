@@ -11,6 +11,7 @@ endif()
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glew/lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glew/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/objimp)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glm/glm)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glfw/include)
